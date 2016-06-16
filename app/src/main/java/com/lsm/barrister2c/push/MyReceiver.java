@@ -17,32 +17,17 @@ import android.util.Log;
 import com.androidquery.util.AQUtility;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.yty.minerva.R;
-import com.yty.minerva.app.AppConfig;
-import com.yty.minerva.app.AppManager;
-import com.yty.minerva.app.Constants;
-import com.yty.minerva.app.VersionHelper;
-import com.yty.minerva.data.db.Channel;
-import com.yty.minerva.data.db.ChannelDao;
-import com.yty.minerva.data.db.DbService;
-import com.yty.minerva.data.db.PushMessage;
-import com.yty.minerva.data.db.UserDbService;
-import com.yty.minerva.data.db.VoteResultDao;
-import com.yty.minerva.data.io.Expire;
-import com.yty.minerva.data.io.Request;
-import com.yty.minerva.data.io.gtc.GetChannelListReq;
-import com.yty.minerva.data.io.gtc.GetNewsDetailReq;
-import com.yty.minerva.helper.MsgHelper;
-import com.yty.minerva.helper.UserHelper;
-import com.yty.minerva.ui.activity.AuthorDetailActivity;
-import com.yty.minerva.ui.activity.NewsDetailActivity;
-import com.yty.minerva.ui.activity.TopicDetailActivity;
-import com.yty.minerva.ui.activity.WebViewActivity;
-import com.yty.minerva.utils.DLog;
-import com.yty.minerva.utils.FileUtils;
-
-import java.io.File;
-import java.util.List;
+import com.lsm.barrister2c.R;
+import com.lsm.barrister2c.app.AppConfig;
+import com.lsm.barrister2c.app.AppManager;
+import com.lsm.barrister2c.app.Constants;
+import com.lsm.barrister2c.app.MsgHelper;
+import com.lsm.barrister2c.app.UserHelper;
+import com.lsm.barrister2c.app.VersionHelper;
+import com.lsm.barrister2c.data.db.PushMessage;
+import com.lsm.barrister2c.data.db.UserDbService;
+import com.lsm.barrister2c.ui.activity.WebViewActivity;
+import com.lsm.barrister2c.utils.DLog;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -143,12 +128,7 @@ public class MyReceiver extends BroadcastReceiver {
                     //处理
                     handleNewsType(context, msg);
 
-                } else if (msg.getType().equals(PushMessage.TYPE_UPDATE_NEWS)) {
-
-                    //在线编辑新闻，清除该条新闻缓存
-                    handleUpdateNewsCMD(context, msg);
-
-                } else if (msg.getType().equals(PushMessage.TYPE_FORCE_UPDATE)) {
+                }else if (msg.getType().equals(PushMessage.TYPE_FORCE_UPDATE)) {
                     //强制更新
                     AppConfig.getInstance().setForceUpdate(true);
 
@@ -156,7 +136,7 @@ public class MyReceiver extends BroadcastReceiver {
                         VersionHelper.instance().check(AppManager.getAppManager().currentActivity(), true);
                     }
 
-                } else if (msg.getType().equals(PushMessage.TYPE_AUTHOR_REPLY_MSG)) {
+                } else if (msg.getType().equals(PushMessage.TYPE_ORDER_MSG)) {
 
                     //小编回复消息
                     handleReplyMsg(context, msg);
@@ -208,7 +188,6 @@ public class MyReceiver extends BroadcastReceiver {
 
                 try {
                     AppConfig.removeUser(context);
-                    AppConfig.clearMemCache();
                     AQUtility.cleanCacheAsync(context, 0, 0);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -256,139 +235,7 @@ public class MyReceiver extends BroadcastReceiver {
 
     }
 
-    /**
-     * 在线编辑，清除该条新闻的缓存
-     *
-     * @param context
-     * @param msg
-     */
-    private void handleUpdateNewsCMD(Context context, PushMessage msg) {
 
-        File cacheDir = AQUtility.getCacheDir(context);
-
-        String id = msg.getContentId();
-
-        //普通新闻
-        String url = new GetNewsDetailReq(context, id).url();
-
-        File cacheFile = AQUtility.getCacheFile(cacheDir, url);
-
-        if (cacheFile != null && cacheFile.exists()) {
-
-            FileUtils.deleteFile(cacheFile);
-            return;
-
-        }
-
-        //组图新闻
-//		url = new GetPicSetNewsDetailReq(context, id).url();
-//
-//		cacheFile = AQUtility.getCacheFile(cacheDir, url);
-//
-//		if(cacheFile!=null && cacheFile.exists()){
-//
-//			FileUtils.deleteFile(cacheFile);
-//
-//			return;
-//
-//		}
-
-        //检查是否有投票信息，如果有则清掉
-//		String json = AppConfig.getInstance().get("vote"+id);
-//		if(json!=null){
-//			AppConfig.getInstance().remove("vote"+id);
-//		}
-
-        boolean voted = UserDbService.getInstance(context).getVoteResultAction()
-                .contains(VoteResultDao.Properties.Id.eq("vote" + id));
-
-        if (voted) {
-            UserDbService.getInstance(context).getVoteResultAction().delete(VoteResultDao.Properties.Id.eq("vote" + id));
-        }
-
-    }
-
-    /**
-     * 处理频道下线消息
-     *
-     * @param context
-     * @param msg
-     */
-    private void handlerOfflineChannel(Context context, PushMessage msg) {
-        // TODO 1.如果用户已关注该频道，则从数据库中移除
-        String channelId = msg.getContentId();
-        if (channelId.equals("1")) {
-            DLog.w(TAG, "头条不能下线");
-            return;
-        }
-
-        DLog.d(TAG, "推送消息，频道下线：" + channelId);
-
-        new GetChannelListReq(context, 1)
-                .setRefresh(true)
-                .setExpire(Expire.DAY)
-                .execute(null);
-
-        UserDbService.getInstance(context).getChannelAction().delete(ChannelDao.Properties.Id.eq(channelId));
-    }
-
-    /**
-     * 更新频道
-     *
-     * @param context
-     * @param msg
-     */
-    private void handleUpdateChannelCMD(final Context context, PushMessage msg) {
-
-        DLog.d(TAG, "推送消息，更新频道");
-
-        new GetChannelListReq(context, 1)
-                .setRefresh(true)
-                .setRetry(3)
-                .setExpire(Expire.DAY)
-                .execute(new Request.Callback<List<Channel>>() {
-
-                    @Override
-                    public void progress() {
-                    }
-
-                    @Override
-                    public void onError(int errorCode, String msg) {
-                    }
-
-                    @Override
-                    public void onCompleted(final List<Channel> t) {
-                        if (t != null) {
-
-                            new Thread() {
-                                public void run() {
-                                    DbService.getInstance(context).getChannelAction().save(t);
-
-                                    List<Channel> userChannels = UserDbService.getInstance(context).getChannelAction().loadAll();
-
-                                    loop:
-                                    for (Channel userChannel : userChannels) {
-
-                                        for (Channel temp : t) {
-
-                                            if (userChannel.getId().equals(temp.getId())) {
-
-                                                userChannel.setName(temp.getName());
-
-                                                UserDbService.getInstance(context).getChannelAction().save(userChannel);
-
-                                                continue loop;
-                                            }
-                                        }
-                                    }
-                                }
-                            }.start();
-
-
-                        }
-                    }
-                });
-    }
 
     /**
      * 处理其他类型的消息
@@ -458,12 +305,9 @@ public class MyReceiver extends BroadcastReceiver {
 
         Intent targetIntent = null;
 
-        if (type.equals(PushMessage.TYPE_TOPIC)) {
+        if (type.equals(PushMessage.TYPE_ORDER_MSG)) {
 
             //推送消息是专题新闻
-            targetIntent = new Intent(context, TopicDetailActivity.class);
-            targetIntent.putExtra(Constants.KEY_ID, contentId);
-            targetIntent.putExtra(Constants.KEY_TOPIC_TYPE, Constants.TOPIC_TYPE_NEWS);
 
         } else if (type.equals(PushMessage.TYPE_AD)) {
 
@@ -475,26 +319,13 @@ public class MyReceiver extends BroadcastReceiver {
         } else if (type.equals(PushMessage.TYPE_NEWS)) {
 
             //推送消息是普通新闻
-            targetIntent = new Intent(context, NewsDetailActivity.class);
-            targetIntent.putExtra(Constants.KEY_ID, contentId);
-            targetIntent.putExtra(Constants.KEY_THUMB, icon);
 
         } else if (type.equals(PushMessage.TYPE_SYSTEM_MSG)) {
 
 
-        } else if (type.contains(PushMessage.TYPE_AUTHOR_REPLY_MSG)) {
+        } else if (type.contains(PushMessage.TYPE_ORDER_MSG)) {
 
             //推送消息是普通新闻
-            targetIntent = new Intent(context, AuthorDetailActivity.class);
-
-            String authorId = contentId;//小编id
-            String authorName = title;//小编昵称
-            String authorIcon = icon;
-
-            targetIntent.putExtra(AuthorDetailActivity.KEY_ID, contentId);
-            targetIntent.putExtra(AuthorDetailActivity.KEY_NAME, authorName);
-            targetIntent.putExtra(AuthorDetailActivity.KEY_ICON, icon);
-            targetIntent.putExtra(AuthorDetailActivity.KEY_FROM_PUSH, true);
 
         }
 
@@ -512,7 +343,7 @@ public class MyReceiver extends BroadcastReceiver {
                 //程序未运行，弹出消息后，退出消息详情返回主页面
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
                 // Adds the back stack
-                stackBuilder.addParentStack(NewsDetailActivity.class);
+//                stackBuilder.addParentStack(NewsDetailActivity.class);
 
                 stackBuilder.addNextIntent(targetIntent);
 
