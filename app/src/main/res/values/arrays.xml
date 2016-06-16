@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="caseTypes">
+        <item >婚姻家庭</item>
+        <item >交通事故</item>
+        <item >继承纠结</item>
+        <item >债权债务</item>
+        <item >劳动仲裁</item>
+        <item >消费权益</item>
+        <item >房屋拆迁</item>
+        <item >刑事辩护</item>
+        <item >公司治理</item>
+        <item >投融资</item>
+    </string-array>
+    <string-array name="businessTypes">
+        <item >合同起草与审核</item>
+        <item >法律文书</item>
+        <item >法律意见书</item>
+        <item >律师函</item>
+        <item >法律论证</item>
+        <item >案件代理</item>
+    </string-array>
+    <string-array name="lawApps">
+        <item >中国法律</item>
+        <item >中国法规</item>
+        <item >地方法规</item>
+        <item >司法解释</item>
+        <item >实用案例</item>
+        <item >国际条约</item>
+        <item >合同范本</item>
+        <item >法律文书</item>
+        <item >WTO/白皮书</item>
+        <item >百姓法律</item>
+        <item >英文法律</item>
+        <item >法律考试</item>
+    </string-array>
+</resources>
