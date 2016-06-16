@@ -187,7 +187,7 @@
             android:value="true" />
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="56a6f4ea67e58e9af60022c8" />
+            android:value="f802f6cf4892280c2a542731" />
 
         <activity android:name=".ui.activity.VoIPCallActivity" />
         <activity android:name=".ui.activity.BarristerListActivity"></activity>
