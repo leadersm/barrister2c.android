@@ -2,8 +2,8 @@ package com.lsm.barrister2c.data.io.app;
 
 import android.content.Context;
 
+import com.google.gson.reflect.TypeToken;
 import com.lsm.barrister2c.app.AppConfig;
-import com.lsm.barrister2c.data.io.Test;
 import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
@@ -68,7 +68,7 @@ public class BindBankCardReq extends Action {
     @Override
     public CommonResult parse(String json) throws Exception {
 
-        final IO.BindBankcardResult result = Test.getBindcardResult();//getFromGson(json,new TypeToken<IO.BindBankcardResult>(){});
+        final IO.BindBankcardResult result = getFromGson(json,new TypeToken<IO.BindBankcardResult>(){});//Test.getBindcardResult();//
 
         if(result!=null){
 

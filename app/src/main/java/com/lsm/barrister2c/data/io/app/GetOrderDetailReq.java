@@ -2,9 +2,9 @@ package com.lsm.barrister2c.data.io.app;
 
 import android.content.Context;
 
+import com.google.gson.reflect.TypeToken;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
-import com.lsm.barrister2c.data.io.Test;
 
 /**
  * Created by lvshimin on 16/5/8.
@@ -38,7 +38,7 @@ public class GetOrderDetailReq extends Action{
 
     @Override
     public CommonResult parse(String json) throws Exception {
-        IO.GetOrderDetailResult result = Test.getOrderDetailResult();//getFromGson(json, new TypeToken<IO.GetOrderDetailResult>() {});
+        IO.GetOrderDetailResult result = getFromGson(json, new TypeToken<IO.GetOrderDetailResult>() {});//Test.getOrderDetailResult();//
 
         if(result!=null){
 
@@ -50,9 +50,9 @@ public class GetOrderDetailReq extends Action{
 
             return result;
 
-        }else{
-            throw new Exception("解析错误");
         }
+
+        return null;
     }
 
     @Override

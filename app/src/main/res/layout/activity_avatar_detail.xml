@@ -63,7 +63,7 @@
                     android:layout_marginRight="30dp"
                     app:actualImageScaleType="focusCrop"
                     app:fadeDuration="300"
-                    app:placeholderImage="@color/colorPrimary"
+                    app:placeholderImage="@color/placeholder"
                     app:placeholderImageScaleType="fitCenter"
                     app:roundAsCircle="true" />
 
@@ -111,6 +111,7 @@
                     android:layout_gravity="right|center_vertical"
                     android:background="@color/transparent"
                     android:gravity="right"
+                    android:paddingRight="10dp"
                     android:text="@string/unknown_name" />
             </FrameLayout>
 

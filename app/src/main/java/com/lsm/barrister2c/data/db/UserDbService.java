@@ -16,6 +16,14 @@ public class UserDbService {
     private PushMessageDao pushMessageDao;
     Action<PushMessage> pushMessageAction;
 
+    private FavoriteDao favoriteDao;
+
+    public Action<Favorite> getFavoriteAction() {
+        return favoriteAction;
+    }
+
+    Action<Favorite> favoriteAction;
+
 
     public Action<PushMessage> getPushMessageAction() {
         return pushMessageAction;
@@ -33,7 +41,10 @@ public class UserDbService {
         daoSession = daoMaster.newSession();
 
         pushMessageDao = daoSession.getPushMessageDao();
-        pushMessageAction = new Action<PushMessage>(pushMessageDao);
+        pushMessageAction = new Action<>(pushMessageDao);
+
+        favoriteDao = daoSession.getFavoriteDao();
+        favoriteAction = new Action<>(favoriteDao);
 
     }
 

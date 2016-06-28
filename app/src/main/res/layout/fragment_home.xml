@@ -94,7 +94,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="余额"
+                        android:text="@string/remaining_balance"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:layout_toRightOf="@+id/image_yue"
@@ -103,7 +103,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="100"
+                        android:text="@string/default_money"
                         android:layout_toRightOf="@+id/image_yue"
                         android:layout_below="@+id/textview_yue"
                         android:id="@+id/tv_home_yue" />
@@ -135,7 +135,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="累计消费"
+                        android:text="@string/total_consume"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:layout_toRightOf="@+id/image_consume"
@@ -144,7 +144,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="100"
+                        android:text="@string/default_money"
                         android:layout_toRightOf="@+id/image_consume"
                         android:layout_below="@+id/textview_consume"
                         android:id="@+id/tv_home_consume" />

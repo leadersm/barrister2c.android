@@ -20,25 +20,28 @@ import com.androidquery.AQuery;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.app.AppConfig;
+import com.lsm.barrister2c.app.BizHelper;
+import com.lsm.barrister2c.app.UserHelper;
+import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.entity.Ad;
 import com.lsm.barrister2c.data.entity.BusinessArea;
 import com.lsm.barrister2c.data.entity.BusinessType;
 import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
-import com.lsm.barrister2c.data.io.app.GetLunboAdsReq;
 import com.lsm.barrister2c.data.io.app.GetMyAccountReq;
 import com.lsm.barrister2c.data.io.app.GetUserHomeReq;
 import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.activity.WebViewActivity;
-import com.lsm.barrister2c.ui.adapter.BusinessTypeAdapter;
-import com.lsm.barrister2c.ui.adapter.CaseTypeAdapter;
+import com.lsm.barrister2c.ui.adapter.BizAreaAdapter;
+import com.lsm.barrister2c.ui.adapter.BizTypeAdapter;
 import com.lsm.barrister2c.ui.widget.CirclePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements UserHelper.UserActionListener{
 
 
     public HomeFragment() {
@@ -78,14 +81,14 @@ public class HomeFragment extends Fragment {
     CirclePageIndicator indicator;
 
     GetUserHomeReq mGetHomeReq;
-    GetLunboAdsReq mGetAdsReq;
-    GetMyAccountReq mGetAccountReq;
+//    GetLunboAdsReq mGetAdsReq;
+//    GetMyAccountReq mGetAccountReq;
 
     RecyclerView mCaseTypesListView, mBusinessTypeListView;
     GridLayoutManager mBusinessTypeListLayoutManager, mCaseTypeListLayoutManager;
 
-    CaseTypeAdapter mCaseTypeListAdapter;
-    BusinessTypeAdapter mBusinessTypeListAdapter;
+    BizAreaAdapter mCaseTypeListAdapter;
+    BizTypeAdapter mBusinessTypeListAdapter;
 
     View view;
 
@@ -107,21 +110,23 @@ public class HomeFragment extends Fragment {
         mBusinessTypeListLayoutManager = new GridLayoutManager(getActivity(), 5);
         mCaseTypeListLayoutManager = new GridLayoutManager(getActivity(), 2);
 
-        mCaseTypeListAdapter = new CaseTypeAdapter(caseTypeList);
+        mCaseTypeListAdapter = new BizAreaAdapter(mBizAreas);
         mCaseTypesListView.setLayoutManager(mBusinessTypeListLayoutManager);
         mCaseTypesListView.setItemAnimator(new DefaultItemAnimator());
         mCaseTypesListView.setAdapter(mCaseTypeListAdapter);
 
-        mBusinessTypeListAdapter = new BusinessTypeAdapter(businessTypeList);
+        mBusinessTypeListAdapter = new BizTypeAdapter(mBizTypes);
         mBusinessTypeListView.setLayoutManager(mCaseTypeListLayoutManager);
         mBusinessTypeListView.setItemAnimator(new DefaultItemAnimator());
         mBusinessTypeListView.setAdapter(mBusinessTypeListAdapter);
 
         refresh();
+
+        loadMyAccount();
     }
 
-    List<BusinessArea> caseTypeList = new ArrayList<>();
-    List<BusinessType> businessTypeList = new ArrayList<>();
+    List<BusinessArea> mBizAreas = new ArrayList<>();
+    List<BusinessType> mBizTypes = new ArrayList<>();
 
     public void refresh() {
         if (mGetHomeReq == null) {
@@ -146,44 +151,16 @@ public class HomeFragment extends Fragment {
                 bindHomeData(homeResult);
             }
         });
+    }
 
-        if (mGetAdsReq == null) {
-            mGetAdsReq = new GetLunboAdsReq(getActivity());
-        }
-
-        mGetAdsReq.execute(new Action.Callback<IO.GetLunboAdsResult>() {
-
-            @Override
-            public void progress() {
-
-            }
-
-            @Override
-            public void onError(int errorCode, String msg) {
-                UIHelper.showToast(getContext(), msg);
-            }
-
-            @Override
-            public void onCompleted(IO.GetLunboAdsResult getLunboAdsResult) {
-                if (getLunboAdsResult != null && getLunboAdsResult.ads != null) {
-
-                    ads.clear();
-                    ads.addAll(getLunboAdsResult.ads);
-                    mAdsAdapter.notifyDataSetChanged();
-
-                }
-            }
-        });
-
-
-        if(mGetAccountReq == null){
-            mGetAccountReq = new GetMyAccountReq(getContext());
-        }
+    private void loadMyAccount(){
 
         User user = AppConfig.getUser(getContext());
 
-        if(user!=null)
-        mGetAccountReq.execute(new Action.Callback<IO.GetAccountResult>() {
+        if(user==null)
+            return;
+
+        new GetMyAccountReq(getActivity()).execute(new Action.Callback<IO.GetAccountResult>() {
             @Override
             public void progress() {
 
@@ -191,46 +168,47 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onError(int errorCode, String msg) {
-                UIHelper.showToast(getContext(),"获取信息失败："+msg);
+
             }
 
             @Override
             public void onCompleted(IO.GetAccountResult result) {
 
-                if(result!=null){
+                mAccount = result.account;
 
-                    String remainingBalance = result.account.getRemainingBalance();
-                    String totalConsume = result.account.getTotalConsume();
-
-                    aq.id(R.id.tv_home_yue).text(remainingBalance + "元");
-
-                    aq.id(R.id.tv_home_consume).text(totalConsume + "元");
-
-                }
+                updateAccount();
             }
         });
-
-
     }
 
 
     private void bindHomeData(IO.HomeResult homeResult) {
 
-        List<BusinessArea> caseTypeList = homeResult.caseTypeList;
-        List<BusinessType> businessTypeList = homeResult.businessTypeList;
+        List<BusinessArea> bizAreas = homeResult.bizAreas;
+        List<BusinessType> bizTypes = homeResult.bizTypes;
 
-        if (caseTypeList != null) {
-            this.caseTypeList.clear();
-            this.caseTypeList.addAll(caseTypeList);
+        BizHelper.getInstance().setBizAreas(bizAreas);
+        BizHelper.getInstance().setBizTypes(bizTypes);
+
+        List<Ad> ads = homeResult.list;
+
+        if (bizAreas != null) {
+            this.mBizAreas.clear();
+            this.mBizAreas.addAll(bizAreas);
             mCaseTypeListAdapter.notifyDataSetChanged();
         }
 
-        if (businessTypeList != null) {
-            this.businessTypeList.clear();
-            this.businessTypeList.addAll(businessTypeList);
+        if (bizTypes != null) {
+            this.mBizTypes.clear();
+            this.mBizTypes.addAll(bizTypes);
             mBusinessTypeListAdapter.notifyDataSetChanged();
         }
 
+        if(ads!=null){
+            this.ads.clear();
+            this.ads.addAll(ads);
+            mAdsAdapter.notifyDataSetChanged();
+        }
 
     }
 
@@ -245,6 +223,43 @@ public class HomeFragment extends Fragment {
     }
 
     List<Ad> ads = new ArrayList<>();
+
+    @Override
+    public void onSSOLoginCallback(User user) {
+    }
+
+    @Override
+    public void onLoginCallback(User user) {
+        //请求账户信息，余额，累计消费
+        loadMyAccount();
+    }
+
+    @Override
+    public void onLogoutCallback() {
+        //余额，累计消费 显示 0.0
+        onUpdateUserInfo();
+    }
+
+    Account mAccount = null;
+
+    private void updateAccount(){
+        float remainingBalance = 0f;
+        float totalConsume = 0f;
+
+        if(mAccount != null){
+            remainingBalance = mAccount.getRemainingBalance();
+            totalConsume = mAccount.getTotalConsume();
+        }
+
+        aq.id(R.id.tv_home_yue).text(String.format(Locale.CHINA,"%.1f元", remainingBalance));
+        aq.id(R.id.tv_home_consume).text(String.format(Locale.CHINA,"%.1f元", totalConsume));
+    }
+
+    @Override
+    public void onUpdateUserInfo() {
+
+
+    }
 
     public class AdsPagerAdapter extends FragmentPagerAdapter {
 

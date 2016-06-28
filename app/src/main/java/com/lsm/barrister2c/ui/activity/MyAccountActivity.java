@@ -22,6 +22,7 @@ import com.lsm.barrister2c.ui.adapter.LoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -54,8 +55,10 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
 //                if(result==null)
 //                    return;
 
+                boolean bind = result.account.getBankCardBindStatus().equals(Account.CARD_STATUS_BOUND);
+
                 //TODO 银行卡
-                UIHelper.goBankcardActivity(MyAccountActivity.this,bankcard);//result.account.getBankCard());
+                UIHelper.goBankcardActivity(MyAccountActivity.this,bind?bankcard:null);//result.account.getBankCard());
             }
         });
 
@@ -161,8 +164,8 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
 
     Account.BankCard bankcard;
     private void bind() {
-        aq.id(R.id.tv_myaccount_balance).text(result.account.getRemainingBalance());
-        aq.id(R.id.tv_myaccount_total).text(result.account.getTotalConsume());
+        aq.id(R.id.tv_myaccount_balance).text(String.format(Locale.CHINA,"%.1f元",result.account.getRemainingBalance()));
+        aq.id(R.id.tv_myaccount_total).text(String.format(Locale.CHINA,"%.1f元",result.account.getTotalConsume()));
 
         bankcard = result.account.getBankCard();
 

@@ -80,7 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="订单号：20160409123456789"
+                    android:text="订单号："
                     android:textSize="13sp" />
 
                 <TextView
@@ -89,7 +89,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="10dp"
-                    android:text="订单类型：民事纠纷"
                     android:textSize="13sp" />
 
                 <TextView
@@ -98,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="10dp"
-                    android:text="下单时间：2016-04-09 11:15:28"
+                    android:text="下单时间："
                     android:textSize="13sp" />
 
                 <LinearLayout
@@ -132,6 +131,7 @@
                     android:background="@color/divider" />
 
                 <TextView
+                    android:id="@+id/tv_order_remark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -179,7 +179,7 @@
                         android:layout_height="45dp"
                         app:actualImageScaleType="focusCrop"
                         app:fadeDuration="300"
-                        app:placeholderImage="@color/colorPrimary"
+                        app:placeholderImage="@color/placeholder"
                         app:placeholderImageScaleType="fitCenter"
                         app:roundAsCircle="true" />
 
@@ -244,30 +244,10 @@
                     android:layout_marginTop="10dp"
                     android:background="@color/divider" />
 
-                <LinearLayout
+                <com.lsm.barrister2c.ui.widget.ListViewForScrollView
+                    android:id="@+id/listview_callhistory"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/tv_order_buy_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="预约时间：2016-04-09 14:00-17:00"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="通话时长：45秒"
-                        android:layout_marginTop="5dp"
-                        android:textSize="13sp" />
-
-                </LinearLayout>
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 

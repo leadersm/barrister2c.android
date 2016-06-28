@@ -1,5 +1,7 @@
 package com.lsm.barrister2c.data.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by lvshimin on 16/5/20.
  * 咨询案件领域（类型）
@@ -14,26 +16,10 @@ package com.lsm.barrister2c.data.entity;
  * 债券债务
  * 刑事辩护
  */
-public class BusinessArea {
-    String id;
-    String name;
+public class BusinessArea extends Filter implements Serializable{
+
     String desc;
     String icon;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getDesc() {
         return desc;

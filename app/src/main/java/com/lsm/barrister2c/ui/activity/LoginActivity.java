@@ -16,15 +16,20 @@ import com.androidquery.AQuery;
 import com.androidquery.util.AQUtility;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.app.AppConfig;
+import com.lsm.barrister2c.app.AppManager;
 import com.lsm.barrister2c.app.Constants;
+import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.ErrorCode;
+import com.lsm.barrister2c.data.io.IO;
 import com.lsm.barrister2c.data.io.app.GetVerifyCodeReq;
 import com.lsm.barrister2c.data.io.app.LoginReq;
+import com.lsm.barrister2c.data.io.app.UpdateUserInfoReq;
 import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.utils.TextHandler;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 /**
@@ -277,21 +282,26 @@ public class LoginActivity extends BaseActivity  {
 
                     mLoginReq = null;
 
+                    String pushId = AppConfig.getInstance().getPushId(getApplicationContext());
+
+                    if(!TextUtils.isEmpty(pushId) && (TextUtils.isEmpty(user.getPushId()) || !user.getPushId().equals(pushId))){
+
+                        user.setPushId(pushId);
+
+                        uploadPushId(pushId);
+                    }
+
                     UIHelper.showToast(getApplicationContext(),getString(R.string.tip_success_login));
 
                     //保存user，更新界面信息；
                     AppConfig.setUser(getApplicationContext(), user);
 
-                    //跳转到MainActivity
-                    UIHelper.goMainActivity(LoginActivity.this);
+                    UserHelper.getInstance().onLogin(user);
 
-//                    if(user.getVerifyStatus().equals(User.STATUS_UNAUTHERIZED)){
-//
-//                        UIHelper.goUserDetailActivity(LoginActivity.this);
-//
-//                    }else{
-//
-//                    }
+                    if(!AppManager.isMainActivityRunning()){
+                        //跳转到MainActivity
+                        UIHelper.goMainActivity(LoginActivity.this);
+                    }
 
                     finish();
 
@@ -313,6 +323,28 @@ public class LoginActivity extends BaseActivity  {
     private boolean isVerifyCodeValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
+    }
+
+    /**
+     * 更新pushId
+     */
+    private void uploadPushId(String pushId) {
+        HashMap<String,String> params = new HashMap<>();
+        params.put("pushId",pushId);
+
+        new UpdateUserInfoReq(getApplicationContext(),params).execute(new Action.Callback<IO.GetUpdateUserResult>() {
+            @Override
+            public void progress() {
+            }
+
+            @Override
+            public void onError(int errorCode, String msg) {
+            }
+
+            @Override
+            public void onCompleted(IO.GetUpdateUserResult result) {
+            }
+        });
     }
 
 

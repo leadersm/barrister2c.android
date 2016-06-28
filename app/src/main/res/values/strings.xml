@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Barrister2C</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">登录</string>
 
     <!-- Strings related to login -->
     <string name="prompt_phone">请输入手机号码</string>
@@ -241,5 +241,25 @@
     <string name="male">男</string>
     <string name="female">女</string>
     <string name="title_my_orders">我的订单</string>
+    <string name="title_favorite">我的收藏</string>
+    <string name="lawyer_service">律师服务</string>
+    <string name="intro">个人简介</string>
+    <string name="pmt">提示</string>
+    <string name="tip_price">系统将从您的账户中扣除%.2f元</string>
+    <string name="recharge">充值</string>
+    <string name="reset_filter">重置条件</string>
+    <string name="repick_date">重新选择日期</string>
+    <string name="repick">重新选择</string>
+    <string name="pick_appointment_time">选择预约时间</string>
+    <string name="tip_pick_appointment">提示:每次只能预约某一天的最多两个时段</string>
+    <string name="tip_no_pick">请选择购买时段</string>
+    <string name="tip_makeorder_success">订单已提交</string>
+    <string name="pay_wx">微信支付</string>
+    <string name="pay_ali">支付宝</string>
+    <string name="remarks_pay">请填写备注信息</string>
+    <string name="lawapplist">中国法律应用大全</string>
+    <string name="default_money">0.0元</string>
+    <string name="total_consume">累计消费</string>
+    <string name="remaining_balance">余额</string>
 
 </resources>

@@ -2,7 +2,7 @@ package com.lsm.barrister2c.data.io.app;
 
 import android.content.Context;
 
-import com.lsm.barrister2c.data.io.Test;
+import com.google.gson.reflect.TypeToken;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
 
@@ -36,7 +36,7 @@ public class GetLunboAdsReq extends Action{
     @Override
     public CommonResult parse(String json) throws Exception {
 
-        IO.GetLunboAdsResult result = Test.getLunoAdsResult();//getFromGson(json, new TypeToken<IO.GetLunboAdsResult>() {});
+        IO.GetLunboAdsResult result = getFromGson(json, new TypeToken<IO.GetLunboAdsResult>() {});//Test.getLunoAdsResult();//
 
         if(result!=null){
 

@@ -12,8 +12,13 @@ import com.androidquery.AQuery;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.app.AppConfig;
 import com.lsm.barrister2c.app.AppManager;
+import com.lsm.barrister2c.app.BizHelper;
 import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.data.entity.User;
+import com.lsm.barrister2c.data.io.Action;
+import com.lsm.barrister2c.data.io.IO;
+import com.lsm.barrister2c.data.io.app.GetMyAccountReq;
+import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.fragment.AvaterCenterFragment;
 import com.lsm.barrister2c.ui.fragment.FaxianFragment;
 import com.lsm.barrister2c.ui.fragment.HomeFragment;
@@ -49,7 +54,32 @@ public class MainActivity extends BaseActivity {
 
         user = AppConfig.getUser(this);
 
-//        ECHelper.getInstance().createSubUser(this,"test123456");
+        BizHelper.getInstance().init(this);
+
+        loadMyAccount();
+    }
+
+    private void loadMyAccount() {
+
+        if(user==null)
+            return;
+
+        new GetMyAccountReq(this).execute(new Action.Callback<IO.GetAccountResult>() {
+            @Override
+            public void progress() {
+
+            }
+
+            @Override
+            public void onError(int errorCode, String msg) {
+                UIHelper.showToast(getApplicationContext(),msg);
+            }
+
+            @Override
+            public void onCompleted(IO.GetAccountResult result) {
+                UserHelper.getInstance().setAccountResult(result);
+            }
+        });
     }
 
     private void setupViewPager() {
@@ -100,13 +130,13 @@ public class MainActivity extends BaseActivity {
         }
 
         BottomNavigationItem homeItem = new BottomNavigationItem
-                (getString(R.string.tab_home), getResources().getColor(R.color.colorPrimary), R.drawable.ic_mic_black_24dp);
+                (getString(R.string.tab_home), getResources().getColor(R.color.colorPrimary), R.drawable.func_main_home_selector);
         BottomNavigationItem myConsultsItem = new BottomNavigationItem
-                (getString(R.string.tab_faxian), getResources().getColor(R.color.colorPrimary), R.drawable.ic_favorite_black_24dp);
+                (getString(R.string.tab_faxian), getResources().getColor(R.color.colorPrimary), R.drawable.func_main_faxian_selector);
         BottomNavigationItem learningCenterItem = new BottomNavigationItem
-                (getString(R.string.tab_learning_center), getResources().getColor(R.color.colorPrimary), R.drawable.ic_book_black_24dp);
+                (getString(R.string.tab_learning_center), getResources().getColor(R.color.colorPrimary), R.drawable.func_main_learning_selector);
         BottomNavigationItem avaterCenterItem = new BottomNavigationItem
-                (getString(R.string.tab_avatar_center), getResources().getColor(R.color.colorPrimary),R.drawable.github_circle);
+                (getString(R.string.tab_avatar_center), getResources().getColor(R.color.colorPrimary),R.drawable.func_main_avatar_selector);
 
 
         bottomNavigationView.addTab(homeItem);
@@ -183,9 +213,12 @@ public class MainActivity extends BaseActivity {
 
         // 启动推送服务
         JPushInterface.resumePush(getApplicationContext());
-
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
 
     /**

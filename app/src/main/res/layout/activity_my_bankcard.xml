@@ -24,14 +24,14 @@
         android:layout_height="130dp"
         android:gravity="center_vertical"
         android:layout_margin="10dp"
-        android:background="@drawable/bankcard_bg"
-        android:padding="15dp">
+        android:background="@drawable/bankcard_bg">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:padding="15dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:layout_width="35dp"
@@ -79,7 +79,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:clickable="true"
-        android:padding="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:layout_gravity="center_vertical"
         android:layout_margin="10dp"
         android:background="@drawable/bankcard_add_bg">

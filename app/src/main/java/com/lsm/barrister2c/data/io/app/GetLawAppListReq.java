@@ -21,7 +21,6 @@ public class GetLawAppListReq extends Action{
     public GetLawAppListReq(Context context) {
         super(context);
 
-        addUserParams();
     }
 
     @Override

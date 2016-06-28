@@ -145,6 +145,9 @@ public class ModifyAvaterActivity extends BaseActivity {
     private LocationClientOption.LocationMode tempMode = LocationClientOption.LocationMode.Hight_Accuracy;
     private String tempcoor = "bd09ll";
     private int span = 500;
+
+    String province, city, mLocation;
+
     public class MyLocationListener implements BDLocationListener {
 
         @Override
@@ -155,6 +158,12 @@ public class ModifyAvaterActivity extends BaseActivity {
                 aq.id(R.id.et_modify_user).text(location.getProvince()+","+location.getCity());
 
                 DLog.i("Location", "location.getProvince:"+location.getProvince());
+
+                province = location.getProvince();
+
+                city = location.getCity();
+
+                mLocation = location.getLongitude() + "," + location.getLatitude();
 
             }
 
@@ -200,6 +209,7 @@ public class ModifyAvaterActivity extends BaseActivity {
             return;
         }
 
+
         if(key.equals(User.KEY_NICKNAME) && !TextHandler.validateNickname(content)){//修改昵称
             //验证用户名，支持中英文（包括全角字符）、数字、下划线和减号 （全角及汉字算两位）,长度为4-20位,中文按二位计数
             UIHelper.showToast(this, R.string.tip_invalid_nickname);
@@ -220,8 +230,18 @@ public class ModifyAvaterActivity extends BaseActivity {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put(key, content);
 
+        if(key.equals(User.KEY_AREA)){
+
+            if(!TextUtils.isEmpty(mLocation))
+                params.put("location",mLocation);
+            if(!TextUtils.isEmpty(city))
+                params.put("city",city);
+            if(!TextUtils.isEmpty(province))
+                params.put("state",province);
+        }
+
         mUpdateUserReq = new UpdateUserInfoReq(this, params);
-        mUpdateUserReq.execute(new Action.Callback<Boolean>() {
+        mUpdateUserReq.execute(new Action.Callback<User>() {
 
             @Override
             public void progress() {
@@ -254,7 +274,7 @@ public class ModifyAvaterActivity extends BaseActivity {
             }
 
             @Override
-            public void onCompleted(Boolean t) {
+            public void onCompleted(User t) {
                 mUpdateUserReq = null;
 
                 progressDialog.dismiss();
@@ -286,10 +306,13 @@ public class ModifyAvaterActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mUpdateUserReq!=null && mUpdateUserReq.isLoading())
-        {
+
+        if(mUpdateUserReq!=null && mUpdateUserReq.isLoading()){
             mUpdateUserReq.cancel();
             mUpdateUserReq = null;
         }
+
+        if(mLocationClient!=null)
+            mLocationClient.stop();
     }
 }

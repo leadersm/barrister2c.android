@@ -1,17 +1,23 @@
 package com.lsm.barrister2c.data.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by lvshimin on 16/5/8.
  * 预约设置
- * key:date yyyy-MM-dd
+ * key:addTime yyyy-MM-dd
  * value:0,1,0,1……对应36个时段的状态
  */
 public class AppointmentSetting implements Serializable{
 
+    public static final String STATUS_OFF = "0";//不接受预约
+    public static final String STATUS_ON = "1";//接受预约
+    public static final String STATUS_SOLD = "2";//已出售
+
     String date;
     String settings;
+    List<HourItem> hours;
 
     public String getDate() {
         return date;
@@ -27,5 +33,44 @@ public class AppointmentSetting implements Serializable{
 
     public void setSettings(String settings) {
         this.settings = settings;
+    }
+
+    public List<HourItem> getHours() {
+        return hours;
+    }
+
+    public void setHours(List<HourItem> hours) {
+        this.hours = hours;
+    }
+
+    public static class HourItem implements Serializable {
+
+        String hour;
+        boolean isEnable;
+        boolean isSoldOut = false;
+
+        public String getHour() {
+            return hour;
+        }
+
+        public void setHour(String hour) {
+            this.hour = hour;
+        }
+
+        public boolean isEnable() {
+            return isEnable;
+        }
+
+        public void setEnable(boolean enable) {
+            isEnable = enable;
+        }
+
+        public boolean isSoldOut() {
+            return isSoldOut;
+        }
+
+        public void setSoldOut(boolean soldOut) {
+            isSoldOut = soldOut;
+        }
     }
 }

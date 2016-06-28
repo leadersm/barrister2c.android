@@ -14,8 +14,11 @@ import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.app.AppConfig;
 import com.lsm.barrister2c.app.Constants;
 import com.lsm.barrister2c.app.VersionHelper;
+import com.lsm.barrister2c.data.entity.LawApp;
 import com.lsm.barrister2c.push.PushUtil;
 import com.lsm.barrister2c.utils.DLog;
+
+import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -30,6 +33,8 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupPush();
+
         setContentView(R.layout.activity_welcome);
 
         initAppInfo();
@@ -73,6 +78,33 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     };
 
+    private void setupPush() {
+        if (AppConfig.getInstance().getPushId(this) == null) {
+            String pushId = JPushInterface.getRegistrationID(this);
+            DLog.d(TAG, "pushId:" + pushId);
+        }
+
+        String pushTag = AppConfig.getInstance().getPushTag(this);
+
+        //设置别名，防止内外网推送混乱
+        if (Constants.DEBUG) {
+
+            DLog.d(TAG, "推送设置：内网接收");
+
+            if (TextUtils.isEmpty(pushTag) || !pushTag.equals(Constants.TAG_LAN)) {
+                PushUtil.getInstance().setTag(Constants.TAG_LAN);
+            }
+
+        } else {
+
+            DLog.d(TAG, "推送设置：外网接收");
+            if (TextUtils.isEmpty(pushTag) || !pushTag.equals(Constants.TAG_WAN)) {
+                PushUtil.getInstance().setTag(Constants.TAG_WAN);
+            }
+
+        }
+
+    }
 
     /**
      * 初始化应用信息，读取配置文件
@@ -123,9 +155,25 @@ public class WelcomeActivity extends AppCompatActivity {
 
             }
 
+            List<LawApp> apps = AppConfig.getInstance().getApps();
+            if (apps == null || apps.isEmpty()) {
+                AppConfig.getInstance().initLawApps();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(this);
     }
 }

@@ -2,9 +2,9 @@ package com.lsm.barrister2c.data.io.app;
 
 import android.content.Context;
 
+import com.google.gson.reflect.TypeToken;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
-import com.lsm.barrister2c.data.io.Test;
 
 /**
  * Created by lvshimin on 16/5/8.
@@ -13,15 +13,13 @@ import com.lsm.barrister2c.data.io.Test;
  * userHome
  *   提交方式：post
  *   参数:userId,verifyCode
- *   返回值：resultCode，resultMsg , status（接单状态）,orderQty订单数，remainingBalance余额，totalIncome总收入，List<OrderItem> todoList待办事件；
+ *   resultCode，resultMsg, List<Ad> ads 轮播广告, List<BusinessArea> bizAreas 案件类型（咨询范围）列表,List<BusinessType> bizTypes 业务类型列表
  *   备注：（页面切换）前台获取更新首页信息。
  */
 public class GetUserHomeReq extends Action{
 
     public GetUserHomeReq(Context context) {
         super(context);
-
-        addUserParams();
     }
 
     @Override
@@ -37,7 +35,7 @@ public class GetUserHomeReq extends Action{
     @Override
     public CommonResult parse(String json) throws Exception {
 
-        final IO.HomeResult result = Test.getHomeResult();//getFromGson(json,new TypeToken<IO.HomeResult>(){});
+        final IO.HomeResult result = getFromGson(json,new TypeToken<IO.HomeResult>(){});//Test.getHomeResult();//
 
         if(result!=null){
 
@@ -49,14 +47,13 @@ public class GetUserHomeReq extends Action{
 
             return result;
 
-        }else{
-            throw new Exception("解析错误");
         }
 
+        return null;
     }
 
     @Override
     public int method() {
-        return POST;
+        return GET;
     }
 }

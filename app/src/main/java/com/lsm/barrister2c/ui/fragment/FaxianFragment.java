@@ -58,7 +58,7 @@ public class FaxianFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_consults, container, false);
+        View view = inflater.inflate(R.layout.fragment_faxian, container, false);
 
         init(view);
         return view;
@@ -73,18 +73,18 @@ public class FaxianFragment extends Fragment {
         aq.id(R.id.btn_faxian_appointment).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.goBarristerListAcitivity(v.getContext(), GetBarristerListReq.TYPE_APPOINTMENT);
+                UIHelper.goBarristerListAcitivity(v.getContext(), GetBarristerListReq.TYPE_APPOINTMENT,null,null);
             }
         });
         aq.id(R.id.btn_faxian_im).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.goBarristerListAcitivity(v.getContext(), GetBarristerListReq.TYPE_IM);
+                UIHelper.goBarristerListAcitivity(v.getContext(), GetBarristerListReq.TYPE_IM,null,null);
             }
         });
 
         mLawAppListView = (RecyclerView) view.findViewById(R.id.recyclerview_faxian_apps);
-        mLawAppListLayoutManager = new GridLayoutManager(getActivity(), 4);
+        mLawAppListLayoutManager = new GridLayoutManager(getActivity(), 3);
         mLawAppListAdapter = new LawAppAdapter(items);
         mLawAppListView.setItemAnimator(new DefaultItemAnimator());
         mLawAppListView.setLayoutManager(mLawAppListLayoutManager);

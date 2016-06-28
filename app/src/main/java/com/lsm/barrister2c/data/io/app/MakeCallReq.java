@@ -51,9 +51,9 @@ public class MakeCallReq extends Action{
 
             return result;
 
-        }else{
-            throw new Exception("解析错误");
         }
+
+        return null;
     }
 
     @Override

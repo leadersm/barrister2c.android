@@ -2,6 +2,7 @@ package com.lsm.barrister2c.data.io.app;
 
 import android.content.Context;
 
+import com.google.gson.reflect.TypeToken;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
 
@@ -43,7 +44,15 @@ public class UploadUserIconReq extends Action {
 
     @Override
     public CommonResult parse(String json) throws Exception {
-        return parseCommonResult(json);
+
+        IO.UploadUserIconResult result = getFromGson(json,new TypeToken<IO.UploadUserIconResult>(){});
+
+        if(result!=null && result.resultCode==200){
+            onSafeCompleted(result.user);
+            return result;
+        }
+
+        return null;
     }
 
     @Override

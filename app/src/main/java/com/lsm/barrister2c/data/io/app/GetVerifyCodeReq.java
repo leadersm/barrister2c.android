@@ -2,9 +2,9 @@ package com.lsm.barrister2c.data.io.app;
 
 import android.content.Context;
 
+import com.google.gson.reflect.TypeToken;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
-import com.lsm.barrister2c.data.io.Test;
 
 /**
  * Created by lvshimin on 16/5/8.
@@ -38,7 +38,7 @@ public class GetVerifyCodeReq extends Action{
     @Override
     public CommonResult parse(String json) throws Exception {
 
-        IO.GetVerifyCodeResult result = Test.getVerifyCodeResult();//getFromGson(json,new TypeToken<IO.GetVerifyCodeResult>(){});
+        IO.GetVerifyCodeResult result = getFromGson(json,new TypeToken<IO.GetVerifyCodeResult>(){});//Test.getVerifyCodeResult();//
 
         if(result!=null){
 

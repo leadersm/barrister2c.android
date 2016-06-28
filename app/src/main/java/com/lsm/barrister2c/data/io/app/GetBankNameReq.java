@@ -2,7 +2,7 @@ package com.lsm.barrister2c.data.io.app;
 
 import android.content.Context;
 
-import com.lsm.barrister2c.data.io.Test;
+import com.google.gson.reflect.TypeToken;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
 
@@ -35,7 +35,7 @@ public class GetBankNameReq extends Action {
 
     @Override
     public CommonResult parse(String json) throws Exception {
-        IO.GetBankInfoResult result = Test.getBankInfoResult();//getFromGson(json,new TypeToken<IO.GetBankInfoResult>(){});
+        IO.GetBankInfoResult result = getFromGson(json,new TypeToken<IO.GetBankInfoResult>(){});//Test.getBankInfoResult();//
         if(result!=null){
 
             if(result.data!=null){

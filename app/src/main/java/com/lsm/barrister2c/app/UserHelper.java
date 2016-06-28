@@ -4,8 +4,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.lsm.barrister2c.data.entity.User;
+import com.lsm.barrister2c.data.io.Action;
+import com.lsm.barrister2c.data.io.IO;
+import com.lsm.barrister2c.data.io.app.UpdateUserInfoReq;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,6 +21,7 @@ public class UserHelper {
 
 
     private static UserHelper instance = null;
+    private IO.GetAccountResult accountResult;
 
     private UserHelper() {
 
@@ -52,6 +57,14 @@ public class UserHelper {
         }
     }
 
+    public IO.GetAccountResult getAccountResult() {
+        return accountResult;
+    }
+
+    public void setAccountResult(IO.GetAccountResult accountResult) {
+        this.accountResult = accountResult;
+    }
+
 
     /**
      * 用户普通登录，第三方登录，注销，上传头像回调接口
@@ -82,7 +95,7 @@ public class UserHelper {
         /**
          * 用户更换头像
          */
-        void onUserIconNicknameChanged();
+        void onUpdateUserInfo();
 
     }
 
@@ -166,9 +179,9 @@ public class UserHelper {
         }
     }
 
-    public void notityUserIconOrNicknameChanged() {
+    public void updateUserInfo() {
         for (UserActionListener temp : actionListeners) {
-            temp.onUserIconNicknameChanged();
+            temp.onUpdateUserInfo();
         }
     }
 
@@ -206,7 +219,25 @@ public class UserHelper {
     public void uploadPushId(Context context, String pushId) {
         User user = AppConfig.getUser(context);
         if (user != null) {
+            HashMap<String,String> params = new HashMap<>();
+            params.put("pushId",pushId);
 
+            new UpdateUserInfoReq(context,params).execute(new Action.Callback<IO.GetUpdateUserResult>() {
+                @Override
+                public void progress() {
+
+                }
+
+                @Override
+                public void onError(int errorCode, String msg) {
+
+                }
+
+                @Override
+                public void onCompleted(IO.GetUpdateUserResult result) {
+
+                }
+            });
         }
     }
 

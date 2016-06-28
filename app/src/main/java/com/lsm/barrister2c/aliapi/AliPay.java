@@ -1,26 +1,22 @@
 package com.lsm.barrister2c.aliapi;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Random;
-
-import com.alipay.sdk.app.PayTask;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Toast;
+
+import com.alipay.sdk.app.PayTask;
+import com.lsm.barrister2c.data.io.Action;
+import com.lsm.barrister2c.data.io.app.GetAliPrePayInfoReq;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Random;
 
 public class AliPay {
 
@@ -55,8 +51,9 @@ public class AliPay {
         return context;
     }
 
-    public void setContext(Activity context) {
+    public AliPay init(Activity context) {
         this.context = context;
+        return instance;
     }
 
     Activity context;
@@ -106,55 +103,75 @@ public class AliPay {
     /**
      * call alipay sdk pay. 调用SDK支付
      */
-    public void pay(final Activity context) {
-        if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
-            new AlertDialog.Builder(context).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialoginterface, int i) {
-                            //finish();
-                        }
-                    }).show();
-            return;
-        }
-        String orderInfo = getOrderInfo("测试的商品", "该测试商品的详细描述", "0.01");
+    public void pay(String goodsName,String goodsInfo,float money) {
+//        if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
+//            new AlertDialog.Builder(context).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
+//                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialoginterface, int i) {
+//                            //finish();
+//                        }
+//                    }).show();
+//            return;
+//        }
+//        String orderInfo = getOrderInfo("测试的商品", "该测试商品的详细描述", "0.01");
+//
+//        /**
+//         * 特别注意，这里的签名逻辑需要放在服务端，切勿将私钥泄露在代码中！
+//         */
+//        String sign = sign(orderInfo);
+//        try {
+//            /**
+//             * 仅需对sign 做URL编码
+//             */
+//            sign = URLEncoder.encode(sign, "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//
+//        /**
+//         * 完整的符合支付宝参数规范的订单信息
+//         */
+//        final String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + getSignType();
 
-        /**
-         * 特别注意，这里的签名逻辑需要放在服务端，切勿将私钥泄露在代码中！
-         */
-        String sign = sign(orderInfo);
-        try {
-            /**
-             * 仅需对sign 做URL编码
-             */
-            sign = URLEncoder.encode(sign, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
-        /**
-         * 完整的符合支付宝参数规范的订单信息
-         */
-        final String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + getSignType();
-
-        Runnable payRunnable = new Runnable() {
+        new GetAliPrePayInfoReq(context,goodsName,goodsInfo,money).execute(new Action.Callback<String>(){
 
             @Override
-            public void run() {
-                // 构造PayTask 对象
-                PayTask alipay = new PayTask(context);
-                // 调用支付接口，获取支付结果
-                String result = alipay.pay(payInfo, true);
+            public void progress() {
 
-                Message msg = new Message();
-                msg.what = SDK_PAY_FLAG;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
             }
-        };
 
-        // 必须异步调用
-        Thread payThread = new Thread(payRunnable);
-        payThread.start();
+            @Override
+            public void onError(int errorCode, String msg) {
+
+            }
+
+            @Override
+            public void onCompleted(final String payInfo) {
+
+                Runnable payRunnable = new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // 构造PayTask 对象
+                        PayTask alipay = new PayTask(context);
+                        // 调用支付接口，获取支付结果
+                        String result = alipay.pay(payInfo, true);
+
+                        Message msg = new Message();
+                        msg.what = SDK_PAY_FLAG;
+                        msg.obj = result;
+                        mHandler.sendMessage(msg);
+                    }
+                };
+
+                // 必须异步调用
+                Thread payThread = new Thread(payRunnable);
+                payThread.start();
+            }
+        });
+
+
     }
 
     /**

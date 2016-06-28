@@ -2,9 +2,12 @@ package com.lsm.barrister2c.data.io;
 
 import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.entity.Ad;
+import com.lsm.barrister2c.data.entity.AppointmentSetting;
 import com.lsm.barrister2c.data.entity.Barrister;
-import com.lsm.barrister2c.data.entity.BusinessType;
+import com.lsm.barrister2c.data.entity.BarristerDetail;
 import com.lsm.barrister2c.data.entity.BusinessArea;
+import com.lsm.barrister2c.data.entity.BusinessType;
+import com.lsm.barrister2c.data.entity.Channel;
 import com.lsm.barrister2c.data.entity.ConsumeDetail;
 import com.lsm.barrister2c.data.entity.LawApp;
 import com.lsm.barrister2c.data.entity.LearningItem;
@@ -13,6 +16,7 @@ import com.lsm.barrister2c.data.entity.OrderDetail;
 import com.lsm.barrister2c.data.entity.OrderItem;
 import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.data.entity.Version;
+import com.tencent.mm.sdk.modelpay.PayReq;
 
 import java.util.List;
 
@@ -21,8 +25,10 @@ import java.util.List;
  */
 public class IO {
 
-    public static final String SERVER = "http://119.254.167.200:8080/lawerservice/";//GTC.测试
-    //	public static final String SERVER = "http://10.0.0.25:8080";//高荣威
+    public static final String TEST = "http://www.baidu.com";
+
+    public static final String SERVER = "http://119.254.167.200:8080/clientservice/";//GTC.测试
+//    public static final String SERVER = "http://10.0.0.25:8080";//高荣威
 
 
     public static final String URL_LOGOUT = SERVER + "logout.do";
@@ -30,7 +36,19 @@ public class IO {
     public static final String URL_LOGIN = SERVER + "login.do";
 
     public static final String URL_GET_BANK_INFO = "http://apis.baidu.com/datatiny/cardinfo/cardinfo";
-    public static final String TEST = "http://www.baidu.com";
+    public static final String URL_RECHARGE = SERVER + "barristerDetail.do";
+
+    public static final String URL_PREPAY_INFO = SERVER + "wxPrepayInfo.do";
+    public static final String URL_ALI_PREPAY_INFO = SERVER + "aliPrepayInfo.do";
+    public static final String URL_GET_BARRISTER_DETAIL = SERVER +"barristerDetail.do";
+
+    public static class PrePayResult extends Action.CommonResult {
+        public PayReq payReq;
+    }
+
+    public static class AliPrePayResult extends Action.CommonResult {
+        public String payInfo;//支付信息
+    }
 
     /**
      * 登陆返回结果
@@ -59,7 +77,7 @@ public class IO {
     }
 
 
-    public static final String URL_GET_USER_HOME = SERVER + "userHome.do";
+    public static final String URL_GET_USER_HOME = SERVER + "appHome.do";
 
     /**
      * HOME
@@ -71,9 +89,9 @@ public class IO {
      * List<LawApp> lawAppList 法律应用大全列表;
      */
     public static class HomeResult extends Action.CommonResult {
-        public List<BusinessArea> caseTypeList;//领域列表;
-        public List<BusinessType> businessTypeList;//业务列表;
-        public List<LawApp> lawAppList;//法律应用大全列表;
+        public List<BusinessArea> bizAreas;//领域列表;
+        public List<BusinessType> bizTypes;//业务列表;
+        public List<Ad> list;
     }
 
     public static final String URL_FEEDBACK = SERVER + "addFeedback.do";
@@ -118,7 +136,7 @@ public class IO {
      * 我的订单列表接口
      */
     public static class GetMyOrdersResult extends Action.CommonResult {
-        public List<OrderItem> orderItems;
+        public List<OrderItem> orders;
         public int total;
     }
 
@@ -142,6 +160,9 @@ public class IO {
     }
 
     public static final String URL_MAKE_CALL = SERVER + "makeCall.do";
+    public static class MakeOrderResult extends Action.CommonResult {
+        public OrderDetail orderDetail;
+    }
 
     public static final String URL_UPDATE_USER = SERVER + "updateUserInfo.do";
 
@@ -156,6 +177,10 @@ public class IO {
      * 上传用户头像
      */
     public static final String URL_UPLOAD_USERICON = SERVER + "uploadUserIcon.do";
+
+    public static class UploadUserIconResult extends Action.CommonResult {
+        public User user;
+    }
 
     public static class GetBankInfoResult extends Action.CommonResult {
 
@@ -203,24 +228,24 @@ public class IO {
     }
 
     //领域类型列表
-    public static final String URL_GET_CASETYPE_LIST = SERVER + "caseTypeList.do";
+    public static final String URL_GET_CASETYPE_LIST = SERVER + "bizAreas.do";
 
     /**
      * 领域类型列表
      */
     public static class GetCaseTypeListResult extends Action.CommonResult {
-        public List<BusinessArea> caseTypeList;
+        public List<BusinessArea> bizAreas;
         public int total;
     }
 
     //业务类型列表
-    public static final String URL_GET_BUSINESSTYPE_LIST = SERVER + "businessTypeList.do";
+    public static final String URL_GET_BUSINESSTYPE_LIST = SERVER + "bizTypes.do";
 
     /**
      * 业务类型列表
      */
     public static class GetBusinessTypeListResult extends Action.CommonResult {
-        public List<BusinessType> businessTypeList;
+        public List<BusinessType> bizTypes;
         public int total;
     }
 
@@ -243,7 +268,30 @@ public class IO {
      * 律师列表
      */
     public static class GetBarristerListResult extends Action.CommonResult {
-        public List<Barrister> barristerList;
+        public List<Barrister> items;
         public int total;
     }
+
+    public static final String URL_GET_APPOINTMENT_SETTINGS = SERVER + "getMyAppointmentSettings.do";
+
+    public static class GetAppointmentSettingsResult extends Action.CommonResult {
+        public List<AppointmentSetting> appointmentSettings;
+    }
+
+    public static final String URL_BIZ_TYPE_AREA_LIST = SERVER + "bizAreaAndBizTypeList.do";
+
+    public static class GetBizTypeAreaListResult extends Action.CommonResult{
+        public List<BusinessArea> bizAreas ;//领域列表;
+        public List<BusinessType> bizTypes ;//业务类型;
+    }
+
+    public static class GetBarristerDetailResult extends Action.CommonResult{
+        public BarristerDetail barristerDetail;
+    }
+
+    public static final String URL_GET_CHANNEL_LIST = SERVER + "getStudyChannelList.do";
+    public static class GetChannelListResult extends Action.CommonResult{
+        public List<Channel> items;
+    }
+
 }

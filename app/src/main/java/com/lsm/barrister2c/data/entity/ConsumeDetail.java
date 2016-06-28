@@ -11,6 +11,7 @@ public class ConsumeDetail implements Serializable{
     public static final String TYPE_ORDER = "consume.type.order";//订单
     public static final String TYPE_GET_MONEY = "consume.type.getmoney";//提现
     public static final String TYPE_REWARD = "consume.type.reward";//打赏
+    public static final String TYPE_RECHARGE = "consume.type.recharge";//充值
 
     String id;
     String serialNum;//流水号
@@ -18,10 +19,6 @@ public class ConsumeDetail implements Serializable{
     String orderId;//订单id，如果有
     String type;//类型：接受订单、提现、
     String date;//日期
-    String rewardUserId;//打赏人id
-    String rewardUserName;//打赏人昵称
-    String rewardUserPhone;//打赏人手机号
-    String rewardUserIcon;//打赏人头像
 
 
     public String getId() {
@@ -72,35 +69,4 @@ public class ConsumeDetail implements Serializable{
         this.date = date;
     }
 
-    public String getRewardUserId() {
-        return rewardUserId;
-    }
-
-    public void setRewardUserId(String rewardUserId) {
-        this.rewardUserId = rewardUserId;
-    }
-
-    public String getRewardUserName() {
-        return rewardUserName;
-    }
-
-    public void setRewardUserName(String rewardUserName) {
-        this.rewardUserName = rewardUserName;
-    }
-
-    public String getRewardUserPhone() {
-        return rewardUserPhone;
-    }
-
-    public void setRewardUserPhone(String rewardUserPhone) {
-        this.rewardUserPhone = rewardUserPhone;
-    }
-
-    public String getRewardUserIcon() {
-        return rewardUserIcon;
-    }
-
-    public void setRewardUserIcon(String rewardUserIcon) {
-        this.rewardUserIcon = rewardUserIcon;
-    }
 }

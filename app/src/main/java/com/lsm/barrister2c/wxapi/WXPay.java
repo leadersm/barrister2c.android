@@ -5,8 +5,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.lsm.barrister2c.app.Constants;
-import com.lsm.barrister2c.data.io.Request;
-import com.lsm.barrister2c.data.io.app.GetPrePayInfoReq;
+import com.lsm.barrister2c.data.io.Action;
+import com.lsm.barrister2c.data.io.app.GetWXPrePayInfoReq;
+import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.utils.DLog;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
@@ -26,12 +27,12 @@ public class WXPay {
 
     Activity context;
 
-    WXPay instance = null;
+    private static WXPay instance = null;
 
     private WXPay(){
 
     }
-    public WXPay getInstance(){
+    public static WXPay getInstance(){
         if(instance == null){
 
             instance = new WXPay() ;
@@ -41,7 +42,7 @@ public class WXPay {
     }
 
 
-    public void pay(){
+    public void pay(String goodsName,String goodsInfo,float money){
 
 
         if(api == null)
@@ -60,8 +61,8 @@ public class WXPay {
             return ;
         }
 
+        new GetWXPrePayInfoReq(context,goodsName,goodsInfo,money).execute(new Action.Callback<PayReq>() {
 
-        new GetPrePayInfoReq(context).execute(new Request.Callback<PayReq>() {
             @Override
             public void progress() {
 
@@ -69,7 +70,7 @@ public class WXPay {
 
             @Override
             public void onError(int errorCode, String msg) {
-
+                UIHelper.showToast(context,"创建订单失败："+msg);
             }
 
             @Override
@@ -84,5 +85,11 @@ public class WXPay {
         });
 
     }
+
+    public WXPay init(Activity activity) {
+        this.context = activity;
+        return instance;
+    }
+
 
 }

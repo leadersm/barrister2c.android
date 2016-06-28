@@ -1,12 +1,14 @@
 package com.lsm.barrister2c.data.io;
 
+import com.lsm.barrister2c.app.AppConfig;
 import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.entity.Ad;
+import com.lsm.barrister2c.data.entity.AppointmentSetting;
 import com.lsm.barrister2c.data.entity.Barrister;
-import com.lsm.barrister2c.data.entity.BusinessType;
+import com.lsm.barrister2c.data.entity.BarristerDetail;
 import com.lsm.barrister2c.data.entity.BusinessArea;
+import com.lsm.barrister2c.data.entity.BusinessType;
 import com.lsm.barrister2c.data.entity.ConsumeDetail;
-import com.lsm.barrister2c.data.entity.LawApp;
 import com.lsm.barrister2c.data.entity.LearningItem;
 import com.lsm.barrister2c.data.entity.Message;
 import com.lsm.barrister2c.data.entity.OrderDetail;
@@ -37,8 +39,8 @@ public class Test {
 
         Account account = new Account();
         account.setBankCardBindStatus(Account.CARD_STATUS_BOUND);
-        account.setRemainingBalance("1000");
-        account.setTotalConsume("1500");
+        account.setRemainingBalance(0f);
+        account.setTotalConsume(0f);
         Account.BankCard bankCard = new Account.BankCard();
         bankCard.setBankCardAddress("富力城支行");
         bankCard.setLogoName("icon_bank_zs.png");
@@ -111,9 +113,8 @@ public class Test {
         result.resultCode = 200;
         result.resultMsg = "success";
 
-        result.caseTypeList = getCaseTypeListResult(10).caseTypeList;
-        result.businessTypeList = getBusinessTypeListResult(6).businessTypeList;
-        result.lawAppList = getLawAppListResult(12).lawAppList;
+        result.bizAreas = getBizAreaListResult(10).bizAreas;
+        result.bizTypes = getBizTypeListResult(6).bizTypes;
 
         return  result;
     }
@@ -194,7 +195,7 @@ public class Test {
             item.setCaseType("1");
             orderItems.add(item);
         }
-        result.orderItems = orderItems;
+        result.orders = orderItems;
 
         return result;
     }
@@ -321,7 +322,7 @@ public class Test {
      * caseType列表
      * @return
      */
-    public static IO.GetCaseTypeListResult getCaseTypeListResult(int count){
+    public static IO.GetCaseTypeListResult getBizAreaListResult(int count){
         IO.GetCaseTypeListResult result = new IO.GetCaseTypeListResult();
         result.resultCode = 200;
         result.resultMsg = "success";
@@ -334,7 +335,7 @@ public class Test {
             cs.setIcon("");
             list.add(cs);
         }
-        result.caseTypeList = list;
+        result.bizAreas = list;
         result.total = 10;
         return result;
     }
@@ -343,7 +344,7 @@ public class Test {
      * businessType列表
      * @return
      */
-    public static IO.GetBusinessTypeListResult getBusinessTypeListResult(int count){
+    public static IO.GetBusinessTypeListResult getBizTypeListResult(int count){
         IO.GetBusinessTypeListResult result = new IO.GetBusinessTypeListResult();
         result.resultCode = 200;
         result.resultMsg = "success";
@@ -356,7 +357,7 @@ public class Test {
             cs.setIcon("");
             list.add(cs);
         }
-        result.businessTypeList = list;
+        result.bizTypes = list;
         result.total = 10;
         return result;
     }
@@ -369,16 +370,7 @@ public class Test {
         IO.GetLawAppListResult result = new IO.GetLawAppListResult();
         result.resultCode = 200;
         result.resultMsg = "success";
-        List<LawApp> list = new ArrayList<>();
-        for(int i=0;i<count;i++){
-            LawApp cs = new LawApp();
-            cs.setId(String.valueOf(i));
-            cs.setName("中国法律");
-            cs.setDesc("中国法律法规");
-            cs.setIcon("");
-            list.add(cs);
-        }
-        result.lawAppList = list;
+        result.lawAppList = AppConfig.getInstance().getApps();
         result.total = 10;
         return result;
     }
@@ -394,15 +386,116 @@ public class Test {
             cs.setName("律师"+i);
             cs.setRating(new Random().nextInt(5));
             cs.setUserIcon("");
-            cs.setRecentServiceTimes(10);
-            cs.setWorkingStartYear("1996-10-01");
+//            cs.setRecentServiceTimes(10);
+            cs.setWorkYears("5");
             cs.setArea("北京市-大兴区");
+//            cs.setIntro("其实我是个律师、、、");
             cs.setCompany("xx律师事务所");
-            cs.setGoodAt("金融|交通事故|财产纠纷");
+//            cs.setGoodAt("金融|交通事故|财产纠纷");
+            List<BusinessArea> bizAreas = new ArrayList<>();
+            for(int j=0;j<3;j++){
+                BusinessArea temp = new BusinessArea();
+                temp.setName("财产纠纷");
+                temp.setDesc("财产纠纷");
+                bizAreas.add(temp);
+            }
+
+            cs.setBizAreas(bizAreas);
+
             list.add(cs);
         }
-        result.barristerList = list;
+        result.items = list;
         result.total = 10;
+        return result;
+    }
+
+    public static IO.GetAppointmentSettingsResult getAppointmentSettingsResult(){
+
+        IO.GetAppointmentSettingsResult result = new IO.GetAppointmentSettingsResult();
+        result.resultCode = 200;
+        result.resultMsg = "success";
+        List<AppointmentSetting> appointmentSettings = new ArrayList<>();
+
+        Date today = new Date();
+        for(int i=0;i<6;i++){
+            AppointmentSetting setting = new AppointmentSetting();
+            setting.setDate(DateFormatUtils.format(new Date(today.getTime()+i*24*3600*1000),"yyyy-MM-dd"));
+            setting.setSettings("0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1");
+            appointmentSettings.add(setting);
+        }
+
+        result.appointmentSettings = appointmentSettings;
+
+        return result;
+    }
+
+
+    public static IO.GetBizTypeAreaListResult getGetBizTypeAreaListResult() {
+        IO.GetBizTypeAreaListResult result = new IO.GetBizTypeAreaListResult();
+        result.resultCode = 200;
+        result.resultMsg  = "success";
+        result.bizAreas = new ArrayList<>();
+        result.bizTypes = new ArrayList<>();
+
+        for(int i=0;i<10;i++){
+
+            BusinessArea area = new BusinessArea();
+            area.setId(String.valueOf(i));
+            area.setName("领域"+i);
+            area.setDesc("领域"+i);
+
+            result.bizAreas.add(area);
+
+            BusinessType type = new BusinessType();
+            type.setId(String.valueOf(i));
+            type.setName("业务"+i);
+            type.setDesc("业务"+i);
+
+            result.bizTypes.add(type);
+
+        }
+        return result;
+    }
+
+    public static IO.GetBarristerDetailResult getBarristerDetailResult() {
+        IO.GetBarristerDetailResult result = new IO.GetBarristerDetailResult();
+        result.resultMsg = "success";
+        result.resultCode = 200;
+        BarristerDetail det = new BarristerDetail();
+        det.setId("1");
+        det.setName("律师甲");
+        det.setIntro("我是个律师啊");
+        det.setRecentServiceTimes(11);
+        det.setRating(3.5f);
+        det.setCompany("中国企业法律顾问网");
+
+        List<BusinessArea> bizAreas = new ArrayList<>();
+//        List<BusinessType> bizTypes = new ArrayList<>();
+
+        for(int i=0;i<5;i++){
+
+            BusinessArea area = new BusinessArea();
+            area.setId(String.valueOf(i));
+            area.setName("领域"+i);
+            area.setDesc("领域"+i);
+
+            bizAreas.add(area);
+
+//            BusinessType type = new BusinessType();
+//            type.setId(String.valueOf(i));
+//            type.setName("业务"+i);
+//            type.setDesc("业务"+i);
+//
+//            bizTypes.add(type);
+
+        }
+
+        det.setArea("北京市朝阳区");
+        det.setBizAreas(bizAreas);
+        det.setStatus(BarristerDetail.ORDER_STATUS_CAN);
+
+        result.barristerDetail = det;
+
         return result;
     }
 }

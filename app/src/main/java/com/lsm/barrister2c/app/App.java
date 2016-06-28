@@ -10,9 +10,12 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.androidquery.util.AQUtility;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.lsm.barrister2c.push.PushUtil;
 import com.lsm.barrister2c.utils.DLog;
 import com.lsm.barrister2c.utils.NetworkManager;
 import com.zhy.http.okhttp.OkHttpUtils;
+
+import cn.jpush.android.api.JPushInterface;
 
 
 /**
@@ -58,6 +61,10 @@ public class App extends Application {
         //初始化deviceId
         Constants.deviceId = Secure.getString(getContentResolver(), Secure.ANDROID_ID);//deviceId
         DLog.i(TAG, "deviceId:" + Constants.deviceId);
+
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+        PushUtil.getInstance().init(this);
 
         //ECSDK-百度地图
 //        SDKInitializer.initialize(instance);

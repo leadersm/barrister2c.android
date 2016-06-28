@@ -7,9 +7,11 @@ import android.view.View;
 
 import com.androidquery.AQuery;
 import com.lsm.barrister2c.R;
+import com.lsm.barrister2c.app.AppConfig;
 import com.lsm.barrister2c.app.Constants;
 import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.app.VersionHelper;
+import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.app.LogoutReq;
 import com.lsm.barrister2c.ui.UIHelper;
@@ -35,7 +37,7 @@ public class SettingsActivity extends BaseActivity {
         aq.id(R.id.btn_settings_about).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.goDocActivity(SettingsActivity.this,"关于我们", Constants.DOC_ABOUT);
+                UIHelper.goDocActivity(SettingsActivity.this,getString(R.string.about_us), Constants.DOC_ABOUT);
             }
         });
         aq.id(R.id.btn_settings_feedback).clicked(new View.OnClickListener() {
@@ -48,7 +50,7 @@ public class SettingsActivity extends BaseActivity {
         aq.id(R.id.btn_settings_help).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.goDocActivity(SettingsActivity.this,"帮助", Constants.DOC_ABOUT);
+                UIHelper.goDocActivity(SettingsActivity.this,getString(R.string.help_doc), Constants.DOC_ABOUT);
             }
         });
         aq.id(R.id.btn_settings_update).clicked(new View.OnClickListener() {
@@ -57,6 +59,15 @@ public class SettingsActivity extends BaseActivity {
                 VersionHelper.instance().check(SettingsActivity.this,true);
             }
         });
+
+
+        //注销
+        User user = AppConfig.getUser(this);
+        if(user==null)
+            aq.id(R.id.btn_settings_logout).gone();
+        else
+            aq.id(R.id.btn_settings_logout).visible();
+
         aq.id(R.id.btn_settings_logout).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,10 +86,20 @@ public class SettingsActivity extends BaseActivity {
                     @Override
                     public void onError(int errorCode, String msg) {
                         isLogouting = false;
+
+                        //登出
+                        UserHelper.getInstance().logout(getApplicationContext());
+
+                        finish();
+
+                        //跳转登录页
+                        UIHelper.goLoginActivity(SettingsActivity.this);
+
                     }
 
                     @Override
                     public void onCompleted(Boolean aBoolean) {
+
                         isLogouting = false;
 
                         //登出

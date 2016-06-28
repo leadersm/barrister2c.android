@@ -1,10 +1,11 @@
 package com.lsm.barrister2c.data.io.app;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import com.google.gson.reflect.TypeToken;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
-import com.lsm.barrister2c.data.io.Test;
 
 /**
  * Created by lvshimin on 16/5/8.
@@ -26,16 +27,34 @@ public class GetBarristerListReq extends Action{
 
     public static int pageSize = 20;
 
-    public GetBarristerListReq(Context context, int page, String type) {
+    String bizType;
+    String bizArea;
+    String year;
+
+    public GetBarristerListReq(Context context, int page, String type,String bizArea,String bizType,String year) {
         super(context);
         this.page = page;
         this.type = type;
+        this.bizArea = bizArea;
+        this.bizType = bizType;
+        this.year = year;
 
         params("type",type);
         params("page",String.valueOf(page));
         params("pageSize",String.valueOf(pageSize));
 
-        addUserParams();
+        if(!TextUtils.isEmpty(bizArea)){
+            params("bizArea",bizArea);
+        }
+        if(!TextUtils.isEmpty(bizType)){
+            params("bizType",bizType);
+        }
+
+        if(!TextUtils.isEmpty(year)){
+            params("year",year);
+        }
+
+//        addUserParams();
     }
 
     @Override
@@ -45,13 +64,13 @@ public class GetBarristerListReq extends Action{
 
     @Override
     public String url() {
-        return IO.TEST;
+        return IO.URL_GET_BARRISTER_LIST;
     }
 
     @Override
     public CommonResult parse(String json) throws Exception {
 
-        IO.GetBarristerListResult result = Test.getBarristerResult(20);//getFromGson(json,new TypeToken<IO.GetBarristerListResult>(){});
+        IO.GetBarristerListResult result = getFromGson(json,new TypeToken<IO.GetBarristerListResult>(){});//Test.getBarristerResult(20);//
 
         if(result!=null){
 

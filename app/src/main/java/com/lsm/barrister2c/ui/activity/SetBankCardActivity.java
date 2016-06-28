@@ -57,11 +57,6 @@ public class SetBankCardActivity extends BaseActivity {
         banks = AppConfig.getInstance().getBanks();
     }
 
-
-
-
-
-
     private void doScanCard() {
         Intent scanIntent = new Intent(this, CardIOActivity.class);
 
@@ -188,8 +183,6 @@ public class SetBankCardActivity extends BaseActivity {
                     public void onCompleted(IO.GetBankInfoResult result) {
 
                         if(result!=null && result.data!=null){
-
-                            System.out.println(result.toString());
 
                             aq.id(R.id.et_bankcard_bankname).text(result.data.bankname);
                             aq.id(R.id.et_bankcard_type).text(result.data.cardtype);

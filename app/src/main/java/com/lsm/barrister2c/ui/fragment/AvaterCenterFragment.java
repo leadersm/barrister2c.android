@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import com.androidquery.AQuery;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
+import com.lsm.barrister2c.app.AppConfig;
+import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.activity.AvatarDetailActivity;
@@ -20,7 +22,7 @@ import com.lsm.barrister2c.ui.activity.LoginActivity;
 import com.lsm.barrister2c.ui.activity.MsgsActivity;
 import com.lsm.barrister2c.ui.activity.MyAccountActivity;
 
-public class AvaterCenterFragment extends Fragment {
+public class AvaterCenterFragment extends Fragment implements UserHelper.UserActionListener{
 
     public AvaterCenterFragment() {
         // Required empty public constructor
@@ -51,7 +53,7 @@ public class AvaterCenterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_avater_center, container, false);
+        View view = inflater.inflate(R.layout.fragment_me, container, false);
         init(view);
         return view;
     }
@@ -59,34 +61,7 @@ public class AvaterCenterFragment extends Fragment {
     private void init(View view) {
         aq = new AQuery(view);
 
-        aq.id(R.id.btn_user_layout).clicked(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (user == null) {
-                    UIHelper.goLoginActivity(getActivity());
-                } else {
-                    Intent intent = new Intent(getActivity(), AvatarDetailActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
-
-        SimpleDraweeView usrIconView = (SimpleDraweeView) view.findViewById(R.id.image_avatar);
-
-        if (user != null) {
-
-            if (!TextUtils.isEmpty(user.getUserIcon()))
-                usrIconView.setImageURI(Uri.parse(user.getUserIcon()));
-
-            aq.id(R.id.tv_nickname).text(user.getName());
-
-        } else {
-
-            usrIconView.setImageURI(Uri.parse("res://com.lsm.barrister2c/"+R.drawable.umeng_socialize_default_avatar));
-
-            aq.id(R.id.tv_nickname).text(getString(R.string.not_login));
-
-        }
+        setupUserInfo();
 
         aq.id(R.id.btn_user_layout).clicked(new View.OnClickListener() {
             @Override
@@ -165,7 +140,58 @@ public class AvaterCenterFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        UserHelper.getInstance().addOnUserActionListener(this);
+
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        UserHelper.getInstance().removeListener(this);
+    }
 
+    @Override
+    public void onSSOLoginCallback(User user) {
+
+    }
+
+    @Override
+    public void onLoginCallback(User user) {
+        this.user = user;
+
+        setupUserInfo();
+    }
+
+    private void setupUserInfo() {
+        SimpleDraweeView usrIconView = (SimpleDraweeView) aq.id(R.id.image_avatar).getView();
+
+        if (user != null) {
+
+            if (!TextUtils.isEmpty(user.getUserIcon()))
+                usrIconView.setImageURI(Uri.parse(user.getUserIcon()));
+
+            String name = TextUtils.isEmpty(user.getNickname())?user.getPhone():user.getNickname();
+
+            aq.id(R.id.tv_nickname).text(name);
+
+        } else {
+
+//            usrIconView.setImageURI(Uri.parse("res://com.lsm.barrister2c/"+R.drawable.i));
+
+            aq.id(R.id.tv_nickname).text(getString(R.string.not_login));
+
+        }
+    }
+
+    @Override
+    public void onLogoutCallback() {
+        user = null;
+        setupUserInfo();
+    }
+
+    @Override
+    public void onUpdateUserInfo() {
+        user = AppConfig.getUser(getContext());
+        setupUserInfo();
+    }
 }

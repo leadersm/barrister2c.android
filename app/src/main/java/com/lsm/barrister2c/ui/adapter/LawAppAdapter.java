@@ -1,5 +1,6 @@
 package com.lsm.barrister2c.ui.adapter;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,8 +11,10 @@ import android.view.ViewGroup;
 import com.androidquery.AQuery;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
+import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.data.entity.LawApp;
 import com.lsm.barrister2c.data.entity.LearningItem;
+import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.ui.UIHelper;
 
 import java.util.List;
@@ -31,7 +34,7 @@ public class LawAppAdapter extends RecyclerView.Adapter<LawAppAdapter.ViewHolder
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_case_type, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_law_app, parent, false);
         return new ViewHolder(view);
     }
 
@@ -58,15 +61,24 @@ public class LawAppAdapter extends RecyclerView.Adapter<LawAppAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
 
-                    if(mItem!=null)
-                        UIHelper.goWebViewActivity(v.getContext(),mItem.getName(),mItem.getUrl());
+                    User user = UserHelper.getInstance().getUser(v.getContext());
+
+                    if(user ==null){
+                        UIHelper.goLoginActivity((Activity) v.getContext());
+                        return;
+                    }
+
+                    if(mItem!=null) {
+                        String url = mItem.getUrl();// + "&phone="+user.getPhone();//访问验证
+                        UIHelper.goWebViewActivity(v.getContext(), url,mItem.getName());
+                    }
                 }
             });
         }
 
         public void bind(LawApp item) {
             mItem = item;
-            aq.id(R.id.tv_item_casetype_name).text(item.getName());
+            aq.id(R.id.tv_item_biz_name).text(item.getName());
 
             SimpleDraweeView userIconView = (SimpleDraweeView) aq.id(R.id.image_item_casetype_icon).getView();
             if(!TextUtils.isEmpty(item.getIcon())){

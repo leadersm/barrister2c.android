@@ -1,10 +1,16 @@
 package com.lsm.barrister2c.ui.activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -30,9 +36,10 @@ import java.util.HashMap;
 /****
  * 用户详情信息页
  */
-public class AvatarDetailActivity extends BaseActivity {
+public class AvatarDetailActivity extends BaseActivity implements UserHelper.UserActionListener{
 
     private static final String TAG = AvatarDetailActivity.class.getSimpleName();
+    private static final int PERMISSIONS_REQUEST_CAMERA = 0x10001;
 
     AQuery aq;
 
@@ -49,12 +56,19 @@ public class AvatarDetailActivity extends BaseActivity {
         user = AppConfig.getUser(this);
 
         if(user==null){
-            System.err.println("没有找到用户。。。");
+            DLog.d(TAG,"没有找到用户。。。");
             return;
         }
 
         DLog.d(TAG,user.toString());
 
+        init();
+
+        UserHelper.getInstance().addOnUserActionListener(this);
+
+    }
+
+    private void init() {
         if(!TextUtils.isEmpty(user.getUserIcon())){
             SimpleDraweeView userIconView = (SimpleDraweeView) findViewById(R.id.image_userdetail_icon);
             userIconView.setImageURI(Uri.parse(user.getUserIcon()));
@@ -68,19 +82,18 @@ public class AvatarDetailActivity extends BaseActivity {
             }
         });
 
-        aq.id(R.id.tv_userdetail_nickname).text(user.getGoodAt());
+        aq.id(R.id.tv_userdetail_nickname).text(user.getNickname());
         //擅长
         aq.id(R.id.btn_user_nickname).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO 昵称
-                UIHelper.goModifyInfoActivity(AvatarDetailActivity.this,User.KEY_GOOD_AT, user.getGoodAt());
+                UIHelper.goModifyInfoActivity(AvatarDetailActivity.this, User.KEY_NICKNAME, user.getNickname());
             }
         });
 
 
-
-        aq.id(R.id.tv_userdetail_gender).text(user.getGoodAt());
+        aq.id(R.id.tv_userdetail_gender).text(TextUtils.isEmpty(user.getGender())?getString(R.string.default_gender):user.getGender());
         //擅长
         aq.id(R.id.btn_user_gender).clicked(new View.OnClickListener() {
             @Override
@@ -121,8 +134,24 @@ public class AvatarDetailActivity extends BaseActivity {
                 UIHelper.goModifyInfoActivity(AvatarDetailActivity.this,User.KEY_AREA, user.getArea());
             }
         });
+    }
 
+    private void updateUserInfo() {
 
+        if(!TextUtils.isEmpty(user.getUserIcon())){
+            SimpleDraweeView userIconView = (SimpleDraweeView) findViewById(R.id.image_userdetail_icon);
+            userIconView.setImageURI(Uri.parse(user.getUserIcon()));
+        }
+
+        aq.id(R.id.tv_userdetail_nickname).text(user.getNickname());
+
+        aq.id(R.id.tv_userdetail_gender).text(TextUtils.isEmpty(user.getGender())?getString(R.string.default_gender):user.getGender());
+
+        aq.id(R.id.tv_userdetail_phone).text(user.getPhone());
+
+        aq.id(R.id.tv_userdetail_email).text(user.getEmail());
+
+        aq.id(R.id.tv_userdetail_area).text(user.getArea());
     }
 
     /**
@@ -201,7 +230,6 @@ public class AvatarDetailActivity extends BaseActivity {
      * 从相册选择，拍照
      */
     private void showChoosePicDialog() {
-        // TODO Auto-generated method stub
         final String[] items = new String[]{getString(R.string.pick_img_from_album), getString(R.string.take_photo)};
 
         new AlertDialog.Builder(this)
@@ -252,6 +280,15 @@ public class AvatarDetailActivity extends BaseActivity {
      * 从相机获取
      */
     private void pickFromCamera() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                System.out.println("====>请求相机权限");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CAMERA);
+                return;
+            }
+        }
+
         // 激活相机
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         // 判断存储卡是否可以用，可用进行存储
@@ -269,6 +306,29 @@ public class AvatarDetailActivity extends BaseActivity {
         }
         // 开启一个带有返回值的Activity，请求码为REQUEST_CODE_CAPTURE
         startActivityForResult(intent, Constants.REQUEST_CODE_CAPTURE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == PERMISSIONS_REQUEST_CAMERA){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                // permission was granted, yay! Do the
+                // contacts-related task you need to do.
+
+                pickFromCamera();
+
+            } else {
+
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+
+                UIHelper.showToast(getApplicationContext(),"您已拒绝相机使用权限，如果需要请在系统安全设置中手动开启。");
+
+            }
+            return;
+        }
     }
 
     @Override
@@ -322,9 +382,15 @@ public class AvatarDetailActivity extends BaseActivity {
                         user.setEmail(content);
                         aq.id(R.id.tv_userdetail_email).text(user.getEmail());
                         break;
+                    case User.KEY_NICKNAME:
+                        user.setNickname(content);
+                        aq.id(R.id.tv_userdetail_nickname).text(user.getNickname());
+                        break;
                 }
 
                 AppConfig.setUser(getApplicationContext(),user);
+
+                UserHelper.getInstance().updateUserInfo();
 
             }
         } else {
@@ -335,7 +401,7 @@ public class AvatarDetailActivity extends BaseActivity {
 
     private void upload(File file) throws Exception {
 
-        new UploadUserIconReq(this,file).execute(new Action.Callback<String>(){
+        new UploadUserIconReq(this,file).execute(new Action.Callback<User>(){
 
             @Override
             public void progress() {
@@ -350,19 +416,20 @@ public class AvatarDetailActivity extends BaseActivity {
             }
 
             @Override
-            public void onCompleted(String result) {
-                if(!TextUtils.isEmpty(result)){
+            public void onCompleted(User result) {
+                if(!TextUtils.isEmpty(result.getUserIcon())){
                     //上传成功
                     FileUtils.deleteFile(tempFile);
 
-                    //通知主页左菜单更换用户头像
-                    UserHelper.getInstance().notityUserIconOrNicknameChanged();
-
                     User user = AppConfig.getUser(getApplicationContext());
 
-                    user.setUserIcon(result);
+                    user.setUserIcon(result.getUserIcon());
 
                     AppConfig.setUser(AvatarDetailActivity.this, user);
+
+                    //通知主页左菜单更换用户头像
+                    UserHelper.getInstance().updateUserInfo();
+
                 }
             }
         });
@@ -420,5 +487,30 @@ public class AvatarDetailActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onSSOLoginCallback(User user) {
 
+    }
+
+    @Override
+    public void onLoginCallback(User user) {
+
+    }
+
+    @Override
+    public void onLogoutCallback() {
+
+    }
+
+    @Override
+    public void onUpdateUserInfo() {
+        this.user = AppConfig.getUser(this);
+        updateUserInfo();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        UserHelper.getInstance().removeListener(this);
+    }
 }

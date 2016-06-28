@@ -7,6 +7,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.AudioManager;
 import android.os.Environment;
 
+import com.lsm.barrister2c.data.entity.LawApp;
 import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.utils.ComplexPreferences;
 import com.lsm.barrister2c.utils.DLog;
@@ -530,6 +531,7 @@ public class AppConfig {
 
     public List<Bank> banks = new ArrayList<>();
 
+
     public static class Bank {
         public String name;
         public String pinyin;
@@ -542,6 +544,38 @@ public class AppConfig {
                     ", pinyin='" + pinyin + '\'' +
                     ", icon='" + icon + '\'' +
                     '}';
+        }
+    }
+
+    public List<LawApp> apps = new ArrayList<>();
+
+    public List<LawApp> getApps() {
+        return apps;
+    }
+
+    public void initLawApps() {
+        try {
+
+            Document doc = Jsoup.parse(AssetsUtils.loadText(context, Constants.DOC_APPS));
+            List<Element> bankEs = doc.getElementsByTag("App");
+
+            if (bankEs != null)
+                for (Element e : bankEs) {
+
+                    LawApp app = new LawApp();
+
+                    String name = e.attr("name");
+                    String url = e.attr("url");
+                    String value = e.ownText();
+
+                    app.setName(name);
+                    app.setUrl(url);
+
+                    apps.add(app);
+
+                }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

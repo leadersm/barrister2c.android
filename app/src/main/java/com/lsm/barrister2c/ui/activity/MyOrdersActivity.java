@@ -134,10 +134,10 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
 
                 mRefreshResult = getMyOrdersResult;
 
-                if(mRefreshResult.orderItems !=null){
+                if(mRefreshResult.orders !=null){
 
                     items.clear();
-                    items.addAll(mRefreshResult.orderItems);
+                    items.addAll(mRefreshResult.orders);
                     mAdapter.notifyDataSetChanged();
 
                     mEmptyController.showContent();
@@ -176,9 +176,9 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
                     @Override
                     public void onCompleted(IO.GetMyOrdersResult getMyOrdersResult) {
 
-                        if(getMyOrdersResult.orderItems !=null){
+                        if(getMyOrdersResult.orders !=null){
 
-                            items.addAll(getMyOrdersResult.orderItems);
+                            items.addAll(getMyOrdersResult.orders);
 
                             mAdapter.notifyDataSetChanged();
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/image_barrister_item_usericon"
+        app:fadeDuration="300"
+        app:roundAsCircle="true"
+        app:actualImageScaleType="focusCrop"
+        app:placeholderImage="@color/colorPrimary"
+        app:placeholderImageScaleType="fitCenter"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/tv_item_barrister_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_alignTop="@+id/image_barrister_item_usericon"
+        android:layout_toRightOf="@+id/image_barrister_item_usericon"
+        android:text="name"
+        android:textAppearance="?attr/textAppearanceListItem"/>
+
+</LinearLayout>

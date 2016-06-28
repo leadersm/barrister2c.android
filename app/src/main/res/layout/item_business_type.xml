@@ -14,11 +14,11 @@
         app:fadeDuration="300"
         app:roundAsCircle="true"
         app:actualImageScaleType="focusCrop"
-        app:placeholderImage="@color/colorPrimary"
+        app:placeholderImage="@color/placeholder"
         app:placeholderImageScaleType="fitCenter"/>
 
     <TextView
-        android:id="@+id/tv_item_casetype_name"
+        android:id="@+id/tv_item_biz_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

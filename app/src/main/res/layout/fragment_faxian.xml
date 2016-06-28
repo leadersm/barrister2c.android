@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_common"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/title_faxian"
+                android:textColor="#efefef"
+                android:textSize="20sp" />
+        </FrameLayout>
+    </android.support.design.widget.AppBarLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/btn_faxian_im"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp"
+            android:background="@drawable/layout_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_faxian_im"
+                android:layout_marginRight="10dp"
+                android:id="@+id/imageView5" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/consult_im"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:text="立即与律师沟通" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/divider_size"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:id="@+id/btn_faxian_appointment"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp"
+            android:background="@drawable/layout_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_faxian_appointment"
+                android:layout_marginRight="10dp"
+                android:id="@+id/imageView6" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/consult_appointment"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:text="立即与律师沟通" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:text="@string/lawapplist" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_size"
+            android:background="@color/divider" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_faxian_apps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layoutManager="GridLayoutManager"
+            app:spanCount="3"
+            tools:context=".ui.fragment.LearningCenterFragment"
+            tools:listitem="@layout/item_business_area"/>
+
+    </LinearLayout>
+
+</LinearLayout>

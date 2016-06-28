@@ -11,8 +11,8 @@ public class Account implements Serializable{
     public static final String CARD_STATUS_NOT_BOUND = "0";//未绑定
     public static final String CARD_STATUS_BOUND = "1";//已绑定
 
-    String remainingBalance;//余额
-    String totalConsume;//总支出
+    float remainingBalance;//余额
+    float totalConsume;//总支出
 
     String bankCardBindStatus;//银行卡绑定状态，0 未绑定 1 已绑定
 
@@ -93,19 +93,19 @@ public class Account implements Serializable{
         }
     }
 
-    public String getRemainingBalance() {
+    public float getRemainingBalance() {
         return remainingBalance;
     }
 
-    public void setRemainingBalance(String remainingBalance) {
+    public void setRemainingBalance(float remainingBalance) {
         this.remainingBalance = remainingBalance;
     }
 
-    public String getTotalConsume() {
+    public float getTotalConsume() {
         return totalConsume;
     }
 
-    public void setTotalConsume(String totalConsume) {
+    public void setTotalConsume(float totalConsume) {
         this.totalConsume = totalConsume;
     }
 

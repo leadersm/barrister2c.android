@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.lsm.barrister2c.app.Constants;
 import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.entity.Barrister;
 import com.lsm.barrister2c.ui.activity.AvatarDetailActivity;
+import com.lsm.barrister2c.ui.activity.BarristerDetailActivity;
 import com.lsm.barrister2c.ui.activity.BarristerListActivity;
 import com.lsm.barrister2c.ui.activity.DocActivity;
 import com.lsm.barrister2c.ui.activity.GetMoneyActivity;
@@ -31,10 +33,10 @@ import com.lsm.barrister2c.ui.activity.ModifyAvaterActivity;
 import com.lsm.barrister2c.ui.activity.MyBankCardActivity;
 import com.lsm.barrister2c.ui.activity.MyFavoriteActivity;
 import com.lsm.barrister2c.ui.activity.MyOrdersActivity;
+import com.lsm.barrister2c.ui.activity.RechargeActivity;
 import com.lsm.barrister2c.ui.activity.SetBankCardActivity;
 import com.lsm.barrister2c.ui.activity.SettingsActivity;
 import com.lsm.barrister2c.ui.activity.WebViewActivity;
-import com.lsm.barrister2c.ui.adapter.BarristerAdapter;
 
 import java.util.ArrayList;
 
@@ -162,9 +164,19 @@ public class UIHelper {
         }
     }
 
-    public static void goBarristerListAcitivity(Context context, String type) {
+    public static void goBarristerListAcitivity(Context context,String type, String bizType,String bizArea) {
         Intent intent = new Intent(context, BarristerListActivity.class);
-        intent.putExtra(BarristerListActivity.KEY_TYPE, type);
+
+        intent.putExtra(BarristerListActivity.KEY_TYPE,type);
+
+        if(!TextUtils.isEmpty(bizType)){
+            intent.putExtra(BarristerListActivity.KEY_BIZ_TYPE, bizType);
+        }
+
+        if(!TextUtils.isEmpty(bizArea)){
+            intent.putExtra(BarristerListActivity.KEY_BIZ_AREA, bizArea);
+        }
+
         context.startActivity(intent);
     }
 
@@ -274,6 +286,26 @@ public class UIHelper {
 
     public static void goMyOrdersActivity(FragmentActivity activity) {
         Intent intent = new Intent(activity, MyOrdersActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public static void goBarristerDetailActivity(Context activity,Barrister barrister) {
+        Intent intent = new Intent(activity, BarristerDetailActivity.class);
+        intent.putExtra(BarristerDetailActivity.KEY,barrister);
+        activity.startActivity(intent);
+    }
+
+    public static void goBarristerDetailActivity(Context activity,String id) {
+        Intent intent = new Intent(activity, BarristerDetailActivity.class);
+        intent.putExtra("id",id);
+        activity.startActivity(intent);
+    }
+    /**
+     * 充值页面
+     * @param activity
+     */
+    public static void goRechargeActivity(Context activity) {
+        Intent intent = new Intent(activity, RechargeActivity.class);
         activity.startActivity(intent);
     }
 }

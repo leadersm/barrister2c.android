@@ -10,9 +10,8 @@ public class User implements Serializable {
     public static final String KEY_GENDER = "gender";
     public static final String KEY_AGE = "age";
     public static final String KEY_EMAIL = "mail";
-    public static final String KEY_GOOD_AT = "goodAt";
     public static final String KEY_PHONE = "phone";
-    public static final String KEY_NICKNAME = "nickName";
+    public static final String KEY_NICKNAME = "nickname";
     public static final String KEY_USERICON = "userIcon";
     public static final String KEY_INTRODUCTION = "introduction";
     public static final String KEY_ADDRESS = "address";
@@ -166,4 +165,5 @@ public class User implements Serializable {
     public void setVerifyCode(String verifyCode) {
         this.verifyCode = verifyCode;
     }
+
 }

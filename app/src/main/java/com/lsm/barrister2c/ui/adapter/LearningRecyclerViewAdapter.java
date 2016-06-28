@@ -1,11 +1,15 @@
 package com.lsm.barrister2c.ui.adapter;
 
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.androidquery.AQuery;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.data.entity.LearningItem;
 import com.lsm.barrister2c.ui.UIHelper;
@@ -93,17 +97,14 @@ public class LearningRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mTitleView;
-        public final TextView mDateView;
         public LearningItem mItem;
+
+        AQuery aq;
 
         public ItemHolder(View view) {
             super(view);
-            mView = view;
-            mTitleView = (TextView) view.findViewById(R.id.tv_item_title);
-            mDateView = (TextView) view.findViewById(R.id.tv_item_date);
-            mView.setOnClickListener(new View.OnClickListener() {
+            aq = new AQuery(view);
+            aq.clicked(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     UIHelper.goWebViewActivity(v.getContext(),mItem.getUrl(),mItem.getTitle());
@@ -111,16 +112,14 @@ public class LearningRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             });
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mDateView.getText() + "'";
-        }
-
         public void bind(LearningItem learningItem) {
             mItem = learningItem;
-            mTitleView.setText(mItem.getId());
-            mDateView.setText(mItem.getTitle());
-
+            aq.id(R.id.tv_item_title).text(mItem.getTitle());
+            aq.id(R.id.tv_item_date).text(mItem.getDate());
+            SimpleDraweeView thumb = (SimpleDraweeView) aq.id(R.id.image_item_thumb).getView();
+            if(!TextUtils.isEmpty(mItem.getThumb())){
+                thumb.setImageURI(Uri.parse(mItem.getThumb()));
+            }
         }
     }
 

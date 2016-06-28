@@ -87,6 +87,7 @@ public class Constants {
     public static final String DOC_GETMONEY = "file:///android_asset/agreement.htm";
 
     public static final String DOC_BANKS = "banks.xml";
+    public static final String DOC_APPS = "lawApps.html";
 
     //notification ids
     public static final int NOTIFICATION_ID_NEWS = 0x1001;

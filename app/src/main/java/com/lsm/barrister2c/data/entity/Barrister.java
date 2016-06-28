@@ -1,6 +1,7 @@
 package com.lsm.barrister2c.data.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by lvshimin on 16/5/19.
@@ -20,11 +21,10 @@ public class Barrister implements Serializable{
     String userIcon;//头像
     String name;//姓名
     float rating;//评分
-    int recentServiceTimes;//最近服务次数
     String area;
     String company;//律所
-    String workingStartYear;//工作开始时间（yyyy-MM-dd），根据这个时间计算工作年限
-    String goodAt;//擅长领域
+    String workYears;//工作年限
+    List<BusinessArea> bizAreas;//擅长领域
 
     public String getArea() {
         return area;
@@ -66,13 +66,13 @@ public class Barrister implements Serializable{
         this.rating = rating;
     }
 
-    public int getRecentServiceTimes() {
-        return recentServiceTimes;
-    }
-
-    public void setRecentServiceTimes(int recentServiceTimes) {
-        this.recentServiceTimes = recentServiceTimes;
-    }
+//    public int getRecentServiceTimes() {
+//        return recentServiceTimes;
+//    }
+//
+//    public void setRecentServiceTimes(int recentServiceTimes) {
+//        this.recentServiceTimes = recentServiceTimes;
+//    }
 
     public String getCompany() {
         return company;
@@ -82,19 +82,20 @@ public class Barrister implements Serializable{
         this.company = company;
     }
 
-    public String getWorkingStartYear() {
-        return workingStartYear;
+
+    public List<BusinessArea> getBizAreas() {
+        return bizAreas;
     }
 
-    public void setWorkingStartYear(String workingStartYear) {
-        this.workingStartYear = workingStartYear;
+    public void setBizAreas(List<BusinessArea> bizAreas) {
+        this.bizAreas = bizAreas;
     }
 
-    public String getGoodAt() {
-        return goodAt;
+    public String getWorkYears() {
+        return workYears;
     }
 
-    public void setGoodAt(String goodAt) {
-        this.goodAt = goodAt;
+    public void setWorkYears(String workYears) {
+        this.workYears = workYears;
     }
 }

@@ -3,7 +3,6 @@ package com.lsm.barrister2c.data.io;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.text.TextUtils;
 
 import com.androidquery.util.AQUtility;
 import com.google.gson.Gson;
@@ -29,8 +28,8 @@ import okhttp3.Call;
 public abstract class Action {
 
 
+    public static final int GET = 0;
     public static final int POST = 1;
-    public static final int GET = 2;
 
     public String TAG = getName();
 
@@ -217,14 +216,17 @@ public abstract class Action {
             headers.put("X-UID", user.getId());
         }
 
-        String cookie = AppConfig.getInstance().getCookie();
+        //pushId
+        headers.put("X-PUSHID", Constants.PUSH_ID);
 
-        if (!TextUtils.isEmpty(cookie)) {
-
-            headers.put("Cookie", cookie);
-
-            headers.put("sessionId", cookie);
-        }
+//        String cookie = AppConfig.getInstance().getCookie();
+//
+//        if (!TextUtils.isEmpty(cookie)) {
+//
+//            headers.put("Cookie", cookie);
+//
+//            headers.put("sessionId", cookie);
+//        }
 
         return headers;
     }
@@ -371,7 +373,7 @@ public abstract class Action {
 
         User user = AppConfig.getUser(context);
         if(user==null){
-            System.err.println("未登录，无法提交请求。。。");
+            DLog.e(TAG,"未登录，无法提交请求。。。");
             return;
         }
 
