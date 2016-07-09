@@ -55,11 +55,13 @@ public class AppointmentPickDialogFragment extends DialogFragment {
     SmartTabLayout viewPagerTab;
 
     String id;
+    float priceAppointment;
 
-    public static AppointmentPickDialogFragment getInstance(String id) {
+    public static AppointmentPickDialogFragment getInstance(String id, float priceAppointment) {
         AppointmentPickDialogFragment fragment = new AppointmentPickDialogFragment();
         Bundle b = new Bundle();
         b.putString("id", id);
+        b.putFloat("priceAppointment", priceAppointment);
         fragment.setArguments(b);
         return fragment;
     }
@@ -70,6 +72,7 @@ public class AppointmentPickDialogFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         id = getArguments().getString("id");
+        priceAppointment = getArguments().getFloat("priceAppointment");
         hourStrs = getResources().getStringArray(R.array.hours);
     }
 
@@ -78,7 +81,7 @@ public class AppointmentPickDialogFragment extends DialogFragment {
         super.onDismiss(dialog);
         data.clear();
         data = null;
-        
+
         myPick.clear();
 
     }
@@ -100,7 +103,7 @@ public class AppointmentPickDialogFragment extends DialogFragment {
             @Override
             public void onError(int errorCode, String msg) {
                 aq.id(R.id.progressbar_dialog).gone();
-                if(isAdded()){
+                if (isAdded()) {
                     UIHelper.showToast(getContext(), msg);
                 }
             }
@@ -109,9 +112,9 @@ public class AppointmentPickDialogFragment extends DialogFragment {
             public void onCompleted(IO.GetAppointmentSettingsResult result) {
                 aq.id(R.id.progressbar_dialog).gone();
 
-                if (result != null && result.appointmentSettings != null) {
+                if (result != null) {
 
-                    if(isAdded()){
+                    if (isAdded()) {
                         new DateSettingsTask(today, result.appointmentSettings).execute();
                     }
                 }
@@ -127,6 +130,9 @@ public class AppointmentPickDialogFragment extends DialogFragment {
 
         public DateSettingsTask(String today, List<AppointmentSetting> temp) {
             this.today = today;
+            if(temp==null){
+                temp = new ArrayList<>();
+            }
             this.temp = temp;
         }
 
@@ -136,14 +142,14 @@ public class AppointmentPickDialogFragment extends DialogFragment {
             int size = temp.size();
 
             if (size < 7) {
-                String lastDay = temp.size() < 1 ? today : temp.get(temp.size() - 1).getDate();
+                String lastDay = size < 1 ? today : temp.get(temp.size() - 1).getDate();
                 Date lastDate = DateFormatUtils.parse(lastDay, "yyyy-MM-dd");
 
                 for (int i = 0; i < 7 - size; i++) {
                     String settings = "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1";
                     Date date = new Date(lastDate.getTime() + (i + 1) * 24 * 3600 * 1000);
                     String dateStr = DateFormatUtils.format(date, "yyyy-MM-dd");
-                    DLog.d(TAG,"自动补全日期:" + dateStr);
+                    DLog.d(TAG, "自动补全日期:" + dateStr);
                     AppointmentSetting tempSettings = new AppointmentSetting();
                     tempSettings.setDate(dateStr);
                     tempSettings.setSettings(settings);
@@ -179,7 +185,7 @@ public class AppointmentPickDialogFragment extends DialogFragment {
 
             try {
 
-                if(isAdded()){
+                if (isAdded()) {
 
                     data.clear();
                     data.addAll(result);
@@ -249,47 +255,83 @@ public class AppointmentPickDialogFragment extends DialogFragment {
         return view;
     }
 
-    float total;
+    int total;
+
     /**
      * 确定购买？？天+时段+金额
      */
     private void showEnsureDialog() {
-        
-        if(myPick.isEmpty()){
-            UIHelper.showToast(getContext(),getString(R.string.tip_no_pick));
+
+        if (myPick.isEmpty()) {
+            UIHelper.showToast(getContext(), getString(R.string.tip_no_pick));
             return;
         }
 
         total = 0;
 
-        StringBuffer sb = new StringBuffer();
+        final StringBuffer sb = new StringBuffer();
 
-        for (String date : myPick.keySet()) {
+        final JSONArray dateSettings = new JSONArray();
+        JSONObject settingsObj = null;
+        StringBuffer buyTime;
 
-            HashMap<Integer,String> temp = myPick.get(date);
+        try {
+            for (String date : myPick.keySet()) {
 
-            sb.append(date + "：");
+                HashMap<Integer, String> temp = myPick.get(date);
 
-            for (int position : temp.keySet()) {
+                sb.append(date + "：");
 
-                String hour = temp.get(position);
-                sb.append(hour + ",");
-                total += 5;
+                for (int position : temp.keySet()) {
+
+                    String hour = temp.get(position);
+                    sb.append(hour + ",");
+                    total++;
+
+                    settingsObj = new JSONObject();
+                    settingsObj.put("date", date);
+
+                    buyTime = new StringBuffer();
+
+                    for (int i = 0; i < 36; i++) {
+                        if (position == i) {
+                            buyTime.append("2,");
+                        } else {
+                            buyTime.append("0,");
+                        }
+                    }
+
+                    settingsObj.put("value", buyTime.toString());
+
+                    dateSettings.put(settingsObj);
+                }
+
+                sb.append("\n\n");
+
             }
-
-            sb.append("\n\n");
-
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        sb.append("共计："+total+"元");
+        if (priceAppointment != 0) {
+            sb.append("共计：" + total * priceAppointment + "元");
+        }
 
 //        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_ensure, null);
 
-        new AlertDialog.Builder(getContext()).setTitle("确定购买以下时间段的预约服务？").setMessage(sb.toString())//.setView(view)
+        final String message = sb.toString();
+        final String settingsParams = dateSettings.toString();
+
+        DLog.d(TAG,"order.wxPrepayInfo:"+message);
+        DLog.d(TAG,"settings.params:"+settingsParams);
+
+        new AlertDialog.Builder(getContext())
+                .setTitle(getString(R.string.title_dialog_buy_appointment))
+                .setMessage(message)//.setView(view)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        doCommit(total);
+                        callback.onAppointmentOrderPrepared(message.replaceAll("\n\n",""), total, settingsParams);
                     }
                 }).setNegativeButton(R.string.repick, new DialogInterface.OnClickListener() {
             @Override
@@ -297,57 +339,6 @@ public class AppointmentPickDialogFragment extends DialogFragment {
                 dialog.dismiss();
             }
         }).create().show();
-    }
-
-    private void doCommit(float total) {
-        JSONArray jsonArray = new JSONArray();
-
-        JSONArray dateSettings = new JSONArray();
-
-        try {
-
-            JSONObject obj = null;
-            JSONObject settings = null;
-
-            StringBuffer times;
-            for (String date : AppointmentPickDialogFragment.myPick.keySet()) {
-
-                HashMap<Integer,String> temp = AppointmentPickDialogFragment.myPick.get(date);
-
-                for (int position : temp.keySet()) {
-
-                    obj = new JSONObject();
-
-                    obj.put("date", date);
-                    obj.put("index", position);
-                    obj.put("time", temp.get(position));
-
-                    jsonArray.put(obj);
-
-                    settings = new JSONObject();
-
-                    settings.put("date",date);
-                    times = new StringBuffer();
-                    for(int i=0;i<36;i++){
-                        if(position == i){
-                            times.append("1,");
-                        }else {
-                            times.append("0,");
-                        }
-                    }
-
-                    settings.put("value", times.toString());
-
-                    dateSettings.put(settings);
-                }
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        callback.onAppointmentOrderPrepared(jsonArray.toString(),total,dateSettings.toString());
     }
 
     /**
@@ -385,7 +376,7 @@ public class AppointmentPickDialogFragment extends DialogFragment {
 
     }
 
-    public static HashMap<String,HashMap<Integer,String>> myPick = new HashMap<>();
+    public static HashMap<String, HashMap<Integer, String>> myPick = new HashMap<>();
 
     public static class DateFragment extends Fragment {
 
@@ -426,23 +417,23 @@ public class AppointmentPickDialogFragment extends DialogFragment {
             mGridView.setAdapter(mHourAdapter);
         }
 
-        HashMap<Integer,String> hourPics = new HashMap<>();
+        HashMap<Integer, String> hourPics = new HashMap<>();
 
-        public void onHourClick(int position, AppointmentSetting.HourItem hour){
+        public void onHourClick(int position, AppointmentSetting.HourItem hour) {
 
-            if(hour.isEnable()){
+            if (hour.isEnable()) {
 
-                hourPics.put(position,hour.getHour());
+                hourPics.put(position, hour.getHour());
 
-                if(!myPick.containsKey(daySettings.getDate())){
-                    myPick.put(daySettings.getDate(),hourPics);
+                if (!myPick.containsKey(daySettings.getDate())) {
+                    myPick.put(daySettings.getDate(), hourPics);
                 }
 
-            }else{
+            } else {
 
                 hourPics.remove(position);
 
-                if(hourPics.isEmpty()){
+                if (hourPics.isEmpty()) {
                     myPick.remove(daySettings.getDate());
                 }
             }
@@ -478,7 +469,7 @@ public class AppointmentPickDialogFragment extends DialogFragment {
                     public void onClick(View v) {
                         hour.setEnable(holder.id(R.id.cb_item_half_hour).isChecked());
 
-                        onHourClick(position,hour);
+                        onHourClick(position, hour);
 
                     }
                 });
@@ -494,13 +485,13 @@ public class AppointmentPickDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if(activity instanceof Callback){
+        if (activity instanceof Callback) {
             callback = (Callback) activity;
         }
     }
 
-    public interface Callback{
-        public void onAppointmentOrderPrepared(String orderInfo, float price, String dateSettings);
+    public interface Callback {
+        public void onAppointmentOrderPrepared(String orderInfo, int money, String dateSettings);
     }
 
 

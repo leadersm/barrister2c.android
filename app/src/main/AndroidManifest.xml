@@ -87,7 +87,7 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".ui.activity.GuideActivity" />
+        <activity android:name=".ui.activity.GuideActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
         <activity android:name=".ui.activity.BarristerDetailActivity" />
         <activity android:name=".ui.activity.FeedbackActivity" />
         <activity android:name=".ui.activity.DocActivity" />
@@ -104,15 +104,34 @@
         <activity android:name=".ui.activity.MyBankCardActivity" />
         <activity android:name=".ui.activity.SetBankCardActivity" />
         <activity android:name=".ui.activity.RechargeActivity" />
-        <activity android:name=".ui.activity.BarristerListActivity"></activity>
+        <activity android:name=".ui.activity.BarristerListActivity"/>
+        <activity android:name=".ui.activity.AddOrderStarActivity"/>
 
         <!-- 微信分享回调 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/app_name"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:launchMode="singleTop">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="wx719e35ccbca02039"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
+
+        <receiver
+            android:name=".wxapi.AppRegister">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name="com.baidu.location.f"
@@ -138,7 +157,7 @@
 
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="1000" />
+            android:value="default" />
         <meta-data
             android:name="DEBUG"
             android:value="true" />

@@ -59,7 +59,7 @@ public class Constants {
     public static final String KEY_CONTENT = "content";
     public static final String KEY_INDEX = "index";
     public static final String KEY_COMMENT = "comment";
-    public static final String KEY_USER_INFO_VALUE = "user.info.value";
+    public static final String KEY_USER_INFO_VALUE = "user.wxPrepayInfo.value";
     public static final String KEY_ID = "id";
     public static final String KEY_THUMB = "thumb";
 
@@ -78,6 +78,10 @@ public class Constants {
     public static final int REQUEST_CODE_GALLERY = 8017;
     public static final int REQUEST_CODE_CROP = 8018;
     public static final int REQUEST_CODE_NEWCOMMENT = 8019;
+    public static final int REQUEST_CODE_BIND_CARD = 8020;
+    public static final int REQUEST_ADD_ORDER_STAR = 8021;
+
+
     //用户协议文档
     public static final String DOC_AGREEMENT = "file:///android_asset/agreement.htm";
     //关于文档
@@ -103,7 +107,7 @@ public class Constants {
     public static final String MARKET_KEY = "UMENG_CHANNEL";
     public static final String DEBUG_KEY = "DEBUG";
 
-    public static int MARKET = 1000;//
+    public static String MARKET = "default";//
 
     public static final int OFFLINE_NEWS_SIZE = 20;
 
@@ -114,5 +118,5 @@ public class Constants {
     public static final long DURATION_ANIM_TABS_BG_COLOR = 300;
 
 
-    public static final String WX_APP_ID = "";
+    public static final String WX_APP_ID = "wx719e35ccbca02039";
 }

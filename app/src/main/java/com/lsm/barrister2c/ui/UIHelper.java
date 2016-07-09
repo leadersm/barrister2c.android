@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.lsm.barrister2c.app.Constants;
 import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.entity.Barrister;
+import com.lsm.barrister2c.ui.activity.AddOrderStarActivity;
 import com.lsm.barrister2c.ui.activity.AvatarDetailActivity;
 import com.lsm.barrister2c.ui.activity.BarristerDetailActivity;
 import com.lsm.barrister2c.ui.activity.BarristerListActivity;
@@ -33,10 +34,12 @@ import com.lsm.barrister2c.ui.activity.ModifyAvaterActivity;
 import com.lsm.barrister2c.ui.activity.MyBankCardActivity;
 import com.lsm.barrister2c.ui.activity.MyFavoriteActivity;
 import com.lsm.barrister2c.ui.activity.MyOrdersActivity;
+import com.lsm.barrister2c.ui.activity.OrderDetailActivity;
 import com.lsm.barrister2c.ui.activity.RechargeActivity;
 import com.lsm.barrister2c.ui.activity.SetBankCardActivity;
 import com.lsm.barrister2c.ui.activity.SettingsActivity;
 import com.lsm.barrister2c.ui.activity.WebViewActivity;
+import com.lsm.barrister2c.wxapi.WXPayEntryActivity;
 
 import java.util.ArrayList;
 
@@ -264,7 +267,7 @@ public class UIHelper {
         ctx.startActivity(intent);
     }
 
-    public static void goSetBankcardActivity(Context ctx) {
+    public static void goSetBankcardActivity(Activity ctx) {
         Intent intent = new Intent(ctx, SetBankCardActivity.class);
         ctx.startActivity(intent);
     }
@@ -305,7 +308,14 @@ public class UIHelper {
      * @param activity
      */
     public static void goRechargeActivity(Context activity) {
-        Intent intent = new Intent(activity, RechargeActivity.class);
+        Intent intent = new Intent(activity, WXPayEntryActivity.class);
+//        Intent intent = new Intent(activity, RechargeActivity.class);
         activity.startActivity(intent);
+    }
+
+    public static void goAddOrderStarActivity(Activity activity,String id) {
+        Intent intent = new Intent(activity, AddOrderStarActivity.class);
+        intent.putExtra("id",id);
+        activity.startActivityForResult(intent,Constants.REQUEST_ADD_ORDER_STAR);
     }
 }

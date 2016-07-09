@@ -30,15 +30,15 @@ public class BarristerDetail implements Serializable{
     String company;//律所
     String workYears;//工作开始时间（yyyy-MM-dd），根据这个时间计算工作年限
     List<BusinessArea> bizAreas;//擅长领域
+    List<BusinessType> bizTypes;//擅长业务
 
     String intro;//简介
 
-//    * 律师可预约的时段
-    List<AppointmentSetting> appointmentSettings;
-//    * 律师当前接单状态
+//  律师当前接单状态
     String status;
 
-    float price = 15.0f;
+    float priceIM;//即时咨询价格 ,一次
+    float priceAppointment;//预约咨询 每个时段价格
 
     public String getIntro() {
         return intro;
@@ -120,14 +120,6 @@ public class BarristerDetail implements Serializable{
         this.bizAreas = bizAreas;
     }
 
-    public List<AppointmentSetting> getAppointmentSettings() {
-        return appointmentSettings;
-    }
-
-    public void setAppointmentSettings(List<AppointmentSetting> appointmentSettings) {
-        this.appointmentSettings = appointmentSettings;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -136,11 +128,27 @@ public class BarristerDetail implements Serializable{
         this.status = status;
     }
 
-    public float getPrice() {
-        return price;
+    public float getPriceIM() {
+        return priceIM;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setPriceIM(float priceIM) {
+        this.priceIM = priceIM;
+    }
+
+    public float getPriceAppointment() {
+        return priceAppointment;
+    }
+
+    public void setPriceAppointment(float priceAppointment) {
+        this.priceAppointment = priceAppointment;
+    }
+
+    public List<BusinessType> getBizTypes() {
+        return bizTypes;
+    }
+
+    public void setBizTypes(List<BusinessType> bizTypes) {
+        this.bizTypes = bizTypes;
     }
 }

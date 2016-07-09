@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_common"
-    android:orientation="vertical"
-    tools:context=".ui.activity.MsgsActivity">
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@id/toolbar"
@@ -17,24 +15,12 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:orientation="horizontal" >-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/tv_toolbar_title"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="18sp" />-->
-        <!--</LinearLayout>-->
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -84,7 +70,7 @@
                     android:textSize="13sp" />
 
                 <TextView
-                    android:id="@+id/tv_order_type"
+                    android:id="@+id/tv_order_case_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -97,7 +83,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="10dp"
-                    android:text="下单时间："
                     android:textSize="13sp" />
 
                 <LinearLayout
@@ -136,11 +121,126 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="10dp"
-                    android:text="备注：我昨天出门被人打了 /(ㄒoㄒ)/~~ 我找打他赔钱，他不给又给我打一顿，请帮帮我 我要告他 我要跟他打官司"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_order_summary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="10dp"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_order_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="10dp"
                     android:textSize="13sp" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_order_cancel_handle"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@color/white"
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="律师没有及时处理订单，您可以选择取消。"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:id="@+id/tv_tip_order_cancel" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_btn_selector"
+                    android:textColor="@color/white"
+                    android:text="@string/cancel_order"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/btn_order_request_cancel" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_order_done"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@color/white"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:layout_gravity="right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="如果已经完成咨询，请及时评价。"
+                    android:textColor="@color/green04"
+                    android:id="@+id/tv_tip_order_done" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_btn_selector"
+                    android:textColor="@color/white"
+                    android:text="评价订单"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/btn_order_star" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_order_reward"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:background="@drawable/layout_selector"
+                android:visibility="gone"
+                android:padding="10dp"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:src="@drawable/ic_reward"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/reward"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_reward_layout"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="14sp"
+                        android:id="@+id/textView10" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tip_reward"
+                        android:textSize="12sp"
+                        android:id="@+id/textView11" />
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -165,10 +265,13 @@
                     android:background="@color/divider" />
 
                 <LinearLayout
+                    android:id="@+id/btn_call_make"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:background="@drawable/layout_selector"
                     android:gravity="center_vertical"
                     android:padding="10dp">
 
@@ -188,31 +291,32 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="Papi酱"
-                            android:textSize="13sp" />
+                            android:textSize="13sp"
+                            android:id="@+id/tv_order_nickname" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="13812345678"
                             android:layout_marginTop="5dp"
-                            android:textSize="13sp" />
+                            android:textSize="13sp"
+                            android:id="@+id/tv_order_phone_number" />
 
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/btn_call_make"
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="打电话" />
+                        android:background="@color/transparent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_detail_call" />
 
                 </LinearLayout>
                 <View

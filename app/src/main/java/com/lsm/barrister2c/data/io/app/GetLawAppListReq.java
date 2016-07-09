@@ -2,9 +2,9 @@ package com.lsm.barrister2c.data.io.app;
 
 import android.content.Context;
 
+import com.google.gson.reflect.TypeToken;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
-import com.lsm.barrister2c.data.io.Test;
 
 /**
  * Created by lvshimin on 16/5/8.
@@ -30,13 +30,13 @@ public class GetLawAppListReq extends Action{
 
     @Override
     public String url() {
-        return IO.TEST;
+        return IO.URL_GET_LAWAPP_LIST;
     }
 
     @Override
     public CommonResult parse(String json) throws Exception {
 
-        IO.GetLawAppListResult result = Test.getLawAppListResult(12);//getFromGson(json, new TypeToken<IO.GetLawAppListResult>() {});
+        IO.GetLawAppListResult result = getFromGson(json, new TypeToken<IO.GetLawAppListResult>() {});
 
         if(result!=null){
 

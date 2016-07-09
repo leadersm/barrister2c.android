@@ -2,6 +2,7 @@ package com.lsm.barrister2c.ui.adapter;
 
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,11 +115,17 @@ public class LearningRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         public void bind(LearningItem learningItem) {
             mItem = learningItem;
-            aq.id(R.id.tv_item_title).text(mItem.getTitle());
+
+            if(!TextUtils.isEmpty(mItem.getTitle()))
+                aq.id(R.id.tv_item_title).text(Html.fromHtml(mItem.getTitle()));
+
             aq.id(R.id.tv_item_date).text(mItem.getDate());
             SimpleDraweeView thumb = (SimpleDraweeView) aq.id(R.id.image_item_thumb).getView();
             if(!TextUtils.isEmpty(mItem.getThumb())){
+                aq.id(R.id.image_item_thumb).visible();
                 thumb.setImageURI(Uri.parse(mItem.getThumb()));
+            }else{
+                aq.id(R.id.image_item_thumb).gone();
             }
         }
     }

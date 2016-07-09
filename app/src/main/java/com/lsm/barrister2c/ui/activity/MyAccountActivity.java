@@ -5,10 +5,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.androidquery.AQuery;
 import com.lsm.barrister2c.R;
+import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.entity.ConsumeDetail;
 import com.lsm.barrister2c.data.io.Action;
@@ -19,6 +22,7 @@ import com.lsm.barrister2c.data.io.app.GetStudyListReq;
 import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.adapter.IncomeListAdapter;
 import com.lsm.barrister2c.ui.adapter.LoadMoreListener;
+import com.lsm.barrister2c.utils.DLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +36,10 @@ import java.util.Locale;
  * 3.提现记录
  * 4.入账记录
  */
-public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,UserHelper.OnAccountUpdateListener{
 
+    private static final String TAG = MyAccountActivity.class.getSimpleName();
     GetMyAccountReq mGetAccountReq;
-    IO.GetAccountResult result;
 
     GetConsumeDetailListReq mGetIncomeListReq;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -52,10 +56,14 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
             @Override
             public void onClick(View v) {
 
-//                if(result==null)
-//                    return;
+                Account account = UserHelper.getInstance().getAccount();
 
-                boolean bind = result.account.getBankCardBindStatus().equals(Account.CARD_STATUS_BOUND);
+                if(account==null){
+                    DLog.e(TAG,"获取账户信息失败。。");
+                    return;
+                }
+
+                boolean bind = account.getBankCardBindStatus().equals(Account.CARD_STATUS_BOUND);
 
                 //TODO 银行卡
                 UIHelper.goBankcardActivity(MyAccountActivity.this,bind?bankcard:null);//result.account.getBankCard());
@@ -69,8 +77,6 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
                 UIHelper.goGetMoneyActivity(MyAccountActivity.this);
             }
         });
-
-        loadAccount();
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_light, android.R.color.holo_orange_light,
@@ -94,8 +100,32 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+
+        UserHelper.getInstance().addOnAccountUpdateListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        loadAccount();
+
         loadIncomeList();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_recharge){
+            UIHelper.goRechargeActivity(this);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_my_account,menu);
+        return true;
     }
 
     private void loadAccount() {
@@ -113,8 +143,10 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
 
             @Override
             public void onCompleted(IO.GetAccountResult result) {
-                MyAccountActivity.this.result = result;
-                bind();
+
+                UserHelper.getInstance().setAccount(result.account);
+                UserHelper.getInstance().updateAccount();
+
             }
         });
     }
@@ -163,13 +195,6 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
     List<ConsumeDetail> items = new ArrayList<>();
 
     Account.BankCard bankcard;
-    private void bind() {
-        aq.id(R.id.tv_myaccount_balance).text(String.format(Locale.CHINA,"%.1f元",result.account.getRemainingBalance()));
-        aq.id(R.id.tv_myaccount_total).text(String.format(Locale.CHINA,"%.1f元",result.account.getTotalConsume()));
-
-        bankcard = result.account.getBankCard();
-
-    }
 
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -215,5 +240,21 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         loadIncomeList();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        UserHelper.getInstance().removeAccountListener(this);
+    }
+
+    @Override
+    public void onUpdateAccount(Account account) {
+
+        aq.id(R.id.tv_myaccount_balance).text(String.format(Locale.CHINA,"%.2f元",account.getRemainingBalance()));
+        aq.id(R.id.tv_myaccount_total).text(String.format(Locale.CHINA,"%.2f元",account.getTotalConsume()));
+
+        bankcard = account.getBankCard();
+
     }
 }

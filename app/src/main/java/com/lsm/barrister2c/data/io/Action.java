@@ -384,7 +384,7 @@ public abstract class Action {
     }
 
     public CommonResult parseCommonResult(String json) throws Exception {
-        final Action.CommonResult result = getFromGson(json, new TypeToken<CommonResult>() { });
+        Action.CommonResult result = getFromGson(json, new TypeToken<CommonResult>() { });
 
         if (result != null) {
 
@@ -396,9 +396,9 @@ public abstract class Action {
 
             return result;
 
-        } else {
-            throw new Exception("解析错误");
         }
+
+        return null;
     }
 
 }

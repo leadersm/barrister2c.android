@@ -26,7 +26,7 @@ public class GetAppointmentSettingsReq extends Action {
         this.id = id;
 
         params("date",date);
-        params("id",id);
+        params("lawyerId",id);
 
         addUserParams();
 

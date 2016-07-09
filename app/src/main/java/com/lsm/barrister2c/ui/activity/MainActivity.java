@@ -15,10 +15,6 @@ import com.lsm.barrister2c.app.AppManager;
 import com.lsm.barrister2c.app.BizHelper;
 import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.data.entity.User;
-import com.lsm.barrister2c.data.io.Action;
-import com.lsm.barrister2c.data.io.IO;
-import com.lsm.barrister2c.data.io.app.GetMyAccountReq;
-import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.fragment.AvaterCenterFragment;
 import com.lsm.barrister2c.ui.fragment.FaxianFragment;
 import com.lsm.barrister2c.ui.fragment.HomeFragment;
@@ -56,30 +52,6 @@ public class MainActivity extends BaseActivity {
 
         BizHelper.getInstance().init(this);
 
-        loadMyAccount();
-    }
-
-    private void loadMyAccount() {
-
-        if(user==null)
-            return;
-
-        new GetMyAccountReq(this).execute(new Action.Callback<IO.GetAccountResult>() {
-            @Override
-            public void progress() {
-
-            }
-
-            @Override
-            public void onError(int errorCode, String msg) {
-                UIHelper.showToast(getApplicationContext(),msg);
-            }
-
-            @Override
-            public void onCompleted(IO.GetAccountResult result) {
-                UserHelper.getInstance().setAccountResult(result);
-            }
-        });
     }
 
     private void setupViewPager() {
@@ -202,6 +174,14 @@ public class MainActivity extends BaseActivity {
             // Show 3 total pages.
             return 4;
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(AppManager.getAppManager().exit(this))
+            super.onBackPressed();
 
     }
 

@@ -11,15 +11,12 @@ import com.androidquery.AQuery;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.data.db.Favorite;
-import com.lsm.barrister2c.data.entity.LearningItem;
 import com.lsm.barrister2c.ui.UIHelper;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link LearningItem} and makes a call to the
- * specified {@link LoadMoreListener}.
- * TODO: Replace the implementation with code for your data type.
+ * 收藏列表适配器
  */
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
@@ -68,11 +65,11 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
         public void bind(Favorite item) {
             mItem = item;
-            aq.id(R.id.tv_item_barrister_nickname).text(item.getName());
+            aq.id(R.id.tv_item_barrister_nickname).text(item.getTitle());
 
             SimpleDraweeView userIconView = (SimpleDraweeView) aq.id(R.id.image_barrister_item_usericon).getView();
-            if(!TextUtils.isEmpty(item.getUserIcon())){
-                userIconView.setImageURI(Uri.parse(item.getUserIcon()));
+            if(!TextUtils.isEmpty(item.getThumb())){
+                userIconView.setImageURI(Uri.parse(item.getThumb()));
             }
 
         }

@@ -9,6 +9,7 @@ import com.androidquery.AQuery;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.app.AppConfig;
+import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.utils.DLog;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * 我的银行卡
  */
-public class MyBankCardActivity extends BaseActivity {
+public class MyBankCardActivity extends BaseActivity implements UserHelper.OnAccountUpdateListener{
 
     public static final String KEY = "bankcard";
     private static final String TAG = MyBankCardActivity.class.getSimpleName();
@@ -35,6 +36,20 @@ public class MyBankCardActivity extends BaseActivity {
         aq = new AQuery(this);
 
         bankCard = (Account.BankCard) getIntent().getSerializableExtra(KEY);
+
+        setupView();
+
+        UserHelper.getInstance().addOnAccountUpdateListener(this);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        UserHelper.getInstance().removeAccountListener(this);
+    }
+
+    private void setupView() {
 
         List<AppConfig.Bank> banks = AppConfig.getInstance().getBanks();
         if (banks == null || banks.isEmpty()) {
@@ -81,7 +96,6 @@ public class MyBankCardActivity extends BaseActivity {
                 }
             });
         }
-
     }
 
     private void setupToolbar() {
@@ -89,5 +103,12 @@ public class MyBankCardActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.mybankcard);
+    }
+
+
+    @Override
+    public void onUpdateAccount(Account account) {
+        bankCard = account.getBankCard();
+        setupView();
     }
 }

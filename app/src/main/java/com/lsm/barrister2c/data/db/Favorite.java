@@ -6,10 +6,16 @@ package com.lsm.barrister2c.data.db;
  */
 public class Favorite {
 
+    public static final String TYPE_BARRISTER = "favorite.type.barrister";
+
     /** Not-null value. */
-    private String id;
-    private String name;
-    private String userIcon;
+    private String id;//如果是律师，就是律师id
+    private String type;//收藏类型
+    private String title;
+    private String desc;
+    private String url;//如果是收藏的其他东西
+    private String thumb;//如果律师就是律师头像 ,如果是收藏的其他（如学习中心）就是缩略图 TBD
+    private String addTime;//添加收藏的时间；
 
     public Favorite() {
     }
@@ -18,10 +24,14 @@ public class Favorite {
         this.id = id;
     }
 
-    public Favorite(String id, String name, String userIcon) {
+    public Favorite(String id, String title, String thumb, String type, String desc, String url, String addTime) {
         this.id = id;
-        this.name = name;
-        this.userIcon = userIcon;
+        this.title = title;
+        this.thumb = thumb;
+        this.type = type;
+        this.desc = desc;
+        this.url = url;
+        this.addTime = addTime;
     }
 
     /** Not-null value. */
@@ -34,20 +44,52 @@ public class Favorite {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getUserIcon() {
-        return userIcon;
+    public String getThumb() {
+        return thumb;
     }
 
-    public void setUserIcon(String userIcon) {
-        this.userIcon = userIcon;
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(String addTime) {
+        this.addTime = addTime;
     }
 
 }

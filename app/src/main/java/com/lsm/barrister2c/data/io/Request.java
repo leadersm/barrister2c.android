@@ -173,7 +173,7 @@ public abstract class Request {
                     }
 
                     DLog.e(TAG, "url:" + url);
-                    DLog.e(TAG, "info: code:" + status.getCode() + " ;message:" + status.getMessage());
+                    DLog.e(TAG, "wxPrepayInfo: code:" + status.getCode() + " ;message:" + status.getMessage());
                     status.invalidate();
                 }
                 DLog.v(TAG, "====" + getName() + "=========本次连接耗时" + status.getDuration() + "毫秒============");

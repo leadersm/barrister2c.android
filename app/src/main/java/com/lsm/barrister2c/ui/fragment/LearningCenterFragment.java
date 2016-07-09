@@ -235,7 +235,6 @@ public class LearningCenterFragment extends Fragment {
                     isLoadingMore = false;
 
                     if(result!=null && result.items!=null){
-                        items.clear();
                         items.addAll(result.items);
                         mAdapter.notifyDataSetChanged();
                     }

@@ -18,8 +18,13 @@ import com.lsm.barrister2c.data.io.IO;
  */
 public class GetLatestVersionReq extends Action {
 
+
+
     public GetLatestVersionReq(Context context) {
         super(context);
+//        type（barrister2c , barrister）
+        params("type","barrister2c");
+        params("platform","android");
     }
 
     @Override

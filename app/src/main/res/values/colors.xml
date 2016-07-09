@@ -4,7 +4,6 @@
     <color name="colorPrimaryDark">#1aa3e6</color>
     <color name="colorAccent">#1aa3e6</color>
 
-
     <color name="menu_text_color_act">#3F51B5</color>
     <color name="menu_text_color_nor">#757880</color>
     <color name="divider">#c2c7cc</color>
@@ -146,7 +145,7 @@
     <color name="red01">#F9B2C0</color>
     <color name="red02">#F6728C</color>
     <color name="redViolet01">#F6D1F3</color>
-    <color name="redViolet02">#F6728C</color>
+    <color name="redViolet02">#FF3300</color>
 
     <!-- 灰色 -->
     <color name="gray01">#DADDE2</color>
@@ -170,8 +169,8 @@
 
     <color name="light_gray">#c2c7cc</color>
     <color name="order_status_0">#f9bf88</color>
-    <color name="btn_blue_sel">#1a77f2</color>
-    <color name="btn_blue_normal">#1a9fff</color>
+    <color name="btn_blue_sel">#1aa3e6</color>
+    <color name="btn_blue_normal">#119fec</color>
 
 
     <color name="tab_divider">#eeeeee</color>
@@ -181,4 +180,7 @@
     <color name="lable">#222222</color>
 
     <color name="placeholder">#c2c7cc</color>
+    <color name="money_in">#31F77E</color>
+    <color name="money_out">#FF2222</color>
+
 </resources>

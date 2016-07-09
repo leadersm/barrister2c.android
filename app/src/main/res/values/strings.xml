@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Barrister2C</string>
+    <string name="app_name">中国大律师</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">登录</string>
 
@@ -256,10 +256,33 @@
     <string name="tip_makeorder_success">订单已提交</string>
     <string name="pay_wx">微信支付</string>
     <string name="pay_ali">支付宝</string>
-    <string name="remarks_pay">请填写备注信息</string>
+    <string name="remarks_pay">请简单描述您要咨询的问题</string>
     <string name="lawapplist">中国法律应用大全</string>
     <string name="default_money">0.0元</string>
     <string name="total_consume">累计消费</string>
     <string name="remaining_balance">余额</string>
+    <string name="title_dialog_buy_appointment">确定购买以下时间段的预约服务？</string>
+    <string name="tip_recharge_alipay">推荐安装支付宝客户端的用户使用</string>
+    <string name="tip_recharge_wx_pay">推荐安装微信5.0以上版本的用户使用</string>
+    <string name="title_consume_list">明细</string>
+    <string name="tip_order_success_appointment">下单成功,<![CDATA[请到我的>我的订单中查看]]></string>
+    <string name="tip_check_myorders"><![CDATA[请到我的>我的订单中查看]]></string>
+    <string name="cancel_order">取消订单</string>
+    <string name="reward">打赏</string>
+    <string name="other_money">其他金额</string>
+    <string name="feedback_order">订单评价</string>
+    <string name="hint_order_feedback">请输入您对此次服务的评价</string>
+    <string name="tip_order_success_im">下单成功，系统即将为您建立通话，请稍候，如果1分钟内未接到电话可以手动拨号建立通话。</string>
+    <string name="title_biz_type">线上专项服务</string>
+    <string name="type_appointment">预约订单</string>
+    <string name="type_im">即时订单</string>
+    <string name="tip_reward">如果您对此次服务比较满意可以打赏律师</string>
+    <string name="title_reward_layout">打赏律师</string>
+    <string name="hint_recharge_et">充值金额</string>
+    <string name="tip_min_recharge_money">充值金额不能小于0.01元</string>
+    <string name="goods_name_info">大律师充值</string>
+    <string name="tip_bankcard_not_bind">您还没有绑定银行卡</string>
+    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
+    <string name="title_wx_pay_result">支付结果</string>
 
 </resources>

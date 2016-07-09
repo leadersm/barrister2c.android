@@ -8,9 +8,9 @@ import java.io.Serializable;
  */
 public class ConsumeDetail implements Serializable{
 
-    public static final String TYPE_ORDER = "consume.type.order";//订单
-    public static final String TYPE_GET_MONEY = "consume.type.getmoney";//提现
-    public static final String TYPE_REWARD = "consume.type.reward";//打赏
+    public static final String TYPE_ORDER = "income.type.order";//订单
+    public static final String TYPE_GET_MONEY = "income.type.getmoney";//提现
+    public static final String TYPE_REWARD = "income.type.reward";//打赏
     public static final String TYPE_RECHARGE = "consume.type.recharge";//充值
 
     String id;

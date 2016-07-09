@@ -3,13 +3,13 @@ package com.lsm.barrister2c.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.lsm.barrister2c.R;
@@ -18,12 +18,13 @@ import com.lsm.barrister2c.app.VersionHelper;
 
 
 /**
- * Title: GuideAcitivity.java Description: 新手引导页,软件特色介绍，（首次安装）上传设备信息
+ * Title: GuideAcitivity.java
+ * Description: 新手引导页,软件特色介绍，（首次安装）上传设备信息
  *
  * @author lsm
  * @date 2015-4-3
  */
-public class GuideActivity extends BaseActivity {
+public class GuideActivity extends FragmentActivity {
 
     protected static final String TAG = GuideActivity.class.getSimpleName();
 
@@ -97,12 +98,8 @@ public class GuideActivity extends BaseActivity {
             ImageView imageView = (ImageView) view.findViewById(R.id.imageView_guide);
             imageView.setImageResource(resId);
 
-            ImageButton start = (ImageButton) view.findViewById(R.id.button_start);
-
             if (startVisiable)
-                start.setVisibility(View.VISIBLE);
-
-            start.setOnClickListener(new View.OnClickListener() {
+                imageView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View arg0) {

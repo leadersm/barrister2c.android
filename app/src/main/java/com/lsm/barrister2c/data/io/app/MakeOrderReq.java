@@ -18,16 +18,22 @@ import com.lsm.barrister2c.data.io.IO;
 public class MakeOrderReq extends Action{
 
     String orderInfo;
+    float money;
     float price;
     String remarks;
+    String barristerId;
 
-    public MakeOrderReq(Context context, String orderInfo, float price, String remarks,String settings) {
+    public MakeOrderReq(Context context,String barristerId, String orderInfo,float money, float price, String remarks,String settings) {
         super(context);
         this.orderInfo = orderInfo;
+        this.money = money;
         this.price = price;
         this.remarks = remarks;
+        this.barristerId = barristerId;
 
-        params("orderInfo",orderInfo);
+        params("barristerId",barristerId);
+//        params("orderInfo",orderInfo);
+        params("money",money+"");
         params("price",price+"");
         params("orderContent",remarks);
 
@@ -45,19 +51,19 @@ public class MakeOrderReq extends Action{
 
     @Override
     public String url() {
-        return IO.URL_MAKE_CALL;
+        return IO.URL_MAKE_DEAL;
     }
 
     @Override
     public CommonResult parse(String json) throws Exception {
 
-        IO.MakeOrderResult result = getFromGson(json, new TypeToken<IO.MakeOrderResult>() {});
+        CommonResult result = getFromGson(json, new TypeToken<CommonResult>() {});
 
         if(result!=null){
 
-            if(result.resultCode == 200 && result.orderDetail!=null){
+            if(result.resultCode == 200){
 
-                onSafeCompleted(result.orderDetail);
+                onSafeCompleted(true);
 
             }
 

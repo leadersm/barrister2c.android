@@ -23,7 +23,7 @@ public class GetBarristerDetailReq extends Action{
     public GetBarristerDetailReq(Context context, String id) {
         super(context);
         this.id = id;
-        params("id",id);
+        params("lawyerId",id);
     }
 
     @Override

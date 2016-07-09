@@ -58,7 +58,7 @@
                     android:layout_gravity="top"
                     app:actualImageScaleType="focusCrop"
                     app:fadeDuration="300"
-                    app:placeholderImage="@color/colorPrimary"
+                    app:placeholderImage="@color/placeholder"
                     app:placeholderImageScaleType="fitCenter"
                     app:roundAsCircle="true" />
 

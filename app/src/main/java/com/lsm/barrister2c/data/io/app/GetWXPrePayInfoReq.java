@@ -22,9 +22,15 @@ public class GetWXPrePayInfoReq extends Action{
         this.goodsName = goodsName;
         this.money = money;
 
-        params("goodsInfo",goodsInfo);
-        params("goodsName",goodsName);
-        params("money",String.valueOf(money));
+//        params("goodsInfo",goodsInfo);
+//        params("goodsName",goodsName);
+
+        params("goodsInfo","CN.DLS.APP2C");
+        params("goodsName","CN.DLS.APP2C");
+
+        int moneyFen = (int) (money*100);//转换成分
+
+        params("money",String.valueOf(moneyFen));
 
         addUserParams();
     }
@@ -43,8 +49,8 @@ public class GetWXPrePayInfoReq extends Action{
     public CommonResult parse(String json) throws Exception {
 
         IO.PrePayResult result = getFromGson(json,new TypeToken<IO.PrePayResult>(){});
-        if(result.resultCode == 200 && result.payReq!=null){
-            onSafeCompleted(result.payReq);
+        if(result.resultCode == 200 && result.wxPrepayInfo !=null){
+            onSafeCompleted(result.wxPrepayInfo);
             return result;
         }
 

@@ -8,6 +8,8 @@ import android.view.View;
 import com.androidquery.AQuery;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.app.Constants;
+import com.lsm.barrister2c.app.UserHelper;
+import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.app.GetMoneyReq;
 import com.lsm.barrister2c.ui.UIHelper;
@@ -63,11 +65,20 @@ public class GetMoneyActivity extends BaseActivity {
 
 
 
+    boolean isLoading = false;
 
     /**
      * 保存
      */
     protected void doCommit() {
+        if(isLoading)
+            return;
+
+        String bankCardBindStatus = UserHelper.getInstance().getAccount().getBankCardBindStatus();
+        if(bankCardBindStatus!=null && bankCardBindStatus.equals(Account.CARD_STATUS_NOT_BOUND)){
+            UIHelper.showToast(getApplicationContext(),getString(R.string.tip_bankcard_not_bind));
+            return;
+        }
 
         final String money = aq.id(R.id.et_get_money).getEditable().toString();
 
@@ -81,12 +92,16 @@ public class GetMoneyActivity extends BaseActivity {
 
             @Override
             public void progress() {
+                isLoading = true;
+
                 progressDialog.setMessage(getString(R.string.tip_loading));
                 progressDialog.show();
             }
 
             @Override
             public void onError(int errorCode, String msg) {
+                isLoading = false;
+
                 mGetMoneyReq = null;
 
                 progressDialog.dismiss();
@@ -96,6 +111,8 @@ public class GetMoneyActivity extends BaseActivity {
 
             @Override
             public void onCompleted(Boolean t) {
+                isLoading = false;
+
                 mGetMoneyReq = null;
 
                 progressDialog.dismiss();

@@ -8,6 +8,10 @@ import android.view.View;
 import com.androidquery.AQuery;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.aliapi.AliPay;
+import com.lsm.barrister2c.data.entity.WxPrepayInfo;
+import com.lsm.barrister2c.data.io.Action;
+import com.lsm.barrister2c.data.io.app.GetAliPrePayInfoReq;
+import com.lsm.barrister2c.data.io.app.GetWXPrePayInfoReq;
 import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.wxapi.WXPay;
 
@@ -18,8 +22,6 @@ import com.lsm.barrister2c.wxapi.WXPay;
 public class RechargeActivity extends BaseActivity {
 
     AQuery aq;
-
-//    GetWXPrePayInfoReq mRechareReq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,19 +76,87 @@ public class RechargeActivity extends BaseActivity {
         }
 
         //商品名称
-        String goodsName = "大律师充值";
+        String goodsName = getString(R.string.goods_name_info);
         //商品信息描述
-        String goodsInfo = "大律师充值";
+        String goodsInfo = getString(R.string.goods_name_info);
+
         //金额
         float moneyAct = Float.parseFloat(money);
 
+        if(moneyAct<0.01f){
+            UIHelper.showToast(getApplicationContext(),getString(R.string.tip_min_recharge_money));
+            return;
+        }
+
         if(aq.id(R.id.cb_recharge_wx).isChecked()){
             //微信支付
-            WXPay.getInstance().init(RechargeActivity.this).pay(goodsName,goodsInfo,moneyAct);
+            doGetWxPrepayInfo(goodsName,goodsInfo,moneyAct);
         }else{
             //支付宝支付
-            AliPay.getInstance().init(RechargeActivity.this).pay(goodsName,goodsInfo,moneyAct);
+            doGetAliPrepayInfo(goodsName,goodsInfo,moneyAct);
         }
+
+    }
+
+    /**
+     * 支付宝预付订单
+     * @param goodsName
+     * @param goodsInfo
+     * @param money
+     */
+    private void doGetAliPrepayInfo(String goodsName, String goodsInfo, float money) {
+
+        new GetAliPrePayInfoReq(this,goodsName,goodsInfo,money).execute(new Action.Callback<String>(){
+
+            @Override
+            public void progress() {
+                progressDialog.setMessage("正在创建订单，请稍候..");
+                progressDialog.show();
+            }
+
+            @Override
+            public void onError(int errorCode, String msg) {
+                progressDialog.dismiss();
+                UIHelper.showToast(getApplicationContext(),"创建订单失败");
+            }
+
+            @Override
+            public void onCompleted(final String payInfo) {
+                progressDialog.dismiss();
+                AliPay.getInstance().init(RechargeActivity.this).pay(payInfo);
+            }
+        });
+    }
+
+    /**
+     * 微信预付订单
+     * @param goodsName
+     * @param goodsInfo
+     * @param money
+     */
+    private void doGetWxPrepayInfo(String goodsName, String goodsInfo, float money) {
+        new GetWXPrePayInfoReq(this,goodsName,goodsInfo,money).execute(new Action.Callback<WxPrepayInfo>() {
+
+            @Override
+            public void progress() {
+                progressDialog.setMessage("正在创建订单，请稍候..");
+                progressDialog.show();
+            }
+
+            @Override
+            public void onError(int errorCode, String msg) {
+                progressDialog.dismiss();
+                UIHelper.showToast(getApplicationContext(),"创建订单失败");
+            }
+
+            @Override
+            public void onCompleted(WxPrepayInfo info) {
+                progressDialog.dismiss();
+
+                WXPay.getInstance().init(RechargeActivity.this).pay(info);
+
+            }
+        });
 
     }
 

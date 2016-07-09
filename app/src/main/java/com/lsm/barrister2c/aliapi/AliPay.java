@@ -10,8 +10,6 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
-import com.lsm.barrister2c.data.io.Action;
-import com.lsm.barrister2c.data.io.app.GetAliPrePayInfoReq;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -103,7 +101,7 @@ public class AliPay {
     /**
      * call alipay sdk pay. 调用SDK支付
      */
-    public void pay(String goodsName,String goodsInfo,float money) {
+    public void pay(final String payInfo) {
 //        if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
 //            new AlertDialog.Builder(context).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
 //                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -133,43 +131,25 @@ public class AliPay {
 //         */
 //        final String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + getSignType();
 
-
-        new GetAliPrePayInfoReq(context,goodsName,goodsInfo,money).execute(new Action.Callback<String>(){
-
-            @Override
-            public void progress() {
-
-            }
+        Runnable payRunnable = new Runnable() {
 
             @Override
-            public void onError(int errorCode, String msg) {
+            public void run() {
+                // 构造PayTask 对象
+                PayTask alipay = new PayTask(context);
+                // 调用支付接口，获取支付结果
+                String result = alipay.pay(payInfo, true);
 
+                Message msg = new Message();
+                msg.what = SDK_PAY_FLAG;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
             }
+        };
 
-            @Override
-            public void onCompleted(final String payInfo) {
-
-                Runnable payRunnable = new Runnable() {
-
-                    @Override
-                    public void run() {
-                        // 构造PayTask 对象
-                        PayTask alipay = new PayTask(context);
-                        // 调用支付接口，获取支付结果
-                        String result = alipay.pay(payInfo, true);
-
-                        Message msg = new Message();
-                        msg.what = SDK_PAY_FLAG;
-                        msg.obj = result;
-                        mHandler.sendMessage(msg);
-                    }
-                };
-
-                // 必须异步调用
-                Thread payThread = new Thread(payRunnable);
-                payThread.start();
-            }
-        });
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
 
 
     }
@@ -203,7 +183,7 @@ public class AliPay {
     }
 
     /**
-     * create the order info. 创建订单信息
+     * create the order wxPrepayInfo. 创建订单信息
      */
     private String getOrderInfo(String subject, String body, String price) {
 
@@ -271,7 +251,7 @@ public class AliPay {
     }
 
     /**
-     * sign the order info. 对订单信息进行签名
+     * sign the order wxPrepayInfo. 对订单信息进行签名
      *
      * @param content 待签名订单信息
      */

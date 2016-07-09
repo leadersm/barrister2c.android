@@ -1,21 +1,29 @@
 package com.lsm.barrister2c.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.androidquery.AQuery;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.app.AppConfig;
-import com.lsm.barrister2c.data.entity.Account;
+import com.lsm.barrister2c.app.Constants;
+import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
 import com.lsm.barrister2c.data.io.app.BindBankCardReq;
 import com.lsm.barrister2c.data.io.app.GetBankNameReq;
 import com.lsm.barrister2c.ui.UIHelper;
+import com.lsm.barrister2c.utils.DLog;
+import com.lsm.barrister2c.utils.FileUtils;
 
+import java.io.File;
 import java.util.List;
 
 import io.card.payment.CardIOActivity;
@@ -27,10 +35,11 @@ import io.card.payment.CreditCard;
  */
 public class SetBankCardActivity extends BaseActivity {
 
+    private static final String TAG = SetBankCardActivity.class.getSimpleName();
+
     public static final String KEY = "bankcard";
     private static final int MY_SCAN_REQUEST_CODE = 0x1001;
 
-    Account.BankCard bankCard;
     AQuery aq;
     List<AppConfig.Bank> banks;
     @Override
@@ -64,10 +73,13 @@ public class SetBankCardActivity extends BaseActivity {
         scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
         scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
         scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_RETURN_CARD_IMAGE, true); // default: false
 
         // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
         startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
     }
+
+    File file;
 
     private void doCommit() {
 
@@ -100,7 +112,7 @@ public class SetBankCardActivity extends BaseActivity {
             }
         }
 
-        new BindBankCardReq(this, cardNum, cardholderName,phone,bankType, bankName, bankAddress,logoName).execute(new Action.Callback<IO.BindBankcardResult>() {
+        new BindBankCardReq(this, cardNum, cardholderName,phone,bankType, bankName, bankAddress,logoName,file).execute(new Action.Callback<IO.BindBankcardResult>() {
             @Override
             public void progress() {
                 progressDialog.setMessage(getString(R.string.tip_loading));
@@ -117,8 +129,14 @@ public class SetBankCardActivity extends BaseActivity {
             @Override
             public void onCompleted(IO.BindBankcardResult result) {
                 progressDialog.dismiss();
+
                 if(result!=null){
+
+                    UserHelper.getInstance().setAccount(result.account);
+                    UserHelper.getInstance().updateAccount();
+
                     finish();
+
                 }
 
             }
@@ -143,6 +161,22 @@ public class SetBankCardActivity extends BaseActivity {
             String expire;//
 
             if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
+
+                byte[] byteArray = data.getByteArrayExtra(CardIOActivity.EXTRA_CAPTURED_CARD_IMAGE);
+                if(byteArray!=null){
+                    Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    FileUtils.saveImageFile(bmp, AppConfig.getDir(Constants.imageDir), "mycard.png", new FileUtils.FileCallback() {
+                        @Override
+                        public void onFileCallback(File file) {
+                            DLog.d(TAG,"save card:"+file.getAbsolutePath());
+                            SetBankCardActivity.this.file = file;
+                            SimpleDraweeView card = (SimpleDraweeView) findViewById(R.id.image_setbank);
+                            if(file.exists()){
+                                card.setImageURI(Uri.fromFile(file));
+                            }
+                        }
+                    });
+                }
 
                 CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
 

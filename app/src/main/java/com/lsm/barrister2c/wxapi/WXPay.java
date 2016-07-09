@@ -5,10 +5,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.lsm.barrister2c.app.Constants;
-import com.lsm.barrister2c.data.io.Action;
-import com.lsm.barrister2c.data.io.app.GetWXPrePayInfoReq;
-import com.lsm.barrister2c.ui.UIHelper;
-import com.lsm.barrister2c.utils.DLog;
+import com.lsm.barrister2c.app.MD5Tools;
+import com.lsm.barrister2c.data.entity.WxPrepayInfo;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -42,15 +40,16 @@ public class WXPay {
     }
 
 
-    public void pay(String goodsName,String goodsInfo,float money){
+    public void pay(WxPrepayInfo info){
 
 
         if(api == null)
         {
             // 通过WXAPIFactory工厂，获取IWXAPI的实例
-            api = WXAPIFactory.createWXAPI(context, Constants.WX_APP_ID, false);
+            api = WXAPIFactory.createWXAPI(context, null);
 
             api.registerApp(Constants.WX_APP_ID);
+
         }
 
         boolean isPaySupported = api.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
@@ -61,33 +60,52 @@ public class WXPay {
             return ;
         }
 
-        new GetWXPrePayInfoReq(context,goodsName,goodsInfo,money).execute(new Action.Callback<PayReq>() {
+        String sign = reSign(info);
 
-            @Override
-            public void progress() {
+        PayReq req = new PayReq();
+        req.appId = info.getAppid();
+        req.nonceStr = info.getNoncestr();
+        req.packageValue = info.getPackageValue();
+        req.partnerId = info.getPartnerid();
+        req.prepayId = info.getPrepayid();
+        req.timeStamp = info.getTimestamp();
 
-            }
+        req.sign = sign;
 
-            @Override
-            public void onError(int errorCode, String msg) {
-                UIHelper.showToast(context,"创建订单失败："+msg);
-            }
+        boolean result = api.sendReq(req);
 
-            @Override
-            public void onCompleted(PayReq payReq) {
+        System.out.println("====>req.send.result:"+result);
 
-                if(payReq!=null){
-                    api.sendReq(payReq);
-                }else{
-                    DLog.e(TAG,"返回错误");
-                }
-            }
-        });
+    }
 
+    private String reSign(WxPrepayInfo info) {
+        String stringA ="appid="+info.getAppid()
+                +"&noncestr="+info.getNoncestr()
+                +"&package="+info.getPackageValue()
+                +"&partnerid="+info.getPartnerid()
+                +"&prepayid="+info.getPrepayid()
+                +"&timestamp="+info.getTimestamp();
+
+        String stringSignTemp= stringA+"&key=8aac25361765227616fed5718daa3653";
+
+        String sign= MD5Tools.MD5(stringSignTemp).toUpperCase();
+
+        return sign;
     }
 
     public WXPay init(Activity activity) {
         this.context = activity;
+
+        if(api == null)
+        {
+            // 通过WXAPIFactory工厂，获取IWXAPI的实例
+            api = WXAPIFactory.createWXAPI(context, null);
+
+            boolean register = api.registerApp(Constants.WX_APP_ID);
+            System.out.println("====>register.wx:"+register);
+
+        }
+
         return instance;
     }
 

@@ -1,5 +1,6 @@
 package com.lsm.barrister2c.ui.adapter;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,17 +114,30 @@ public class IncomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mItem = item;
 
             String type = "其他";
+            String pm = "-";
+            int color = Color.parseColor("#cccccc");
             if(item.getType().equals(ConsumeDetail.TYPE_GET_MONEY)){
                 type = "提现";
+                color = aq.getContext().getResources().getColor(R.color.money_out);
+                pm = "-";
             }else if(item.getType().equals(ConsumeDetail.TYPE_ORDER)){
-                type = "订单收入";
+                type = "订单支出";
+                color = aq.getContext().getResources().getColor(R.color.money_out);
+                pm = "-";
             }else if(item.getType().equals(ConsumeDetail.TYPE_REWARD)){
                 type = "打赏";
+                color = aq.getContext().getResources().getColor(R.color.money_out);
+                pm = "-";
+            }else if(item.getType().equals(ConsumeDetail.TYPE_RECHARGE)){
+                type = "充值";
+                color = aq.getContext().getResources().getColor(R.color.money_in);
+                pm = "+";
             }
 
-            aq.id(R.id.tv_item_income_cash).text(type);
+            aq.id(R.id.tv_item_income_serial_num).text("流水号:"+item.getSerialNum());
+            aq.id(R.id.tv_item_income_type).text(type);
+            aq.id(R.id.tv_item_income_cash).text(pm+item.getMoney()+"元").textColor(color);
             aq.id(R.id.tv_item_income_date).text(item.getDate());
-            aq.id(R.id.tv_item_income_serial_num).text(item.getSerialNum());
         }
     }
 

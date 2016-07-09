@@ -10,6 +10,10 @@ import android.support.v7.widget.Toolbar;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.data.db.Favorite;
 import com.lsm.barrister2c.data.db.UserDbService;
+import com.lsm.barrister2c.data.io.Action;
+import com.lsm.barrister2c.data.io.IO;
+import com.lsm.barrister2c.data.io.app.GetMyFavoriteListReq;
+import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.adapter.FavoriteAdapter;
 import com.lsm.barrister2c.ui.adapter.LoadMoreListener;
 
@@ -27,8 +31,6 @@ public class MyFavoriteActivity extends BaseActivity implements SwipeRefreshLayo
     LinearLayoutManager mLayoutManager;
 
     FavoriteAdapter mAdapter;
-
-//    EmptyController mEmptyController;
 
     List<Favorite> items = new ArrayList<>();
 
@@ -59,16 +61,6 @@ public class MyFavoriteActivity extends BaseActivity implements SwipeRefreshLayo
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.setHasFixedSize(true);
 
-//        View emptyView = findViewById(R.id.emptyLayout);
-//
-//        mEmptyController = new EmptyController(mSwipeRefreshLayout, emptyView, new EmptyController.Callback() {
-//
-//            @Override
-//            public void doRefresh() {
-//                onRefresh();
-//            }
-//        });
-
         mLayoutManager = new LinearLayoutManager(MyFavoriteActivity.this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -76,16 +68,15 @@ public class MyFavoriteActivity extends BaseActivity implements SwipeRefreshLayo
 
             @Override
             public void onLoadMore() {
-//                loadMore();
+                loadMore();
             }
 
             @Override
             public boolean hasMore() {
 
-//                return mGetFavoriteListReq != null
-//                        && mRefreshResult!=null
-//                        && page + 1 <= mGetFavoriteListReq.getTotalPage(mRefreshResult.total, GetMyOrderListReq.pageSize);
-                return false;
+                return mGetFavoriteListReq != null
+                        && mRefreshResult!=null
+                        && page + 1 <= mGetFavoriteListReq.getTotalPage(mRefreshResult.total, GetMyFavoriteListReq.pageSize);
             }
         });
 
@@ -96,8 +87,8 @@ public class MyFavoriteActivity extends BaseActivity implements SwipeRefreshLayo
         refresh();
     }
 
-//    GetMyFavoriteListReq mGetFavoriteListReq;
-//    IO.GetMyOrdersResult mRefreshResult;
+    GetMyFavoriteListReq mGetFavoriteListReq;
+    IO.GetMyFavoriteListResult mRefreshResult;
     int page = 1;
 
     private void refresh() {
@@ -110,85 +101,77 @@ public class MyFavoriteActivity extends BaseActivity implements SwipeRefreshLayo
             mAdapter.notifyDataSetChanged();
         }
 
-//        if(mGetFavoriteListReq==null){
-//            mGetFavoriteListReq = new GetMyFavoriteListReq(MyFavoriteActivity.this,page = 1, GetMyOrderListReq.TYPE_ALL);
-//        }
-//
-//        mGetFavoriteListReq.execute(new Action.Callback<IO.GetMyFavoriteResult>() {
-//
-//            @Override
-//            public void progress() {
-////                mEmptyController.showLoading();
-//                mSwipeRefreshLayout.setRefreshing(true);
-//            }
-//
-//            @Override
-//            public void onError(int errorCode, String msg) {
-////                mEmptyController.showError(errorCode,msg);
-//                mSwipeRefreshLayout.setRefreshing(false);
-//                UIHelper.showToast(getApplicationContext(),msg);
-//            }
-//
-//            @Override
-//            public void onCompleted(IO.GetMyFavoriteResult getMyOrdersResult) {
-//
-//                mSwipeRefreshLayout.setRefreshing(false);
-//
-//                mRefreshResult = getMyOrdersResult;
-//
-//                if(mRefreshResult.orderItems !=null){
-//
-//
-//
-////                    mEmptyController.showContent();
-//
-//                }else {
-//
-////                    mEmptyController.showEmpty();
-//
-//                }
-//            }
-//        });
+        if(mGetFavoriteListReq==null){
+            mGetFavoriteListReq = new GetMyFavoriteListReq(MyFavoriteActivity.this,page = 1);
+        }
+
+        mGetFavoriteListReq.execute(new Action.Callback<IO.GetMyFavoriteListResult>() {
+
+            @Override
+            public void progress() {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
+
+            @Override
+            public void onError(int errorCode, String msg) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                UIHelper.showToast(getApplicationContext(),msg);
+            }
+
+            @Override
+            public void onCompleted(IO.GetMyFavoriteListResult result) {
+
+                mSwipeRefreshLayout.setRefreshing(false);
+
+                mRefreshResult = result;
+
+                if(mRefreshResult.favoriteItemList !=null){
+
+                    items.clear();
+                    items.addAll(mRefreshResult.favoriteItemList);
+                    mAdapter.notifyDataSetChanged();
+
+                }
+            }
+        });
 
     }
 
     /**
      * 加载更多
      */
-//    public void loadMore(){
-//
-//        new GetMyFavoriteListReq(MyFavoriteActivity.this, ++page, GetMyOrderListReq.TYPE_ALL)
-//                .execute(new Action.Callback<IO.GetMyFavoriteResult>() {
-//
-//                    @Override
-//                    public void progress() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(int errorCode, String msg) {
-//
-//                        --page;
-//
-//                        UIHelper.showToast(getApplicationContext(),msg);
-//                    }
-//
-//                    @Override
-//                    public void onCompleted(IO.GetMyFavoriteResult getMyOrdersResult) {
-//
-//                        if(getMyOrdersResult.orderItems !=null){
-//
-//                            items.addAll(getMyOrdersResult.orderItems);
-//
-//                            mAdapter.notifyDataSetChanged();
-//
-////                            mEmptyController.showContent();
-//
-//                        }
-//                    }
-//                });
-//
-//    }
+    public void loadMore(){
+
+        new GetMyFavoriteListReq(this, ++page)
+                .execute(new Action.Callback<IO.GetMyFavoriteListResult>() {
+
+                    @Override
+                    public void progress() {
+
+                    }
+
+                    @Override
+                    public void onError(int errorCode, String msg) {
+
+                        --page;
+
+                        UIHelper.showToast(getApplicationContext(),msg);
+                    }
+
+                    @Override
+                    public void onCompleted(IO.GetMyFavoriteListResult result) {
+
+                        if(result.favoriteItemList !=null){
+
+                            items.addAll(result.favoriteItemList);
+
+                            mAdapter.notifyDataSetChanged();
+
+                        }
+                    }
+                });
+
+    }
 
     @Override
     public void onRefresh() {

@@ -300,7 +300,7 @@ public class AppConfig {
      * @return
      */
     public String getPushId(Context ctx) {
-        return sp.getString(PUSH_REG_ID, null);
+        return sp.getString(PUSH_REG_ID, "");
     }
 
     /**
@@ -553,29 +553,4 @@ public class AppConfig {
         return apps;
     }
 
-    public void initLawApps() {
-        try {
-
-            Document doc = Jsoup.parse(AssetsUtils.loadText(context, Constants.DOC_APPS));
-            List<Element> bankEs = doc.getElementsByTag("App");
-
-            if (bankEs != null)
-                for (Element e : bankEs) {
-
-                    LawApp app = new LawApp();
-
-                    String name = e.attr("name");
-                    String url = e.attr("url");
-                    String value = e.ownText();
-
-                    app.setName(name);
-                    app.setUrl(url);
-
-                    apps.add(app);
-
-                }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

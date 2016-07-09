@@ -14,11 +14,11 @@ public class OrderItem implements Serializable{
     String id;
     String type;//订单类型：即时、预约
     String userIcon;//用户头像
-    String nickname;//用户昵称
+    String name;//用户昵称
     String date;//日期
     String status;//订单状态
     String caseType;//案件类型：财产纠纷，离婚，……
-    String clientPhone;//用户手机
+    String phone;//用户手机
 
     public String getId() {
         return id;
@@ -44,12 +44,12 @@ public class OrderItem implements Serializable{
         this.userIcon = userIcon;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getName() {
+        return name;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDate() {
@@ -76,11 +76,11 @@ public class OrderItem implements Serializable{
         this.caseType = caseType;
     }
 
-    public String getClientPhone() {
-        return clientPhone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setClientPhone(String clientPhone) {
-        this.clientPhone = clientPhone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

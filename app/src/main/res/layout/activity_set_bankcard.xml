@@ -111,7 +111,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right|center_vertical"
-                app:placeholderImage="@color/colorPrimary" />
+                app:placeholderImage="@color/placeholder" />
         </FrameLayout>
 
         <Button

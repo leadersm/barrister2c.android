@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class HomeFragment extends Fragment implements UserHelper.UserActionListener{
+public class HomeFragment extends Fragment implements UserHelper.UserActionListener,UserHelper.OnAccountUpdateListener{
 
 
     public HomeFragment() {
@@ -59,11 +59,6 @@ public class HomeFragment extends Fragment implements UserHelper.UserActionListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
-
-
     }
 
     @Override
@@ -108,7 +103,7 @@ public class HomeFragment extends Fragment implements UserHelper.UserActionListe
 
         //布局管理
         mBusinessTypeListLayoutManager = new GridLayoutManager(getActivity(), 5);
-        mCaseTypeListLayoutManager = new GridLayoutManager(getActivity(), 2);
+        mCaseTypeListLayoutManager = new GridLayoutManager(getActivity(), 3);
 
         mCaseTypeListAdapter = new BizAreaAdapter(mBizAreas);
         mCaseTypesListView.setLayoutManager(mBusinessTypeListLayoutManager);
@@ -168,17 +163,15 @@ public class HomeFragment extends Fragment implements UserHelper.UserActionListe
 
             @Override
             public void onError(int errorCode, String msg) {
-
             }
 
             @Override
             public void onCompleted(IO.GetAccountResult result) {
-
-                mAccount = result.account;
-
-                updateAccount();
+                UserHelper.getInstance().setAccount(result.account);
+                UserHelper.getInstance().updateAccount();
             }
         });
+
     }
 
 
@@ -215,11 +208,15 @@ public class HomeFragment extends Fragment implements UserHelper.UserActionListe
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        UserHelper.getInstance().addOnUserActionListener(this);
+        UserHelper.getInstance().addOnAccountUpdateListener(this);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        UserHelper.getInstance().removeListener(this);
+        UserHelper.getInstance().removeAccountListener(this);
     }
 
     List<Ad> ads = new ArrayList<>();
@@ -240,25 +237,23 @@ public class HomeFragment extends Fragment implements UserHelper.UserActionListe
         onUpdateUserInfo();
     }
 
-    Account mAccount = null;
+    @Override
+    public void onUpdateUserInfo() {
 
-    private void updateAccount(){
+    }
+
+    @Override
+    public void onUpdateAccount(Account account) {
         float remainingBalance = 0f;
         float totalConsume = 0f;
 
-        if(mAccount != null){
-            remainingBalance = mAccount.getRemainingBalance();
-            totalConsume = mAccount.getTotalConsume();
+        if(account != null){
+            remainingBalance = account.getRemainingBalance();
+            totalConsume = account.getTotalConsume();
         }
 
         aq.id(R.id.tv_home_yue).text(String.format(Locale.CHINA,"%.1f元", remainingBalance));
         aq.id(R.id.tv_home_consume).text(String.format(Locale.CHINA,"%.1f元", totalConsume));
-    }
-
-    @Override
-    public void onUpdateUserInfo() {
-
-
     }
 
     public class AdsPagerAdapter extends FragmentPagerAdapter {

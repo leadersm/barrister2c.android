@@ -189,9 +189,9 @@ public class Test {
             item.setId(""+i);
             item.setType(OrderItem.TYPE_APPOINTMENT);
             item.setDate("2016-05-29");
-            item.setClientPhone("13671057132");
+            item.setPhone("13671057132");
             item.setStatus(OrderDetail.STATUS_WAITING);
-            item.setNickname("The Fox");
+            item.setName("The Fox");
             item.setCaseType("1");
             orderItems.add(item);
         }
@@ -370,8 +370,7 @@ public class Test {
         IO.GetLawAppListResult result = new IO.GetLawAppListResult();
         result.resultCode = 200;
         result.resultMsg = "success";
-        result.lawAppList = AppConfig.getInstance().getApps();
-        result.total = 10;
+        result.legalList = AppConfig.getInstance().getApps();
         return result;
     }
 
@@ -494,7 +493,7 @@ public class Test {
         det.setBizAreas(bizAreas);
         det.setStatus(BarristerDetail.ORDER_STATUS_CAN);
 
-        result.barristerDetail = det;
+        result.detail = det;
 
         return result;
     }

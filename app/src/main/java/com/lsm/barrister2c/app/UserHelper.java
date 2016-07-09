@@ -3,6 +3,7 @@ package com.lsm.barrister2c.app;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
@@ -57,15 +58,6 @@ public class UserHelper {
         }
     }
 
-    public IO.GetAccountResult getAccountResult() {
-        return accountResult;
-    }
-
-    public void setAccountResult(IO.GetAccountResult accountResult) {
-        this.accountResult = accountResult;
-    }
-
-
     /**
      * 用户普通登录，第三方登录，注销，上传头像回调接口
      *
@@ -97,6 +89,46 @@ public class UserHelper {
          */
         void onUpdateUserInfo();
 
+    }
+
+    List<OnAccountUpdateListener> onAccountUpdateListeners = new ArrayList<>();
+    public void addOnAccountUpdateListener(OnAccountUpdateListener listener){
+        if(!onAccountUpdateListeners.contains(listener)){
+            onAccountUpdateListeners.add(listener);
+        }
+    }
+
+    public void removeAccountListener(OnAccountUpdateListener listener){
+        if(onAccountUpdateListeners.contains(listener)){
+            onAccountUpdateListeners.remove(listener);
+        }
+    }
+
+    public Account getAccount() {
+        return mAccount;
+    }
+
+    public void setAccount(Account account) {
+        if(account!=null){
+            mAccount = null;
+            mAccount = account;
+        }
+    }
+
+    Account mAccount;
+
+    public void updateAccount(){
+
+        if(mAccount==null)
+            return;
+
+        for(OnAccountUpdateListener listener:onAccountUpdateListeners){
+            listener.onUpdateAccount(mAccount);
+        }
+    }
+
+    public interface OnAccountUpdateListener {
+        public void onUpdateAccount(Account account);
     }
 
     /**

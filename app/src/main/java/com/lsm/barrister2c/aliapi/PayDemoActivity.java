@@ -165,7 +165,7 @@ public class PayDemoActivity extends FragmentActivity {
 	}
 
 	/**
-	 * create the order info. 创建订单信息
+	 * create the order wxPrepayInfo. 创建订单信息
 	 * 
 	 */
 	private String getOrderInfo(String subject, String body, String price) {
@@ -235,7 +235,7 @@ public class PayDemoActivity extends FragmentActivity {
 	}
 
 	/**
-	 * sign the order info. 对订单信息进行签名
+	 * sign the order wxPrepayInfo. 对订单信息进行签名
 	 * 
 	 * @param content
 	 *            待签名订单信息

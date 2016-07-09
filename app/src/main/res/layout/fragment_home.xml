@@ -175,7 +175,7 @@
                     android:layout_margin="10dp"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:text="业务类型" />
+                    android:text="@string/title_biz_type" />
 
                 <View
                     android:layout_width="match_parent"

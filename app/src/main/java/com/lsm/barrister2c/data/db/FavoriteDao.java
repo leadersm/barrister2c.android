@@ -24,8 +24,12 @@ public class FavoriteDao extends AbstractDao<Favorite, String> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, String.class, "id", true, "ID");
-        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-        public final static Property UserIcon = new Property(2, String.class, "userIcon", false, "USER_ICON");
+        public final static Property Title = new Property(1, String.class, "title", false, "TITLE");
+        public final static Property Thumb = new Property(2, String.class, "thumb", false, "THUMB");
+        public final static Property Type = new Property(3, String.class, "type", false, "TYPE");
+        public final static Property Desc = new Property(4, String.class, "desc", false, "DESC");
+        public final static Property Url = new Property(5, String.class, "url", false, "URL");
+        public final static Property AddTime = new Property(6, String.class, "addTime", false, "ADD_TIME");
     };
 
 
@@ -42,8 +46,12 @@ public class FavoriteDao extends AbstractDao<Favorite, String> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'FAVORITE' (" + //
                 "'ID' TEXT PRIMARY KEY NOT NULL ," + // 0: id
-                "'NAME' TEXT," + // 1: name
-                "'USER_ICON' TEXT);"); // 2: userIcon
+                "'TITLE' TEXT," + // 1: title
+                "'THUMB' TEXT," + // 2: thumb
+                "'TYPE' TEXT," + // 3: type
+                "'DESC' TEXT," + // 4: desc
+                "'URL' TEXT," + // 5: url
+                "'ADD_TIME' TEXT);"); // 6: addTime
     }
 
     /** Drops the underlying database table. */
@@ -58,14 +66,34 @@ public class FavoriteDao extends AbstractDao<Favorite, String> {
         stmt.clearBindings();
         stmt.bindString(1, entity.getId());
  
-        String name = entity.getName();
-        if (name != null) {
-            stmt.bindString(2, name);
+        String title = entity.getTitle();
+        if (title != null) {
+            stmt.bindString(2, title);
         }
  
-        String userIcon = entity.getUserIcon();
-        if (userIcon != null) {
-            stmt.bindString(3, userIcon);
+        String thumb = entity.getThumb();
+        if (thumb != null) {
+            stmt.bindString(3, thumb);
+        }
+ 
+        String type = entity.getType();
+        if (type != null) {
+            stmt.bindString(4, type);
+        }
+ 
+        String desc = entity.getDesc();
+        if (desc != null) {
+            stmt.bindString(5, desc);
+        }
+ 
+        String url = entity.getUrl();
+        if (url != null) {
+            stmt.bindString(6, url);
+        }
+ 
+        String addTime = entity.getAddTime();
+        if (addTime != null) {
+            stmt.bindString(7, addTime);
         }
     }
 
@@ -80,8 +108,12 @@ public class FavoriteDao extends AbstractDao<Favorite, String> {
     public Favorite readEntity(Cursor cursor, int offset) {
         Favorite entity = new Favorite( //
             cursor.getString(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // userIcon
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // title
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // thumb
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // type
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // desc
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // url
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // addTime
         );
         return entity;
     }
@@ -90,8 +122,12 @@ public class FavoriteDao extends AbstractDao<Favorite, String> {
     @Override
     public void readEntity(Cursor cursor, Favorite entity, int offset) {
         entity.setId(cursor.getString(offset + 0));
-        entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setUserIcon(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setTitle(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setThumb(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setDesc(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setUrl(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setAddTime(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
      }
     
     /** @inheritdoc */

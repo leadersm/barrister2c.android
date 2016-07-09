@@ -23,6 +23,7 @@ public class GetOrderDetailReq extends Action{
     public GetOrderDetailReq(Context context, String orderId) {
         super(context);
         this.orderId = orderId;
+        params("orderId",orderId);
         addUserParams();
     }
 

@@ -1,5 +1,6 @@
 package com.lsm.barrister2c.data.io;
 
+import com.lsm.barrister2c.data.db.Favorite;
 import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.entity.Ad;
 import com.lsm.barrister2c.data.entity.AppointmentSetting;
@@ -16,7 +17,7 @@ import com.lsm.barrister2c.data.entity.OrderDetail;
 import com.lsm.barrister2c.data.entity.OrderItem;
 import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.data.entity.Version;
-import com.tencent.mm.sdk.modelpay.PayReq;
+import com.lsm.barrister2c.data.entity.WxPrepayInfo;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class IO {
     public static final String TEST = "http://www.baidu.com";
 
     public static final String SERVER = "http://119.254.167.200:8080/clientservice/";//GTC.测试
-//    public static final String SERVER = "http://10.0.0.25:8080";//高荣威
+//    public static final String SERVER = "http://10.0.0.64:8080/clientservice/";//高荣威
 
 
     public static final String URL_LOGOUT = SERVER + "logout.do";
@@ -41,9 +42,15 @@ public class IO {
     public static final String URL_PREPAY_INFO = SERVER + "wxPrepayInfo.do";
     public static final String URL_ALI_PREPAY_INFO = SERVER + "aliPrepayInfo.do";
     public static final String URL_GET_BARRISTER_DETAIL = SERVER +"barristerDetail.do";
+    public static final String URL_ADD_FAVORITE_BARRISTER = SERVER + "addFavoriteBarrister.do";
+    public static final String URL_DEL_FAVORITE_BARRISTER = SERVER + "delFavoriteBarrister.do";
+    public static final String URL_GET_MY_FAVORITE = SERVER + "myFavoriteList.do";
+    public static final String URL_MAKE_DEAL = SERVER + "placeOrder.do";
+    public static final String URL_ADD_ORDER_STAR = SERVER + "addOrderStar.do";
+
 
     public static class PrePayResult extends Action.CommonResult {
-        public PayReq payReq;
+        public WxPrepayInfo wxPrepayInfo;
     }
 
     public static class AliPrePayResult extends Action.CommonResult {
@@ -73,7 +80,7 @@ public class IO {
      * 绑定银行卡
      */
     public static class BindBankcardResult extends Action.CommonResult {
-        public Account.BankCard bankCard;
+        public Account account;
     }
 
 
@@ -95,6 +102,9 @@ public class IO {
     }
 
     public static final String URL_FEEDBACK = SERVER + "addFeedback.do";
+
+    public static final String URL_REQUEST_CANCEL_ORDER = SERVER + "requestCancelOrder.do";
+    public static final String URL_REWARD_ORDER = SERVER + "rewardOrder.do";
 
     public static final String URL_GET_APP_VERSION = SERVER + "getLatestVersion.do";
 
@@ -160,9 +170,9 @@ public class IO {
     }
 
     public static final String URL_MAKE_CALL = SERVER + "makeCall.do";
-    public static class MakeOrderResult extends Action.CommonResult {
-        public OrderDetail orderDetail;
-    }
+//    public static class MakeOrderResult extends Action.CommonResult {
+//        public OrderDetail orderDetail;
+//    }
 
     public static final String URL_UPDATE_USER = SERVER + "updateUserInfo.do";
 
@@ -250,14 +260,13 @@ public class IO {
     }
 
     //应用大全列表
-    public static final String URL_GET_LAWAPP_LIST = SERVER + "lawAppList.do";
+    public static final String URL_GET_LAWAPP_LIST = SERVER + "getLegalApplictions.do";
 
     /**
      * 应用大全列表
      */
     public static class GetLawAppListResult extends Action.CommonResult {
-        public List<LawApp> lawAppList;
-        public int total;
+        public List<LawApp> legalList;
     }
 
 
@@ -272,7 +281,7 @@ public class IO {
         public int total;
     }
 
-    public static final String URL_GET_APPOINTMENT_SETTINGS = SERVER + "getMyAppointmentSettings.do";
+    public static final String URL_GET_APPOINTMENT_SETTINGS = SERVER + "getAppointmentSettings.do";
 
     public static class GetAppointmentSettingsResult extends Action.CommonResult {
         public List<AppointmentSetting> appointmentSettings;
@@ -286,7 +295,7 @@ public class IO {
     }
 
     public static class GetBarristerDetailResult extends Action.CommonResult{
-        public BarristerDetail barristerDetail;
+        public BarristerDetail detail;
     }
 
     public static final String URL_GET_CHANNEL_LIST = SERVER + "getStudyChannelList.do";
@@ -294,4 +303,9 @@ public class IO {
         public List<Channel> items;
     }
 
+
+    public static class GetMyFavoriteListResult extends Action.CommonResult {
+        public List<Favorite> favoriteItemList;
+        public int total;
+    }
 }

@@ -56,7 +56,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="充值金额"
+                android:hint="@string/hint_recharge_et"
                 android:inputType="numberDecimal"
                 android:id="@+id/et_recharge" />
         </android.support.design.widget.TextInputLayout>
@@ -75,50 +75,11 @@
             android:background="@color/white">
 
             <LinearLayout
-                android:id="@+id/btn_recharge_alipay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/layout_selector"
-                android:clickable="true"
-                android:orientation="horizontal"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_pay_alipay"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/pay_ali" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/cb_recharge_alipay"
-                    android:layout_gravity="right|center_vertical"
-                    android:checked="true" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_size"
-                android:background="@color/divider" />
-
-            <LinearLayout
                 android:id="@+id/btn_recharge_wx"
                 android:layout_width="match_parent"
                 android:clickable="true"
                 android:background="@drawable/layout_selector"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="10dp"
@@ -130,20 +91,89 @@
                     android:layout_height="40dp"
                     android:src="@drawable/ic_pay_wx"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
                     android:layout_marginLeft="10dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:text="@string/pay_wx" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:text="@string/pay_wx" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/tip_recharge_wx_pay"/>
+                </LinearLayout>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/cb_recharge_wx"
+                    android:layout_gravity="right|center_vertical"
+                    android:checked="true" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_size"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/btn_recharge_alipay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/layout_selector"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_pay_alipay"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/pay_ali" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/tip_recharge_alipay"/>
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cb_recharge_alipay"
                     android:layout_gravity="right|center_vertical"/>
 
             </LinearLayout>

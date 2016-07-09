@@ -19,6 +19,11 @@ public class OrderDetail implements Serializable {
     public static final String STATUS_CANCELED = "order.status.canceled";
     //    e.退款中
     public static final String STATUS_REFUND = "order.status.refund";
+    //    f.请求取消
+    public static final String STATUS_REQUEST_CANCELED = "order.status.request.cancel";
+
+    public static final String ISSTART_YES = "isStart.yes";// 已经给星
+    public static final String ISSTART_NO = "isStart.no";// 没有给星
 
     String id;//订单id
     String orderNo;//订单号
@@ -39,7 +44,15 @@ public class OrderDetail implements Serializable {
     String barristerIcon;//律师头像
     String barristerPhone;//律师电话
 
+    String lawFeedback;//律师小结
+    String comment;//用户评论
+
+    String startTime ;//start_time	开始时间
+    String endTime ;//end_time		结束时间
+
     List<CallHistory> callHistories;//通话记录
+
+    String isStart;
 
     public String getId() {
         return id;
@@ -175,5 +188,45 @@ public class OrderDetail implements Serializable {
 
     public void setBarristerPhone(String barristerPhone) {
         this.barristerPhone = barristerPhone;
+    }
+
+    public String getLawFeedback() {
+        return lawFeedback;
+    }
+
+    public void setLawFeedback(String lawFeedback) {
+        this.lawFeedback = lawFeedback;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getIsStart() {
+        return isStart;
+    }
+
+    public void setIsStart(String isStart) {
+        this.isStart = isStart;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

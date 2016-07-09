@@ -108,10 +108,10 @@ public class FaxianFragment extends Fragment {
             @Override
             public void onCompleted(IO.GetLawAppListResult result) {
 
-                if (result.lawAppList != null) {
+                if (result.legalList != null) {
 
                     FaxianFragment.this.items.clear();
-                    FaxianFragment.this.items.addAll(result.lawAppList);
+                    FaxianFragment.this.items.addAll(result.legalList);
 
                     mLawAppListAdapter.notifyDataSetChanged();
                 }else {

@@ -30,8 +30,9 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="15dp">
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:gravity="center_vertical">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:layout_width="35dp"
@@ -63,10 +64,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="6225 8801 4204 7506"
+            android:text="0000 0000 0000 0000"
             android:textSize="@dimen/text_size_bank_number"
             android:gravity="center"
             android:textColor="@color/white"
+            android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:id="@+id/tv_bankcard_num" />
 

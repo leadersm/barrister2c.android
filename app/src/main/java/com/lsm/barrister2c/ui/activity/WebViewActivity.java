@@ -1,9 +1,11 @@
 package com.lsm.barrister2c.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -97,6 +99,9 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        webView.getSettings().setBuiltInZoomControls(false);
+        ViewGroup view = (ViewGroup) getWindow().getDecorView();
+        view.removeAllViews();
         super.onDestroy();
      }
 
@@ -109,6 +114,15 @@ public class WebViewActivity extends BaseActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    protected void onPause() {
+        super.onPause();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            webView.onPause(); // 暂停网页中正在播放的视频
+        }
     }
 
 }
