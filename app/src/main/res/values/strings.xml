@@ -281,8 +281,10 @@
     <string name="hint_recharge_et">充值金额</string>
     <string name="tip_min_recharge_money">充值金额不能小于0.01元</string>
     <string name="goods_name_info">大律师充值</string>
-    <string name="tip_bankcard_not_bind">您还没有绑定银行卡</string>
+    <string name="tip_bankcard_not_bind">请到我的账户中绑定银行卡</string>
     <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
     <string name="title_wx_pay_result">支付结果</string>
+    <string name="tip_invalid_status_makecall">当前订单状态不能拨打电话</string>
+    <string name="tip_wait_for_call">请等待回拨</string>
 
 </resources>

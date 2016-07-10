@@ -101,7 +101,7 @@ public class IO {
         public List<Ad> list;
     }
 
-    public static final String URL_FEEDBACK = SERVER + "addFeedback.do";
+    public static final String URL_FEEDBACK = SERVER + "feedback.do";
 
     public static final String URL_REQUEST_CANCEL_ORDER = SERVER + "requestCancelOrder.do";
     public static final String URL_REWARD_ORDER = SERVER + "rewardOrder.do";

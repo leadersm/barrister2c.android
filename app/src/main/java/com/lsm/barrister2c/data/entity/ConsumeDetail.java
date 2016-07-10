@@ -12,6 +12,7 @@ public class ConsumeDetail implements Serializable{
     public static final String TYPE_GET_MONEY = "income.type.getmoney";//提现
     public static final String TYPE_REWARD = "income.type.reward";//打赏
     public static final String TYPE_RECHARGE = "consume.type.recharge";//充值
+    public static final String TYPE_BACK = "consume.type.back";// 退钱
 
     String id;
     String serialNum;//流水号

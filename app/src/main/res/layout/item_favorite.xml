@@ -14,47 +14,31 @@
         app:fadeDuration="300"
         app:roundAsCircle="true"
         app:actualImageScaleType="focusCrop"
-        app:placeholderImage="@color/colorPrimary"
+        app:placeholderImage="@color/placeholder"
         app:placeholderImageScaleType="fitCenter"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentTop="true"/>
+        android:layout_marginRight="10dp"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/tv_item_barrister_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_alignTop="@+id/image_barrister_item_usericon"
-            android:layout_toRightOf="@+id/image_barrister_item_usericon"
             android:text="name"
-            android:textAppearance="?attr/textAppearanceListItem"/>
-
-        <FrameLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:textSize="10sp"
-                android:id="@+id/tv_favorite_type" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:textSize="10sp"
-                android:id="@+id/tv_favorite_date" />
-        </FrameLayout>
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/tv_item_barrister_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="7dp"
+            android:text="name"
+            android:textSize="12sp"/>
     </LinearLayout>
 
 </LinearLayout>

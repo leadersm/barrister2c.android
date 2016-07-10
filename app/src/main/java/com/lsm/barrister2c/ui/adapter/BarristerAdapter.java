@@ -26,7 +26,9 @@ import java.util.List;
  * specified {@link LoadMoreListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class BarristerAdapter extends RecyclerView.Adapter<BarristerAdapter.ViewHolder> {
+public class BarristerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int TYPE_FOOTER = 0;
+    private static final int TYPE_ITEM = 1;
 
     private final List<Barrister> items;
     private final LoadMoreListener mListener;
@@ -37,22 +39,67 @@ public class BarristerAdapter extends RecyclerView.Adapter<BarristerAdapter.View
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_barrister, parent, false);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder holder = null;
+
+        if (viewType == TYPE_ITEM) {
+
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_barrister, parent, false);
+
+            holder = new ItemHolder(view);
+
+            return holder;
+
+        } else {
+
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading_more, parent, false);
+
+            return holder = new FooterViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.bind(items.get(position));
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+
+        if(holder instanceof ItemHolder){
+
+            ItemHolder temp = (ItemHolder) holder;
+            temp.bind(items.get(position));
+
+        }else if (holder instanceof FooterViewHolder) {
+
+            FooterViewHolder footer = (FooterViewHolder) holder;
+
+            if (mListener.hasMore()) {
+                footer.showLoadMore();
+                mListener.onLoadMore();
+            } else {
+                footer.showNoMore();
+            }
+
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        if (position + 1 == getItemCount()) {
+
+            // 最后一个item设置为footerView
+            return TYPE_FOOTER;
+
+        }else {
+            return TYPE_ITEM;
+
+        }
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return items == null || items.isEmpty() ? 0 : (items.size() + 1);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ItemHolder extends RecyclerView.ViewHolder {
 
         public Barrister mItem;
 
@@ -60,7 +107,7 @@ public class BarristerAdapter extends RecyclerView.Adapter<BarristerAdapter.View
 
         List<BusinessArea> bizAreas = new ArrayList<>();
         ArrayAdapter<BusinessArea> aa;
-        public ViewHolder(View view) {
+        public ItemHolder(View view) {
             super(view);
             aq = new AQuery(view);
             aq.clicked(new View.OnClickListener() {
@@ -92,13 +139,22 @@ public class BarristerAdapter extends RecyclerView.Adapter<BarristerAdapter.View
             aq.id(R.id.tv_item_barrister_nickname).text(item.getName());
 //            aq.id(R.id.tv_item_barrister_goodat).text(item.getGoodAt());
             aq.id(R.id.tv_item_barrister_area).text(item.getArea());
-            aq.id(R.id.tv_item_barrister_year).text(item.getWorkYears()+"年");
+
+            String workYears = item.getWorkYears();
+            if(TextUtils.isEmpty(workYears)){
+                aq.id(R.id.tv_item_barrister_year).gone();
+            }else{
+                aq.id(R.id.tv_item_barrister_year).text(workYears +"年").visible();
+            }
+
             RatingBar rb = (RatingBar) aq.id(R.id.ratingbar_item_barrister).getView();
             rb.setRating(item.getRating());
 
             SimpleDraweeView userIconView = (SimpleDraweeView) aq.id(R.id.image_barrister_item_usericon).getView();
             if(!TextUtils.isEmpty(item.getUserIcon())){
                 userIconView.setImageURI(Uri.parse(item.getUserIcon()));
+            }else{
+                userIconView.setImageURI(null);
             }
 
             //擅长领域
@@ -115,6 +171,34 @@ public class BarristerAdapter extends RecyclerView.Adapter<BarristerAdapter.View
 
         }
 
+    }
+
+    public class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        View view;
+
+        public FooterViewHolder(View view) {
+            super(view);
+            this.view = view;
+        }
+
+        public void showNoMore() {
+            // TODO Auto-generated method stub
+            TextView tv = (TextView) view.findViewById(R.id.tv_item_loadingmore);
+
+            view.findViewById(R.id.progress_item_loadingmore).setVisibility(View.GONE);
+
+            tv.setText("没有更多了");
+        }
+
+        public void showLoadMore() {
+            TextView tv = (TextView) view.findViewById(R.id.tv_item_loadingmore);
+
+            view.findViewById(R.id.progress_item_loadingmore).setVisibility(View.VISIBLE);
+
+            tv.setText("加载中,请稍候...");
+        }
 
     }
+
 }

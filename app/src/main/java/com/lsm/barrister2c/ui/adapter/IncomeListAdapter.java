@@ -132,6 +132,10 @@ public class IncomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 type = "充值";
                 color = aq.getContext().getResources().getColor(R.color.money_in);
                 pm = "+";
+            }else if(item.getType().equals(ConsumeDetail.TYPE_BACK)){
+                type = "系统退款";
+                color = aq.getContext().getResources().getColor(R.color.money_in);
+                pm = "+";
             }
 
             aq.id(R.id.tv_item_income_serial_num).text("流水号:"+item.getSerialNum());

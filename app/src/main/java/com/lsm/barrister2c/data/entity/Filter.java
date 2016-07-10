@@ -1,11 +1,13 @@
 package com.lsm.barrister2c.data.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by lvshimin on 16/6/25.
  */
-public class Filter {
-    String name;
+public class Filter implements Serializable{
     String id;
+    String name;
 
     public String getName() {
         return name;
@@ -22,4 +24,6 @@ public class Filter {
     public void setId(String id) {
         this.id = id;
     }
+
+
 }

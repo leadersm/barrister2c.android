@@ -31,27 +31,35 @@ public class GetBarristerListReq extends Action{
     String bizArea;
     String year;
 
-    public GetBarristerListReq(Context context, int page, String type,String bizArea,String bizType,String year) {
+    String area;
+
+    public GetBarristerListReq(Context context, int page, String type,String bizArea,String bizType,String year,String area) {
         super(context);
         this.page = page;
         this.type = type;
         this.bizArea = bizArea;
         this.bizType = bizType;
         this.year = year;
+        this.area = area;
 
         params("type",type);
         params("page",String.valueOf(page));
         params("pageSize",String.valueOf(pageSize));
 
         if(!TextUtils.isEmpty(bizArea)){
-            params("bizArea",bizArea);
+            params("caseType",bizArea);
         }
+
         if(!TextUtils.isEmpty(bizType)){
-            params("bizType",bizType);
+            params("businessType",bizType);
         }
 
         if(!TextUtils.isEmpty(year)){
             params("year",year);
+        }
+
+        if(!TextUtils.isEmpty(area)){
+            params("area",area);
         }
 
 //        addUserParams();

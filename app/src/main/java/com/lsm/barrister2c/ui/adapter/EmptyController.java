@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.androidquery.AQuery;
 import com.lsm.barrister2c.R;
+import com.lsm.barrister2c.data.io.ErrorCode;
 
 public class EmptyController {
 
@@ -81,7 +82,12 @@ public class EmptyController {
             emptyView.setVisibility(View.VISIBLE);
 
             aq.id(R.id.image_empty).image(R.drawable.ic_launcher).getImageView().setBackgroundResource(0);
-            aq.id(R.id.tv_empty_tip).text("服务器出错啦！");
+
+            if(errorCode== 1006)
+                aq.id(R.id.tv_empty_tip).text(errorMsg);
+            else
+                aq.id(R.id.tv_empty_tip).text("服务器出错啦！");
+
             aq.id(R.id.btn_empty_refresh).clicked(new View.OnClickListener() {
 
                 @Override
