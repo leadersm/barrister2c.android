@@ -57,7 +57,7 @@ public class BizAreaAdapter extends RecyclerView.Adapter<BizAreaAdapter.ViewHold
             aq.clicked(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    UIHelper.goBarristerListAcitivity(v.getContext(),null,null,mItem.getId());
+                    UIHelper.goBarristerListAcitivity(v.getContext(),"all",null,mItem);
                 }
             });
         }

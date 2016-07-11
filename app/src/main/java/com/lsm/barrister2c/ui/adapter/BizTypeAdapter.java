@@ -54,7 +54,7 @@ public class BizTypeAdapter extends RecyclerView.Adapter<BizTypeAdapter.ViewHold
             aq.clicked(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    UIHelper.goBarristerListAcitivity(v.getContext(),null, mItem.getId(), null);
+                    UIHelper.goBarristerListAcitivity(v.getContext(),"all", mItem, null);
                 }
             });
         }

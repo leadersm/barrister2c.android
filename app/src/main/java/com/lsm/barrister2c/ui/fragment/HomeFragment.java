@@ -252,8 +252,8 @@ public class HomeFragment extends Fragment implements UserHelper.UserActionListe
             totalConsume = account.getTotalConsume();
         }
 
-        aq.id(R.id.tv_home_yue).text(String.format(Locale.CHINA,"%.1f元", remainingBalance));
-        aq.id(R.id.tv_home_consume).text(String.format(Locale.CHINA,"%.1f元", totalConsume));
+        aq.id(R.id.tv_home_yue).text(String.format(Locale.CHINA,"%.2f元", remainingBalance));
+        aq.id(R.id.tv_home_consume).text(String.format(Locale.CHINA,"%.2f元", totalConsume));
     }
 
     public class AdsPagerAdapter extends FragmentPagerAdapter {

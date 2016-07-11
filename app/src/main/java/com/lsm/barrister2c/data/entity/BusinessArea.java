@@ -36,4 +36,6 @@ public class BusinessArea extends Filter implements Serializable{
     public void setIcon(String icon) {
         this.icon = icon;
     }
+
+
 }

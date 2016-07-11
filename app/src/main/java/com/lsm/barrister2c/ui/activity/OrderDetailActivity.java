@@ -404,7 +404,7 @@ public class OrderDetailActivity extends BaseActivity {
         }
 
         if(!checkCanMakeCall()){
-            UIHelper.showToast(getApplicationContext(),"当前订单状态不能拨打电话");
+            UIHelper.showToast(getApplicationContext(),getString(R.string.tip_invalid_status_makecall));
             return;
         }
 
@@ -412,7 +412,7 @@ public class OrderDetailActivity extends BaseActivity {
             @Override
             public void progress() {
                 isWaitingCall = true;
-                progressDialog.setMessage("请等待回拨");
+                progressDialog.setMessage(getString(R.string.tip_wait_for_call));
                 progressDialog.show();
             }
 

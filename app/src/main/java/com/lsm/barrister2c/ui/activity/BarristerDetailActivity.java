@@ -2,9 +2,11 @@ package com.lsm.barrister2c.ui.activity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.app.AppConfig;
 import com.lsm.barrister2c.app.UserHelper;
@@ -157,12 +160,17 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
 //        aq.id(R.id.tv_detail_intro).text(barrister.getIntro());
         aq.id(R.id.tv_detail_nickname).text(barrister.getName());
         aq.id(R.id.tv_detail_service_times).text("服务（"+0 + "）次");
-        aq.id(R.id.tv_detail_year).text(barrister.getWorkYears()+"年");
 
+        aq.id(R.id.tv_detail_year).gone();
 
     }
 
     private void bindBarristerDetail() {
+        SimpleDraweeView userIconView = (SimpleDraweeView) aq.id(R.id.image_detail_usericon).getView();
+        if(!TextUtils.isEmpty(barristerDetail.getUserIcon())){
+            userIconView.setImageURI(Uri.parse(barristerDetail.getUserIcon()));
+        }
+
         aq.id(R.id.tv_detail_area).text(barristerDetail.getArea());
         aq.id(R.id.tv_detail_comment_count).text("评价").gone();
         aq.id(R.id.tv_detail_company).text(barristerDetail.getCompany());
@@ -198,9 +206,18 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
 //        aq.id(R.id.tv_detail_intro).text(barristerDetail.getIntro());
         aq.id(R.id.tv_detail_nickname).text(barristerDetail.getName());
         aq.id(R.id.tv_detail_service_times).text("服务（"+barristerDetail.getRecentServiceTimes() + "）次");
-        aq.id(R.id.tv_detail_year).text(barristerDetail.getWorkYears()+"年");
 
+        String workYears = barristerDetail.getWorkYears();
+        if(TextUtils.isEmpty(workYears)){
+            aq.id(R.id.tv_detail_year).gone();
+        }else{
+            aq.id(R.id.tv_detail_year).text(workYears +"年").visible();
+        }
 
+        aq.id(R.id.tv_barrister_price_im).text(String.format(Locale.CHINA,"即时咨询（%.1f元/次）",barristerDetail.getPriceIM()));
+        aq.id(R.id.tv_barrister_price_appointment).text(String.format(Locale.CHINA,"预约咨询（%.1f元/次）",barristerDetail.getPriceAppointment()));
+
+        aq.id(R.id.ratingbar_detail).getRatingBar().setRating(barristerDetail.getRating());
     }
 
     boolean isFavorite = false;
@@ -255,6 +272,7 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
 
                     favorite.setId("barrister"+id);
                     favorite.setTitle(name);
+                    favorite.setDesc(barristerDetail.getIntro());
                     favorite.setThumb(userIcon);
                     favorite.setType(Favorite.TYPE_BARRISTER);
 

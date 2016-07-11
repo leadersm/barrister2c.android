@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.lsm.barrister2c.app.Constants;
 import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.entity.Barrister;
+import com.lsm.barrister2c.data.entity.BusinessArea;
+import com.lsm.barrister2c.data.entity.BusinessType;
 import com.lsm.barrister2c.ui.activity.AddOrderStarActivity;
 import com.lsm.barrister2c.ui.activity.AvatarDetailActivity;
 import com.lsm.barrister2c.ui.activity.BarristerDetailActivity;
@@ -167,16 +169,16 @@ public class UIHelper {
         }
     }
 
-    public static void goBarristerListAcitivity(Context context,String type, String bizType,String bizArea) {
+    public static void goBarristerListAcitivity(Context context, String type, BusinessType bizType, BusinessArea bizArea) {
         Intent intent = new Intent(context, BarristerListActivity.class);
 
         intent.putExtra(BarristerListActivity.KEY_TYPE,type);
 
-        if(!TextUtils.isEmpty(bizType)){
+        if(bizType!=null){
             intent.putExtra(BarristerListActivity.KEY_BIZ_TYPE, bizType);
         }
 
-        if(!TextUtils.isEmpty(bizArea)){
+        if(bizArea!=null){
             intent.putExtra(BarristerListActivity.KEY_BIZ_AREA, bizArea);
         }
 

@@ -234,6 +234,7 @@
                         android:layout_height="wrap_content"
                         android:text="即时咨询"
                         android:textColor="@color/black"
+                        android:id="@+id/tv_barrister_price_im"
                         android:textSize="16sp" />
 
                     <TextView
@@ -275,6 +276,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="预约咨询"
+                        android:id="@+id/tv_barrister_price_appointment"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 

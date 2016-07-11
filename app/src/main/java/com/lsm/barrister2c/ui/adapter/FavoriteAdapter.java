@@ -12,6 +12,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.data.db.Favorite;
 import com.lsm.barrister2c.ui.UIHelper;
+import com.lsm.barrister2c.utils.TextHandler;
 
 import java.util.List;
 
@@ -72,6 +73,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                 userIconView.setImageURI(Uri.parse(item.getThumb()));
             }
 
+            aq.id(R.id.tv_item_barrister_phone).text(item.getDesc());
         }
 
 

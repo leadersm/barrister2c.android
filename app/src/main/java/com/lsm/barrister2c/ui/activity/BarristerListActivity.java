@@ -7,6 +7,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +31,7 @@ import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
 import com.lsm.barrister2c.data.io.app.GetBarristerListReq;
 import com.lsm.barrister2c.data.io.app.GetMyOrderListReq;
+import com.lsm.barrister2c.data.io.app.GetStudyListReq;
 import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.adapter.BarristerAdapter;
 import com.lsm.barrister2c.ui.adapter.EmptyController;
@@ -47,6 +50,11 @@ public class BarristerListActivity extends BaseActivity implements SwipeRefreshL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barrister_list);
+
+        filterBizArea = (Filter) getIntent().getSerializableExtra(KEY_BIZ_AREA);
+        filterBizType = (Filter) getIntent().getSerializableExtra(KEY_BIZ_TYPE);
+
+        System.out.println("====>"+filterBizArea);
         setupToolbar();
 
         init();
@@ -101,32 +109,27 @@ public class BarristerListActivity extends BaseActivity implements SwipeRefreshL
 
             @Override
             public boolean hasMore() {
-
-                return mListReq != null
-                        && mRefreshResult != null
-                        && page + 1 <= mListReq.getTotalPage(mRefreshResult.total, GetMyOrderListReq.pageSize);
+                return mListReq != null  && page + 1 <= mListReq.getTotalPage(total, GetMyOrderListReq.pageSize);
             }
         });
 
 
         mRecyclerView.setAdapter(mAdapter);
 
-
         refresh();
     }
 
     GetBarristerListReq mListReq;
-    IO.GetBarristerListResult mRefreshResult;
     int page = 1;
+    int total;
 
     private void refresh() {
-
 
         String bizArea = filterBizArea == null ? null : filterBizArea.getId();
         String bizType = filterBizType == null ? null : filterBizType.getId();
         String year = filterYear == null ? null : filterYear.getId();
 
-        mListReq = new GetBarristerListReq(this, page = 1, type, bizArea, bizType, year);
+        mListReq = new GetBarristerListReq(this, page = 1, type, bizArea, bizType, year,filterArea==null?"":filterArea.getName());
 
         mListReq.execute(new Action.Callback<IO.GetBarristerListResult>() {
 
@@ -140,20 +143,22 @@ public class BarristerListActivity extends BaseActivity implements SwipeRefreshL
             public void onError(int errorCode, String msg) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 mEmptyController.showError(errorCode, msg);
-                UIHelper.showToast(getApplicationContext(), msg);
+//                UIHelper.showToast(getApplicationContext(), msg);
             }
 
 
             @Override
-            public void onCompleted(IO.GetBarristerListResult getMyOrdersResult) {
+            public void onCompleted(IO.GetBarristerListResult result) {
                 mSwipeRefreshLayout.setRefreshing(false);
 
-                mRefreshResult = getMyOrdersResult;
+                BarristerListActivity.this.total = result.total;
 
-                if (mRefreshResult.items != null) {
+                System.out.println("result.total:"+result.total);
+
+                if (result.items != null) {
 
                     items.clear();
-                    items.addAll(mRefreshResult.items);
+                    items.addAll(result.items);
                     mAdapter.notifyDataSetChanged();
 
                     mEmptyController.showContent();
@@ -176,7 +181,11 @@ public class BarristerListActivity extends BaseActivity implements SwipeRefreshL
      */
     public void loadMore() {
 
-        new GetMyOrderListReq(this, ++page, type)
+        String bizArea = filterBizArea == null ? null : filterBizArea.getId();
+        String bizType = filterBizType == null ? null : filterBizType.getId();
+        String year = filterYear == null ? null : filterYear.getId();
+
+        new GetBarristerListReq(this, ++page, type, bizArea, bizType, year,filterArea==null?"":filterArea.getName())
                 .execute(new Action.Callback<IO.GetBarristerListResult>() {
 
                     @Override
@@ -193,11 +202,11 @@ public class BarristerListActivity extends BaseActivity implements SwipeRefreshL
                     }
 
                     @Override
-                    public void onCompleted(IO.GetBarristerListResult getMyOrdersResult) {
+                    public void onCompleted(IO.GetBarristerListResult result) {
 
-                        if (getMyOrdersResult.items != null) {
+                        if (result.items != null) {
 
-                            items.addAll(getMyOrdersResult.items);
+                            items.addAll(result.items);
 
                             mAdapter.notifyDataSetChanged();
 
