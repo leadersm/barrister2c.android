@@ -100,6 +100,7 @@ public class AvaterCenterFragment extends Fragment implements UserHelper.UserAct
             }
         });
 
+        //我的订单
         aq.id(R.id.btn_my_orders).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +112,7 @@ public class AvaterCenterFragment extends Fragment implements UserHelper.UserAct
             }
         });
 
+        //我的消息
         aq.id(R.id.btn_my_msg).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +121,7 @@ public class AvaterCenterFragment extends Fragment implements UserHelper.UserAct
             }
         });
 
+        //联系我们
         aq.id(R.id.btn_contact_us).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +131,15 @@ public class AvaterCenterFragment extends Fragment implements UserHelper.UserAct
             }
         });
 
+        //上传案源
+        aq.id(R.id.btn_upload_case).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.goUploadCaseActivity(getActivity());
+            }
+        });
+
+        //设置
         aq.id(R.id.btn_settings).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

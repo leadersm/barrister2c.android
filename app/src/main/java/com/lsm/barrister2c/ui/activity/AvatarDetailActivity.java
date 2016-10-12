@@ -134,6 +134,16 @@ public class AvatarDetailActivity extends BaseActivity implements UserHelper.Use
                 UIHelper.goModifyInfoActivity(AvatarDetailActivity.this,User.KEY_AREA, user.getArea());
             }
         });
+
+        //单位
+        aq.id(R.id.tv_userdetail_company).text(user.getCompany());
+        aq.id(R.id.btn_user_company).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO 单位，企业用户
+                UIHelper.goModifyInfoActivity(AvatarDetailActivity.this,User.KEY_COMPANY, user.getCompany());
+            }
+        });
     }
 
     private void updateUserInfo() {
@@ -385,6 +395,10 @@ public class AvatarDetailActivity extends BaseActivity implements UserHelper.Use
                     case User.KEY_NICKNAME:
                         user.setNickname(content);
                         aq.id(R.id.tv_userdetail_nickname).text(user.getNickname());
+                        break;
+                    case User.KEY_COMPANY:
+                        user.setCompany(content);
+                        aq.id(R.id.tv_userdetail_company).text(user.getCompany());
                         break;
                 }
 

@@ -1,12 +1,13 @@
 package com.lsm.barrister2c.ui.adapter;
 
 import android.net.Uri;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -15,16 +16,13 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.data.entity.Barrister;
 import com.lsm.barrister2c.data.entity.BusinessArea;
-import com.lsm.barrister2c.data.entity.LearningItem;
 import com.lsm.barrister2c.ui.UIHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link LearningItem} and makes a call to the
- * specified {@link LoadMoreListener}.
- * TODO: Replace the implementation with code for your data type.
+ * 律师列表
  */
 public class BarristerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_FOOTER = 0;
@@ -105,8 +103,10 @@ public class BarristerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         AQuery aq;
 
+        RecyclerView mRecyclerView;
+        LinearLayoutManager mLayoutManager;
         List<BusinessArea> bizAreas = new ArrayList<>();
-        ArrayAdapter<BusinessArea> aa;
+        BarristerBizAreaAdapter mAdapter;
         public ItemHolder(View view) {
             super(view);
             aq = new AQuery(view);
@@ -117,20 +117,16 @@ public class BarristerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
 
-            aa = new ArrayAdapter<BusinessArea>(view.getContext(),R.layout.item_biz_area
-                    ,R.id.tv_item_biz_name,bizAreas){
+            mAdapter = new BarristerBizAreaAdapter(bizAreas);
 
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    View view = super.getView(position, convertView, parent);
-                    TextView tv = (TextView) view.findViewById(R.id.tv_item_biz_name);
-                    tv.setText(mItem.getBizAreas().get(position).getName());
-                    return view;
-                }
-            };
+            mRecyclerView = (RecyclerView) view.findViewById(R.id.gridview_goodat);
+            mLayoutManager = new LinearLayoutManager(view.getContext());
+            mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            mAdapter = new BarristerBizAreaAdapter(bizAreas);
+            mRecyclerView.setAdapter(mAdapter);
 
-
-            aq.id(R.id.gridview_goodat).adapter(aa);
         }
 
         public void bind(Barrister item) {
@@ -144,7 +140,7 @@ public class BarristerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if(TextUtils.isEmpty(workYears)){
                 aq.id(R.id.tv_item_barrister_year).gone();
             }else{
-                aq.id(R.id.tv_item_barrister_year).text(workYears +"年").visible();
+                aq.id(R.id.tv_item_barrister_year).text(workYears + "年").visible();
             }
 
             RatingBar rb = (RatingBar) aq.id(R.id.ratingbar_item_barrister).getView();
@@ -157,16 +153,25 @@ public class BarristerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 userIconView.setImageURI(null);
             }
 
+//            System.out.println(">>>"+item.getName()+","+item.getBizAreas());
+
             //擅长领域
             if(item.getBizAreas()==null || item.getBizAreas().isEmpty()){
                 aq.id(R.id.gridview_goodat).gone();
             }else{
 
+                aq.id(R.id.gridview_goodat).visible();
+
                 bizAreas.clear();
                 bizAreas.addAll(item.getBizAreas());
-                aa.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
 
-                aq.id(R.id.gridview_goodat).visible();
+            }
+
+            if(item.getIsExpert() == 1){
+                aq.id(R.id.tv_item_barrister_expert).visible();
+            }else{
+                aq.id(R.id.tv_item_barrister_expert).gone();
             }
 
         }

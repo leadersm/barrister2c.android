@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <!--<android.support.v4.widget.NestedScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+    <!-- -->
+    <!--</android.support.v4.widget.NestedScrollView>-->
+    <TextView
+        android:id="@+id/btn_expert_consume_doc"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/layout_selector"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="..."
+        android:visibility="gone"
+        android:textColor="@color/text_color_selector_blue_white"
+        android:textSize="16sp" />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="LinearLayoutManager"
+                tools:context=".ui.fragment.LearningCenterFragment"
+                tools:listitem="@layout/item_barrister" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+        <include
+            layout="@layout/list_empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+</LinearLayout>
+

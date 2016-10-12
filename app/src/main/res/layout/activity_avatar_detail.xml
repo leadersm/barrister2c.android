@@ -267,6 +267,44 @@
                     android:layout_height="@dimen/divider_size"
                     android:layout_gravity="bottom"
                     android:background="@color/divider" />
+
+                <LinearLayout
+                    android:id="@+id/btn_user_company"
+                    style="@style/clickablelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/text_style_user_detail1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/user_company" />
+
+                    <TextView
+                        android:id="@+id/tv_userdetail_company"
+                        style="@style/text_style_user_detail2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/transparent"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@drawable/ic_arrow_right"
+                        android:gravity="right"
+                        android:minWidth="200dp"
+                        android:paddingRight="10dp"
+                        android:text="" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_size"
+                    android:layout_gravity="bottom"
+                    android:background="@color/divider" />
+
             </LinearLayout>
 
 

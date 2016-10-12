@@ -9,11 +9,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.androidquery.AQuery;
+import com.androidquery.util.AQUtility;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.app.AppConfig;
 import com.lsm.barrister2c.app.AppManager;
 import com.lsm.barrister2c.app.BizHelper;
 import com.lsm.barrister2c.app.UserHelper;
+import com.lsm.barrister2c.app.VersionHelper;
 import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.ui.fragment.AvaterCenterFragment;
 import com.lsm.barrister2c.ui.fragment.FaxianFragment;
@@ -51,6 +53,13 @@ public class MainActivity extends BaseActivity {
         user = AppConfig.getUser(this);
 
         BizHelper.getInstance().init(this);
+
+        AQUtility.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                VersionHelper.instance().check(MainActivity.this,false);
+            }
+        },2000);
 
     }
 

@@ -44,7 +44,7 @@ public class Constants {
     //bundle key
     public static final String KEY = "key";
     public static final String KEY_ACCOUNT = "account";
-    public static final String KEY_TITLE = "key.title";
+    public static final String KEY_TITLE = "title";
     public static final String KEY_FILE = "key.file";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_USER = "user";
@@ -83,12 +83,13 @@ public class Constants {
 
 
     //用户协议文档
-    public static final String DOC_AGREEMENT = "file:///android_asset/agreement.htm";
+    public static final String DOC_AGREEMENT = "http://www.dls.com.cn/art/waplist.asp?id=675";
     //关于文档
-    public static final String DOC_ABOUT = "file:///android_asset/about.htm";
-
+    public static final String DOC_ABOUT = "http://www.dls.com.cn/art/WAPlist.asp?id=660";
+    //帮助
+    public static final String DOC_HELP = "http://www.dls.com.cn/art/waplist.asp?id=671";
     //提现须知
-    public static final String DOC_GETMONEY = "file:///android_asset/agreement.htm";
+    public static final String DOC_GETMONEY = "http://www.dls.com.cn/art/waplist.asp?id=673";
 
     public static final String DOC_BANKS = "banks.xml";
     public static final String DOC_APPS = "lawApps.html";
@@ -101,8 +102,6 @@ public class Constants {
     public static final int MAX_COMMENT = 500;//500字符，250汉字
     public static final int MAX_POST_TITLE = 50;//50字符，25汉字
     public static final int MAX_POST_CONTENT = 4000;//4000字符，2000汉字
-
-    public static int NOTIFICATION_REQUEST_CODE = 0x2001;
 
     public static final String MARKET_KEY = "UMENG_CHANNEL";
     public static final String DEBUG_KEY = "DEBUG";

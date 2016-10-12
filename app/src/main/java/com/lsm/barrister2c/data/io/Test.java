@@ -491,7 +491,7 @@ public class Test {
 
         det.setArea("北京市朝阳区");
         det.setBizAreas(bizAreas);
-        det.setStatus(BarristerDetail.ORDER_STATUS_CAN);
+        det.setOrderStatus(BarristerDetail.ORDER_STATUS_CAN);
 
         result.detail = det;
 

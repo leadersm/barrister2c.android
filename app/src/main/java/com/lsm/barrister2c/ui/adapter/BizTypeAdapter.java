@@ -16,7 +16,7 @@ import com.lsm.barrister2c.ui.UIHelper;
 import java.util.List;
 
 /**
- * 业务类型
+ * 在线业务
  */
 public class BizTypeAdapter extends RecyclerView.Adapter<BizTypeAdapter.ViewHolder> {
 
@@ -54,7 +54,7 @@ public class BizTypeAdapter extends RecyclerView.Adapter<BizTypeAdapter.ViewHold
             aq.clicked(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    UIHelper.goBarristerListAcitivity(v.getContext(),"all", mItem, null);
+                    UIHelper.goOnLineUserListAcitivity(v.getContext(), mItem);
                 }
             });
         }

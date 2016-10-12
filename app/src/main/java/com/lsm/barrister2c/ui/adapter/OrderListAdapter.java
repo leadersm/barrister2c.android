@@ -13,13 +13,16 @@ import com.androidquery.AQuery;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.data.entity.OrderItem;
+import com.lsm.barrister2c.ui.activity.OnlineOrderDetailActivity;
 import com.lsm.barrister2c.ui.activity.OrderDetailActivity;
 import com.lsm.barrister2c.utils.OrderUtils;
 
 import java.util.List;
 
 /**
- * TODO: Replace the implementation with code for your data type.
+ * 订单列表：
+ * 电话咨询订单
+ * 在线业务订单
  */
 public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -106,9 +109,18 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             aq.clicked(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), OrderDetailActivity.class);
-                    intent.putExtra("id",mItem.getId());
-                    v.getContext().startActivity(intent);
+
+                    if(!mItem.getType().equals(OrderItem.TYPE_ONLINE)){
+                        Intent intent = new Intent(v.getContext(), OrderDetailActivity.class);
+                        intent.putExtra("id",mItem.getId());
+                        v.getContext().startActivity(intent);
+                    }else{
+                        Intent intent = new Intent(v.getContext(), OnlineOrderDetailActivity.class);
+                        intent.putExtra("item",mItem);
+                        v.getContext().startActivity(intent);
+                    }
+
+
                 }
             });
         }
@@ -116,15 +128,15 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void bind(OrderItem item){
             this.mItem = item;
 
-            String phoneNumber = mItem.getPhone();
+//            String phoneNumber = mItem.getPhone();
+//
+//            String showPhone = phoneNumber;
+//
+//            if(!TextUtils.isEmpty(phoneNumber)){
+//                showPhone = phoneNumber.replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2");
+//            }
 
-            String showPhone = phoneNumber;
-
-            if(!TextUtils.isEmpty(phoneNumber)){
-                showPhone = phoneNumber.replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2");
-            }
-
-            aq.id(R.id.tv_item_case_nickname).text(showPhone);
+            aq.id(R.id.tv_item_case_nickname).text(item.getName());
 
             String status = OrderUtils.getStatusString(item.getStatus());
             int statusColor = OrderUtils.getStatusColor(item.getStatus());
@@ -136,8 +148,15 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             if(mItem.getType()!=null && mItem.getType().equals(OrderItem.TYPE_APPOINTMENT)){
                 type = aq.getContext().getString(R.string.type_appointment);
-            }else{
+            }else if(mItem.getType()!=null && mItem.getType().equals(OrderItem.TYPE_IM)){
                 type = aq.getContext().getString(R.string.type_im);
+            }else{
+
+                aq.id(R.id.tv_item_case_status)
+                        .text(OrderUtils.getPayStatusString(item.getPayStatus()))
+                        .textColor(OrderUtils.getPayStatusColor(item.getPayStatus()));
+
+                type = aq.getContext().getString(R.string.type_online);
             }
 
             aq.id(R.id.tv_item_case_type).text(type);
@@ -146,6 +165,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             SimpleDraweeView userIcon = (SimpleDraweeView) aq.id(R.id.image_item_thumb).getView();
             if(!TextUtils.isEmpty(mItem.getUserIcon())){
                 userIcon.setImageURI(Uri.parse(mItem.getUserIcon()));
+            }else{
+                userIcon.setImageURI(null);
             }
 
         }

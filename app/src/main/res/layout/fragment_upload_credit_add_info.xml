@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="类型"
+            android:textSize="13sp" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <RadioGroup
+                android:id="@+id/group_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_type_contract"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="合同欠款" />
+
+                <RadioButton
+                    android:id="@+id/rb_type_borrow_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="借款" />
+
+                <RadioButton
+                    android:id="@+id/rb_type_tort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="侵权" />
+
+                <RadioButton
+                    android:id="@+id/rb_type_labor_disputes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="劳动与劳务" />
+
+                <RadioButton
+                    android:id="@+id/rb_type_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="其它" />
+
+            </RadioGroup>
+
+        </HorizontalScrollView>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="债状态"
+            android:textSize="13sp" />
+
+        <RadioGroup
+            android:id="@+id/group_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_status_not_sue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="未起诉" />
+
+            <RadioButton
+                android:id="@+id/rb_status_judging"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="诉讼中" />
+
+            <RadioButton
+                android:id="@+id/rb_status_suing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="执行中" />
+
+            <RadioButton
+                android:id="@+id/rb_status_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="已过时效" />
+
+        </RadioGroup>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <EditText
+                android:id="@+id/et_credit_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:gravity="top"
+                android:hint="描述"
+                android:lines="5"
+                android:textSize="13sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <EditText
+                android:id="@+id/et_credit_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:hint="金额"
+                android:textSize="13sp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <EditText
+                android:id="@+id/et_credit_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:editable="false"
+                android:hint="形成时间"
+                android:text="2016-04-09 14:00-17:00"
+                android:textSize="13sp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:text="凭证类型"
+            android:textSize="13sp" />
+
+        <RadioGroup
+            android:id="@+id/group_proof"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_proof_hetong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="合同" />
+
+            <RadioButton
+                android:id="@+id/rb_proof_xieyi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="协议" />
+
+            <RadioButton
+                android:id="@+id/rb_proof_qiantiao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="欠条" />
+
+            <RadioButton
+                android:id="@+id/rb_proof_qita"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="其他" />
+
+        </RadioGroup>
+
+        <FrameLayout
+            android:id="@+id/btn_proof_image"
+            style="@style/clickablelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawablePadding="5dp"
+                android:text="选择凭证图片"
+                android:textSize="16sp" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/image_proof"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right|center_vertical"
+                app:placeholderImage="@color/placeholder" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_image_judge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/divider" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:text="判决书类型"
+                android:textSize="13sp" />
+
+
+            <!--//判决文书类型
+            public static final String JUDGE_TYPE_PANJUESHU = "panjueshu";//判决书
+            public static final String JUDGE_TYPE_TIAOJIESHU = "tiaojieshu";//调解书
+            public static final String JUDGE_TYPE_ZHONGCAISHU = "zhongcaishu";//仲裁书
+            public static final String JUDGE_TYPE_QITA = "qita";//其他
+            -->
+            <RadioGroup
+                android:id="@+id/group_judge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_judge_panjueshu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="未起诉" />
+
+                <RadioButton
+                    android:id="@+id/rb_judge_tiaojieshu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="诉讼中" />
+
+                <RadioButton
+                    android:id="@+id/rb_judge_zhongcaishu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="执行中" />
+
+                <RadioButton
+                    android:id="@+id/rb_judge_qita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="已过时效" />
+
+            </RadioGroup>
+
+            <FrameLayout
+                android:id="@+id/btn_judge_image"
+                style="@style/clickablelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:drawablePadding="5dp"
+                    android:text="选择判决书图片"
+                    android:textSize="16sp" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/image_judge"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="right|center_vertical"
+                    app:placeholderImage="@color/placeholder" />
+            </FrameLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>

@@ -34,7 +34,7 @@ import java.io.File;
 public class VersionHelper {
 
     private static final String TAG = "VersionHelper";
-    private static final String FILE_NAME = "CP9.apk";
+    private static final String FILE_NAME = "barrister2c.apk";
 
     private long enqueue;
     private DownloadManager dm;
@@ -101,9 +101,13 @@ public class VersionHelper {
         BaseActivity baseActivity;
         if (context instanceof BaseActivity) {
             baseActivity = (BaseActivity) context;
-            progressDialog = baseActivity.progressDialog;
-            progressDialog.setMessage(context.getString(R.string.tip_loading));
-            progressDialog.show();
+
+            if(showToast){
+                progressDialog = baseActivity.progressDialog;
+                progressDialog.setMessage(context.getString(R.string.tip_loading));
+                progressDialog.show();
+            }
+
         }
 
         new GetLatestVersionReq(context)
@@ -291,17 +295,17 @@ public class VersionHelper {
 
         UIHelper.showToast(context,"已进入后台下载。");
 
-        File dir = Environment.getExternalStoragePublicDirectory(Constants.downloadDir);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-
-        File apk = new File(dir, FILE_NAME);
-        if (apk.exists()) {
-            apk.delete();
-        }
-
-        DLog.i(TAG, "download dir:" + dir);
+//        File dir = Environment.getExternalStoragePublicDirectory(Constants.downloadDir);
+//        if (!dir.exists()) {
+//            dir.mkdirs();
+//        }
+//
+//        File apk = new File(dir, FILE_NAME);
+//        if (apk.exists()) {
+//            apk.delete();
+//        }
+//
+//        DLog.i(TAG, "download dir:" + dir);
 
         context.registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
@@ -320,7 +324,9 @@ public class VersionHelper {
 //	   request.setDestinationInExternalFilesDir(context,Environment.DIRECTORY_DOWNLOADS,FILE_NAME);
 
         request.setNotificationVisibility(Request.VISIBILITY_VISIBLE);
-        request.setDestinationInExternalPublicDir(Constants.downloadDir, FILE_NAME);
+//        request.setDestinationInExternalPublicDir(Constants.downloadDir, FILE_NAME);
+
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, FILE_NAME);
 
         enqueue = dm.enqueue(request);
 

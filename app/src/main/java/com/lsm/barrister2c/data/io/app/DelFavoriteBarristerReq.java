@@ -36,7 +36,7 @@ public class DelFavoriteBarristerReq extends Action {
 
     @Override
     public String url() {
-        return IO.URL_ADD_FAVORITE_BARRISTER;
+        return IO.URL_DEL_FAVORITE_BARRISTER;
     }
 
     @Override

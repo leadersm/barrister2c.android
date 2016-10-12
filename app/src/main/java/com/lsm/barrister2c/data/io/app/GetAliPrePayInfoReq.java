@@ -22,8 +22,12 @@ public class GetAliPrePayInfoReq extends Action{
         this.goodsName = goodsName;
         this.money = money;
 
-        params("goodsInfo",goodsInfo);
-        params("goodsName",goodsName);
+//        params("goodsInfo",goodsInfo);
+//        params("goodsName",goodsName);
+
+        params("goodsInfo","CN.DLS.APP2C");
+        params("goodsName","CN.DLS.APP2C");
+
         params("money",String.valueOf(money));
 
         addUserParams();
@@ -44,7 +48,7 @@ public class GetAliPrePayInfoReq extends Action{
 
         IO.AliPrePayResult result = getFromGson(json,new TypeToken<IO.AliPrePayResult>(){});
         if(result.resultCode == 200){
-            onSafeCompleted(result.payInfo);
+            onSafeCompleted(result.aliPrepayInfo);
             return result;
         }
 

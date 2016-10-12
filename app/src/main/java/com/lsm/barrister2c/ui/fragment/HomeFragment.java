@@ -106,14 +106,23 @@ public class HomeFragment extends Fragment implements UserHelper.UserActionListe
         mCaseTypeListLayoutManager = new GridLayoutManager(getActivity(), 3);
 
         mCaseTypeListAdapter = new BizAreaAdapter(mBizAreas);
+        mCaseTypesListView.setNestedScrollingEnabled(false);
         mCaseTypesListView.setLayoutManager(mBusinessTypeListLayoutManager);
         mCaseTypesListView.setItemAnimator(new DefaultItemAnimator());
         mCaseTypesListView.setAdapter(mCaseTypeListAdapter);
 
         mBusinessTypeListAdapter = new BizTypeAdapter(mBizTypes);
+        mBusinessTypeListView.setNestedScrollingEnabled(false);
         mBusinessTypeListView.setLayoutManager(mCaseTypeListLayoutManager);
         mBusinessTypeListView.setItemAnimator(new DefaultItemAnimator());
         mBusinessTypeListView.setAdapter(mBusinessTypeListAdapter);
+
+        aq.id(R.id.btn_upload_case).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.goUploadCaseActivity(getActivity());
+            }
+        });
 
         refresh();
 
@@ -137,13 +146,17 @@ public class HomeFragment extends Fragment implements UserHelper.UserActionListe
 
             @Override
             public void onError(int errorCode, String msg) {
-                UIHelper.showToast(getContext(), msg);
+               if(isAdded()){
+                   UIHelper.showToast(getContext(), msg);
+               }
             }
 
             @Override
             public void onCompleted(IO.HomeResult homeResult) {
 
-                bindHomeData(homeResult);
+                if(isAdded()){
+                    bindHomeData(homeResult);
+                }
             }
         });
     }

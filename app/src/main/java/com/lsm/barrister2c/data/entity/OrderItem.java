@@ -10,15 +10,22 @@ public class OrderItem implements Serializable{
 
     public static final String TYPE_IM = "IM";//即时
     public static final String TYPE_APPOINTMENT = "APPOINTMENT";//预约
+    public static final String TYPE_ONLINE = "ONLINE";//在线业务咨询
 
     String id;
-    String type;//订单类型：即时、预约
+    String type;//订单类型：即时、预约、在线咨询
     String userIcon;//用户头像
     String name;//用户昵称
     String date;//日期
     String status;//订单状态
     String caseType;//案件类型：财产纠纷，离婚，……
-    String phone;//用户手机
+    String phone;
+
+    //=======================
+    String qq;//在线咨询-客服qq
+    String payStatus;//支付状态，0,1 0未支付，1已支付
+    double paymentAmount;//支付金额
+    String orderNo;//订单号
 
     public String getId() {
         return id;
@@ -82,5 +89,38 @@ public class OrderItem implements Serializable{
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    public String getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
+    }
+
+    public double getPaymentAmount() {
+        return paymentAmount;
+    }
+
+    public void setPaymentAmount(double paymentAmount) {
+        this.paymentAmount = paymentAmount;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 }

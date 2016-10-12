@@ -32,6 +32,7 @@
     <string name="tab_learning_center">学习中心</string>
     <string name="tab_avatar_center">个人中心</string>
     <string name="consult_appointment">预约咨询</string>
+    <string name="consult_expert">专家咨询</string>
     <string name="consult_im">即时咨询</string>
 
 
@@ -189,7 +190,7 @@
     <string name="checkupdate">版本更新</string>
     <string name="username">用户名</string>
     <string name="user_icon">用户头像</string>
-    <string name="user_nickname">昵称</string>
+    <string name="user_nickname">姓名</string>
     <string name="user_goodat">专长</string>
     <string name="user_introduction">个人简介</string>
     <string name="default_introduction">擅长领域</string>
@@ -202,7 +203,7 @@
     <string name="default_age">80后</string>
     <string name="user_area">地区</string>
     <string name="user_working_life">工作年限</string>
-    <string name="user_company">律所</string>
+    <string name="user_company">单位名称</string>
     <string name="user_address">地址</string>
     <string name="logout">注销</string>
     <string name="title_user_detail">用户详情</string>
@@ -272,7 +273,7 @@
     <string name="other_money">其他金额</string>
     <string name="feedback_order">订单评价</string>
     <string name="hint_order_feedback">请输入您对此次服务的评价</string>
-    <string name="tip_order_success_im">下单成功，系统即将为您建立通话，请稍候，如果1分钟内未接到电话可以手动拨号建立通话。</string>
+    <string name="tip_order_success_im">下单成功，系统即将为您建立通话，请稍候。</string>
     <string name="title_biz_type">线上专项服务</string>
     <string name="type_appointment">预约订单</string>
     <string name="type_im">即时订单</string>
@@ -286,5 +287,49 @@
     <string name="title_wx_pay_result">支付结果</string>
     <string name="tip_invalid_status_makecall">当前订单状态不能拨打电话</string>
     <string name="tip_wait_for_call">请等待回拨</string>
+    <string name="hint_search">请输入律师名字</string>
+    <string name="hint_search_credit">请输入搜索信息</string>
+    <string name="search">搜索</string>
+    <string name="tip_keywords_empty">请输入律师姓名</string>
+    <string name="title_barrister_search">律师检索</string>
+    <string name="tip_error_sync_account">获取账户信息失败，请重新登录.</string>
+    <string name="tip_action_add_star">订单已完成，请及时评价。</string>
+    <string name="title_online_list">在线业务咨询</string>
+    <string name="tip_empty_case_area">请填写您所在的地区</string>
+    <string name="upload_case">法律求助</string>
+    <string name="tip_empty_case_phone">请填写您的联系方式</string>
+    <string name="tip_empty_case_cname">请填写联系人</string>
+    <string name="tip_empty_case_desc">请描述您的问题</string>
+    <string name="pay">支付</string>
+    <string name="order_online_barrister_info">客服信息</string>
+    <string name="defalult_pay_status">未支付</string>
+    <string name="type_online">在线专项服务订单</string>
+    <string name="title_online_detail">在线专项服务订单</string>
+    <string name="fmt_pay_online">您将支付在线专项服务费%.2f元</string>
+    <string name="modify_card">重新上传</string>
+    <string name="title_upload_case">案件委托</string>
+    <string name="title_expert_list">专家律师列表</string>
+    <string name="title_expert_doc">专家咨询须知</string>
+    <string name="expert">专家</string>
+    <string name="secretary">专家小秘书</string>
+    <string name="title_creditdebt">债权债务信息</string>
+    <string name="summary_creditdebt">点击查看债权债务信息</string>
+    <string name="label_credit_info">债务信息</string>
+    <string name="label_credit_user">债权人</string>
+    <string name="label_debt_user">债务人</string>
+    <string name="title_credit_detail">债券债务信息详情</string>
+    <string name="title_credit_list">债权债务信息列表</string>
+    <string name="label_debt_user_type">债券/债务人类型</string>
+    <string name="label_debt_search_key">查询条件</string>
+    <string name="title_credit_search">债权债务信息查询</string>
+    <string name="title_add_step1">第一步</string>
+    <string name="title_add_step2">第二步</string>
+    <string name="title_add_step3">第三步</string>
+    <string name="title_add_credit_info">填写债券债务信息</string>
+    <string name="title_add_credit_user">填写债权人信息</string>
+    <string name="title_add_debt_user">填写债务人信息</string>
+
+    <string name="title_upload_credit">新增债券债务信息</string>
+    <!--<string name="tip_add_star_success">感谢您的反馈欢迎</string>-->
 
 </resources>

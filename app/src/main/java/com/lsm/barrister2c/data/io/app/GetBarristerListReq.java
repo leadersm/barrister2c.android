@@ -17,10 +17,11 @@ import com.lsm.barrister2c.data.io.IO;
  *   返回值：resultCode，resultMsg , List<OrderItem> orderItems 订单列表 , total（总数，翻页计算用）；
  *   备注：无
  */
-public class GetBarristerListReq extends Action{
+public class GetBarristerListReq extends Action {
 
     public static final String TYPE_IM = "IM";
     public static final String TYPE_APPOINTMENT = "APPOINTMENT";
+    public static final String TYPE_ALL = "ALL";
 
     String type;
     int page;
@@ -33,7 +34,7 @@ public class GetBarristerListReq extends Action{
 
     String area;
 
-    public GetBarristerListReq(Context context, int page, String type,String bizArea,String bizType,String year,String area) {
+    public GetBarristerListReq(Context context, int page, String type, String bizArea, String bizType, String year, String area) {
         super(context);
         this.page = page;
         this.type = type;
@@ -42,27 +43,38 @@ public class GetBarristerListReq extends Action{
         this.year = year;
         this.area = area;
 
-        params("type",type);
-        params("page",String.valueOf(page));
-        params("pageSize",String.valueOf(pageSize));
+        params("type", type);
+        params("page", String.valueOf(page));
+        params("pageSize", String.valueOf(pageSize));
 
-        if(!TextUtils.isEmpty(bizArea)){
-            params("caseType",bizArea);
+        if (!TextUtils.isEmpty(bizArea)) {
+            params("caseType", bizArea);
         }
 
-        if(!TextUtils.isEmpty(bizType)){
-            params("businessType",bizType);
+        if (!TextUtils.isEmpty(bizType)) {
+            params("businessType", bizType);
         }
 
-        if(!TextUtils.isEmpty(year)){
-            params("year",year);
+        if (!TextUtils.isEmpty(year)) {
+            params("year", year);
         }
 
-        if(!TextUtils.isEmpty(area)){
-            params("area",area);
+        if (!TextUtils.isEmpty(area)) {
+            params("area", area.replace("省", ""));
         }
 
 //        addUserParams();
+    }
+
+    boolean isExpert;
+
+    public GetBarristerListReq(Context context, boolean isExpert, int page) {
+        super(context);
+        this.isExpert = isExpert;
+        params("isExpert", isExpert ? "1" : "0");
+        params("page", String.valueOf(page));
+        params("pageSize", String.valueOf(pageSize));
+
     }
 
     @Override
@@ -78,11 +90,12 @@ public class GetBarristerListReq extends Action{
     @Override
     public CommonResult parse(String json) throws Exception {
 
-        IO.GetBarristerListResult result = getFromGson(json,new TypeToken<IO.GetBarristerListResult>(){});//Test.getBarristerResult(20);//
+        IO.GetBarristerListResult result = getFromGson(json, new TypeToken<IO.GetBarristerListResult>() {
+        });//Test.getBarristerResult(20);//
 
-        if(result!=null){
+        if (result != null) {
 
-            if(result.resultCode == 200){
+            if (result.resultCode == 200) {
 
                 onSafeCompleted(result);
 

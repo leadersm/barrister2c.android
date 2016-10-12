@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.androidquery.AQuery;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsm.barrister2c.R;
+import com.lsm.barrister2c.data.entity.BarristerDetail;
 import com.lsm.barrister2c.data.entity.BusinessArea;
 import com.lsm.barrister2c.data.entity.LearningItem;
 import com.lsm.barrister2c.ui.UIHelper;
@@ -57,7 +58,7 @@ public class BizAreaAdapter extends RecyclerView.Adapter<BizAreaAdapter.ViewHold
             aq.clicked(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    UIHelper.goBarristerListAcitivity(v.getContext(),"all",null,mItem);
+                    UIHelper.goBarristerListAcitivity(v.getContext(), BarristerDetail.TYPE_ALL,null,mItem);
                 }
             });
         }

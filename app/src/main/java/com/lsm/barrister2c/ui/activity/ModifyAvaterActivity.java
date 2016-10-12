@@ -121,7 +121,7 @@ public class ModifyAvaterActivity extends BaseActivity {
             //定位，显示到et
             doRequestLocation();
 
-        }else if(key.equals(User.KEY_COMPANY)){//律所
+        }else if(key.equals(User.KEY_COMPANY)){//单位
 
             maxLength = -1;
             getSupportActionBar().setTitle(R.string.user_company);

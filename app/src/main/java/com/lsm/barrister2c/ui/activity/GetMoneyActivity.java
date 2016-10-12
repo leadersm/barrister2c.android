@@ -11,7 +11,9 @@ import com.lsm.barrister2c.app.Constants;
 import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.io.Action;
+import com.lsm.barrister2c.data.io.IO;
 import com.lsm.barrister2c.data.io.app.GetMoneyReq;
+import com.lsm.barrister2c.data.io.app.GetMyAccountReq;
 import com.lsm.barrister2c.ui.UIHelper;
 
 
@@ -74,7 +76,32 @@ public class GetMoneyActivity extends BaseActivity {
         if(isLoading)
             return;
 
-        String bankCardBindStatus = UserHelper.getInstance().getAccount().getBankCardBindStatus();
+        Account account = UserHelper.getInstance().getAccount();
+
+        if(account==null){
+            new GetMyAccountReq(this).execute(new Action.Callback<IO.GetAccountResult>() {
+                @Override
+                public void progress() {
+
+                }
+
+                @Override
+                public void onError(int errorCode, String msg) {
+                    UIHelper.showToast(getApplicationContext(),getString(R.string.tip_error_sync_account));
+                }
+
+                @Override
+                public void onCompleted(IO.GetAccountResult result) {
+
+                    UserHelper.getInstance().setAccount(result.account);
+                    UserHelper.getInstance().updateAccount();
+
+                }
+            });
+            return;
+        }
+
+        String bankCardBindStatus = account.getBankCardBindStatus();
         if(bankCardBindStatus!=null && bankCardBindStatus.equals(Account.CARD_STATUS_NOT_BOUND)){
             UIHelper.showToast(getApplicationContext(),getString(R.string.tip_bankcard_not_bind));
             return;

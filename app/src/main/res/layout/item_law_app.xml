@@ -9,13 +9,12 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/image_item_casetype_icon"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         app:actualImageScaleType="focusCrop"
         app:fadeDuration="300"
         app:placeholderImage="@color/placeholder"
-        app:placeholderImageScaleType="fitCenter"
-        app:roundAsCircle="true" />
+        app:placeholderImageScaleType="fitCenter" />
 
     <TextView
         android:id="@+id/tv_item_biz_name"

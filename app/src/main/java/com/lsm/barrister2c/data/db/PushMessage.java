@@ -22,6 +22,7 @@ public class PushMessage {
     public static final String TYPE_SYSTEM_MSG = "type.system.msg";//系统消息
     public static final String TYPE_VERIFY = "type.verify.msg";//律师认证通知
     public static final String TYPE_LEARNING = "type.learning.item";//学习中心
+    public static final String TYPE_WEB_AUTH = "type.web.auth";//网站授权
 
     
     /** Not-null value. */

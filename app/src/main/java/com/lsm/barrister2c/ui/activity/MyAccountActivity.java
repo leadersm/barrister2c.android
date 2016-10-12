@@ -22,7 +22,6 @@ import com.lsm.barrister2c.data.io.app.GetStudyListReq;
 import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.adapter.IncomeListAdapter;
 import com.lsm.barrister2c.ui.adapter.LoadMoreListener;
-import com.lsm.barrister2c.utils.DLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +58,25 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
                 Account account = UserHelper.getInstance().getAccount();
 
                 if(account==null){
-                    DLog.e(TAG,"获取账户信息失败。。");
+                    new GetMyAccountReq(MyAccountActivity.this).execute(new Action.Callback<IO.GetAccountResult>() {
+                        @Override
+                        public void progress() {
+
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String msg) {
+                            UIHelper.showToast(getApplicationContext(),getString(R.string.tip_error_sync_account));
+                        }
+
+                        @Override
+                        public void onCompleted(IO.GetAccountResult result) {
+
+                            UserHelper.getInstance().setAccount(result.account);
+                            UserHelper.getInstance().updateAccount();
+
+                        }
+                    });
                     return;
                 }
 
@@ -100,6 +117,20 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                mRecyclerView.setEnabled(topRowVerticalPosition >= 0);
+
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
 
         UserHelper.getInstance().addOnAccountUpdateListener(this);
     }
@@ -139,6 +170,10 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
             @Override
             public void onError(int errorCode, String msg) {
                 UIHelper.showToast(getApplicationContext(),msg);
+                if(errorCode==901){
+                    UserHelper.getInstance().logout(getApplicationContext());
+                    finish();
+                }
             }
 
             @Override
@@ -186,8 +221,6 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
 
     int page = 1;
 
-
-
     RecyclerView mRecyclerView;
     LinearLayoutManager mLayoutManager;
     IncomeListAdapter mAdapter;
@@ -224,12 +257,10 @@ public class MyAccountActivity extends BaseActivity implements SwipeRefreshLayou
                 UIHelper.showToast(getApplicationContext(),msg);
             }
 
-            @Override
-            public void onCompleted(IO.GetConsumeDetailListResult result) {
+            @Override            public void onCompleted(IO.GetConsumeDetailListResult result) {
                 isLoadingMore = false;
 
                 if(result!=null && result.consumeDetails!=null){
-                    items.clear();
                     items.addAll(result.consumeDetails);
                     mAdapter.notifyDataSetChanged();
                 }

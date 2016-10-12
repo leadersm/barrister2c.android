@@ -136,25 +136,73 @@ public class AppointmentPickDialogFragment extends DialogFragment {
             this.temp = temp;
         }
 
+        String defaultSettings = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
+
+        /**
+         * 向前补全日期
+         * @param in
+         */
+        private void addForeDate(Date in){
+
+            Date todayDate = DateFormatUtils.parse(today, "yyyy-MM-dd");
+
+            if(in.after(todayDate)){
+
+                Date fore = new Date(in.getTime() - 24 * 3600 * 1000);
+
+                //默认不可接单
+                String dateStr = DateFormatUtils.format(fore, "yyyy-MM-dd");
+
+                DLog.d(TAG, "向前自动补全日期:" + dateStr);
+
+                AppointmentSetting tempSettings = new AppointmentSetting();
+                tempSettings.setDate(dateStr);
+                tempSettings.setSettings(defaultSettings);
+                temp.add(0,tempSettings);
+
+                addForeDate(fore);
+            }
+        }
+
+        /**
+         * 向后补全日期
+         * @param size
+         * @param lastDate
+         */
+        private void addAfterSettings(int size, Date lastDate) {
+            for (int i = 0; i < 7 - size; i++) {
+                //默认不可接单
+                Date date = new Date(lastDate.getTime() + (i + 1) * 24 * 3600 * 1000);
+                String dateStr = DateFormatUtils.format(date, "yyyy-MM-dd");
+                DLog.d(TAG, "自动补全日期:" + dateStr);
+                AppointmentSetting tempSettings = new AppointmentSetting();
+                tempSettings.setDate(dateStr);
+                tempSettings.setSettings(defaultSettings);
+                temp.add(tempSettings);
+            }
+        }
+
+
+
         @Override
         protected List<AppointmentSetting> doInBackground(Void... params) {
 
             int size = temp.size();
 
-            if (size < 7) {
-                String lastDay = size < 1 ? today : temp.get(temp.size() - 1).getDate();
+            if (size <= 7) {
+
+                String firstDay = temp.isEmpty() ? today : temp.get(0).getDate();
+                Date firstDate = DateFormatUtils.parse(firstDay, "yyyy-MM-dd");
+//                Date todayDate = DateFormatUtils.parse(today, "yyyy-MM-dd");
+
+                addForeDate(firstDate);
+
+                size = temp.size();
+
+                String lastDay = temp.isEmpty() ? today : temp.get(temp.size()-1).getDate();
                 Date lastDate = DateFormatUtils.parse(lastDay, "yyyy-MM-dd");
 
-                for (int i = 0; i < 7 - size; i++) {
-                    String settings = "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1";
-                    Date date = new Date(lastDate.getTime() + (i + 1) * 24 * 3600 * 1000);
-                    String dateStr = DateFormatUtils.format(date, "yyyy-MM-dd");
-                    DLog.d(TAG, "自动补全日期:" + dateStr);
-                    AppointmentSetting tempSettings = new AppointmentSetting();
-                    tempSettings.setDate(dateStr);
-                    tempSettings.setSettings(settings);
-                    temp.add(tempSettings);
-                }
+                addAfterSettings(size, lastDate);
             }
 
             for (int i = 0; i < temp.size(); i++) {
@@ -169,6 +217,7 @@ public class AppointmentPickDialogFragment extends DialogFragment {
                     hour.setEnable(flags[j].equals("1"));
                     hour.setSoldOut(flags[j].equals("2"));
                     hour.setHour(hourStrs[12 + j]);
+                    hour.setDate(item.getDate());
                     hours.add(hour);
                 }
 
@@ -178,6 +227,7 @@ public class AppointmentPickDialogFragment extends DialogFragment {
 
             return temp;
         }
+
 
         @Override
         protected void onPostExecute(List<AppointmentSetting> result) {
@@ -323,7 +373,7 @@ public class AppointmentPickDialogFragment extends DialogFragment {
         final String settingsParams = dateSettings.toString();
 
         DLog.d(TAG,"order.wxPrepayInfo:"+message);
-        DLog.d(TAG,"settings.params:"+settingsParams);
+        DLog.d(TAG,"defaultSettings.params:"+settingsParams);
 
         new AlertDialog.Builder(getContext())
                 .setTitle(getString(R.string.title_dialog_buy_appointment))
@@ -462,7 +512,7 @@ public class AppointmentPickDialogFragment extends DialogFragment {
 
                 ///状态 "1" 可接受预约，未选中，可用
                 holder.id(R.id.cb_item_half_hour)
-                        .enabled(hour.isEnable())
+                        .enabled(hour.isEnable() && !isItemOutOfDate(hour.getDate(),hour.getHour()))
                         .checked(hour.isSoldOut())
                         .text(hour.getHour()).clicked(new View.OnClickListener() {
                     @Override
@@ -479,6 +529,25 @@ public class AppointmentPickDialogFragment extends DialogFragment {
         }
     }
 
+    private static boolean isItemOutOfDate(String date,String hour){
+
+        String sHour = hour.split("~")[1];
+
+        if(sHour.equals("00:00")){
+            return false;
+        }
+
+        String inStr = date + " " + sHour;
+        Date inDate = DateFormatUtils.parse(inStr, "yyyy-MM-dd HH:mm");
+
+        Date nowDate = new Date(System.currentTimeMillis());
+
+        if(inDate.before(nowDate)){
+            return true;
+        }
+
+        return false;
+    }
 
     Callback callback;
 

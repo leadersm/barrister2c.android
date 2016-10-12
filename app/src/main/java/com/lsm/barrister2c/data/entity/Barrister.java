@@ -25,6 +25,18 @@ public class Barrister implements Serializable{
     String company;//律所
     String workYears;//工作年限
     List<BusinessArea> bizAreas;//擅长领域
+    int recentServiceTimes;//最近服务次数
+
+    int isExpert = 0;
+    public int getIsExpert() {
+        return isExpert;
+    }
+
+    public void setIsExpert(int isExpert) {
+        this.isExpert = isExpert;
+    }
+
+
 
     public String getArea() {
         return area;
@@ -97,5 +109,13 @@ public class Barrister implements Serializable{
 
     public void setWorkYears(String workYears) {
         this.workYears = workYears;
+    }
+
+    public int getRecentServiceTimes() {
+        return recentServiceTimes;
+    }
+
+    public void setRecentServiceTimes(int recentServiceTimes) {
+        this.recentServiceTimes = recentServiceTimes;
     }
 }

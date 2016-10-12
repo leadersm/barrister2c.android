@@ -50,7 +50,7 @@ public class SettingsActivity extends BaseActivity {
         aq.id(R.id.btn_settings_help).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.goDocActivity(SettingsActivity.this,getString(R.string.help_doc), Constants.DOC_ABOUT);
+                UIHelper.goDocActivity(SettingsActivity.this,getString(R.string.help_doc), Constants.DOC_HELP);
             }
         });
         aq.id(R.id.btn_settings_update).clicked(new View.OnClickListener() {
