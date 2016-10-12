@@ -31,7 +31,7 @@ public class OrderDetail implements Serializable {
     String status;//订单状态
     String caseType;//案件类型（中文），财产纠纷，民事纠纷，……
     String payTime;//下单时间
-    int paymentAmount;//支付金额
+    double paymentAmount;//支付金额
     String remarks;//备注
 
     String customerId;//客户id
@@ -102,11 +102,11 @@ public class OrderDetail implements Serializable {
         this.payTime = payTime;
     }
 
-    public int getPaymentAmount() {
+    public double getPaymentAmount() {
         return paymentAmount;
     }
 
-    public void setPaymentAmount(int paymentAmount) {
+    public void setPaymentAmount(double paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 

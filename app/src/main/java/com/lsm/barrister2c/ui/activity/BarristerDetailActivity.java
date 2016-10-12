@@ -5,11 +5,13 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -35,9 +37,12 @@ import com.lsm.barrister2c.data.io.app.GetBarristerDetailReq;
 import com.lsm.barrister2c.data.io.app.GetMyAccountReq;
 import com.lsm.barrister2c.data.io.app.MakeOrderReq;
 import com.lsm.barrister2c.ui.UIHelper;
+import com.lsm.barrister2c.ui.adapter.BarristerBizAreaAdapter;
 import com.lsm.barrister2c.ui.fragment.AppointmentPickDialogFragment;
 import com.lsm.barrister2c.utils.DLog;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -69,9 +74,19 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
         init();
 
         loadBarristerDetail();
+
     }
 
     private void init() {
+
+        mAdapter = new BarristerBizAreaAdapter(bizAreas);
+        mRecyclerView = (RecyclerView) findViewById(R.id.gridview_goodat);
+        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new BarristerBizAreaAdapter(bizAreas);
+        mRecyclerView.setAdapter(mAdapter);
 
         barrister = (Barrister) getIntent().getSerializableExtra(KEY);
 
@@ -99,6 +114,7 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
         });
 
         aq.id(R.id.btn_detail_im).clicked(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 //登陆检查
@@ -115,14 +131,21 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
 
                 float money = barristerDetail.getPriceIM();
 
-                String imOrderInfo = String.format(Locale.CHINA, "您将购买即时咨询服务，需要支付%.1f元", money);
+                String imOrderInfo = String.format(Locale.CHINA, "您将购买即时咨询服务，需要支付%.1f元，咨询时间小于1分钟不收取费用，咨询结束后系统会退款到您的账户。", money);
 
                 tryToPay(imOrderInfo,money,money, null);
 
             }
         });
+
+
     }
 
+
+    RecyclerView mRecyclerView;
+    LinearLayoutManager mLayoutManager;
+    List<BusinessArea> bizAreas = new ArrayList<>();
+    BarristerBizAreaAdapter mAdapter;
 
     private void bindBarrister() {
         aq.id(R.id.tv_detail_area).text(barrister.getArea());
@@ -135,27 +158,20 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
             }
         }).checked(isFavorite);
 
-
         //擅长领域
         if(barrister.getBizAreas()==null || barrister.getBizAreas().isEmpty()){
+
             aq.id(R.id.gridview_goodat).gone();
+
         }else{
-            ArrayAdapter<BusinessArea> aa = new ArrayAdapter<BusinessArea>(this,R.layout.item_biz_area
-                    ,R.id.tv_item_biz_name,barrister.getBizAreas()){
 
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    View view = super.getView(position, convertView, parent);
-                    BusinessArea item = getItem(position);
-                    TextView tv = (TextView) view.findViewById(R.id.tv_item_biz_name);
-                    tv.setText(item.getName());
-                    return view;
-                }
-            };
+            aq.id(R.id.gridview_goodat).visible();
 
-            aq.id(R.id.gridview_goodat).adapter(aa).visible();
+            bizAreas.clear();
+            bizAreas.addAll(barrister.getBizAreas());
+            mAdapter.notifyDataSetChanged();
+
         }
-
 
 //        aq.id(R.id.tv_detail_intro).text(barrister.getIntro());
         aq.id(R.id.tv_detail_nickname).text(barrister.getName());
@@ -183,27 +199,16 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
 
 
         //擅长领域
-        if(barristerDetail.getBizAreas()==null || barristerDetail.getBizAreas().isEmpty()){
-            aq.id(R.id.gridview_goodat).gone();
-        }else{
-            ArrayAdapter<BusinessArea> aa = new ArrayAdapter<BusinessArea>(this,R.layout.item_biz_area
-                    ,R.id.tv_item_biz_name,barristerDetail.getBizAreas()){
+        if(barristerDetail.getBizAreas()!=null && !barristerDetail.getBizAreas().isEmpty()){
+            aq.id(R.id.gridview_goodat).visible();
 
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    View view = super.getView(position, convertView, parent);
-                    BusinessArea item = getItem(position);
-                    TextView tv = (TextView) view.findViewById(R.id.tv_item_biz_name);
-                    tv.setText(item.getName());
-                    return view;
-                }
-            };
+            bizAreas.clear();
+            bizAreas.addAll(barristerDetail.getBizAreas());
 
-            aq.id(R.id.gridview_goodat).adapter(aa).visible();
+            mAdapter.notifyDataSetChanged();
         }
 
-
-//        aq.id(R.id.tv_detail_intro).text(barristerDetail.getIntro());
+        aq.id(R.id.tv_detail_intro).text(barristerDetail.getIntro()==null?"": Html.fromHtml(barristerDetail.getIntro()));
         aq.id(R.id.tv_detail_nickname).text(barristerDetail.getName());
         aq.id(R.id.tv_detail_service_times).text("服务（"+barristerDetail.getRecentServiceTimes() + "）次");
 
@@ -218,7 +223,49 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
         aq.id(R.id.tv_barrister_price_appointment).text(String.format(Locale.CHINA,"预约咨询（%.1f元/次）",barristerDetail.getPriceAppointment()));
 
         aq.id(R.id.ratingbar_detail).getRatingBar().setRating(barristerDetail.getRating());
+
+        String status = barristerDetail.getOrderStatus();
+
+        if(status.equals(BarristerDetail.ORDER_STATUS_NOT)){
+            aq.id(R.id.btn_detail_im).gone();
+        }
+
+        if(barrister.getIsExpert() == 1){
+            aq.id(R.id.tv_detail_expert).visible();
+
+            final String secretaryQQ = barristerDetail.getSecretaryQQ();
+            final String secretaryPhone = barristerDetail.getSecretaryPhone();
+
+            if(!TextUtils.isEmpty(secretaryQQ)){
+
+                aq.id(R.id.layout_secretary).visible();
+                aq.id(R.id.tv_secretary_qq).text(secretaryQQ);
+                aq.id(R.id.btn_secretary_qq).clicked(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIHelper.startQQ(BarristerDetailActivity.this,secretaryQQ);
+                    }
+                });
+            }
+
+            if(!TextUtils.isEmpty(secretaryPhone)){
+
+                aq.id(R.id.layout_secretary).visible();
+                aq.id(R.id.tv_secretary_phone).text(secretaryPhone);
+                aq.id(R.id.btn_secretary_phone).clicked(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIHelper.showCallView(BarristerDetailActivity.this, secretaryPhone);
+                    }
+                });
+            }
+
+        }else{
+            aq.id(R.id.tv_detail_expert).gone();
+        }
+
     }
+
 
     boolean isFavorite = false;
 
@@ -298,6 +345,31 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
         //余额检查
         Account account = UserHelper.getInstance().getAccount();
 
+        if(account==null){
+            new GetMyAccountReq(this).execute(new Action.Callback<IO.GetAccountResult>() {
+                @Override
+                public void progress() {
+
+                }
+
+                @Override
+                public void onError(int errorCode, String msg) {
+                    UIHelper.showToast(getApplicationContext(),getString(R.string.tip_error_sync_account));
+                }
+
+                @Override
+                public void onCompleted(IO.GetAccountResult result) {
+
+                    UserHelper.getInstance().setAccount(result.account);
+                    UserHelper.getInstance().updateAccount();
+
+                    tryToPay(orderInfo,money,price,dateSettings);
+
+                }
+            });
+            return;
+        }
+
         float remaining = account.getRemainingBalance();
 
         if (remaining < money) {
@@ -318,7 +390,13 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
             View view = getLayoutInflater().inflate(R.layout.dialog_remarks,null);
             final EditText et_remarks = (EditText) view.findViewById(R.id.et_dialog_remarks);
             TextView tv = (TextView) view.findViewById(R.id.tv_dialog_msg);
-            String message = String.format(Locale.CHINA, getString(R.string.tip_price), money);
+
+            String message;
+            if(orderType.equals(OrderItem.TYPE_IM)){
+                message = orderInfo;
+            }else {
+                message = String.format(Locale.CHINA, getString(R.string.tip_price), money);
+            }
 
             tv.setText(message);
             //对话框提示，将扣费
@@ -446,15 +524,16 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
                 }
 
                 new AlertDialog.Builder(BarristerDetailActivity.this)
-                        .setTitle(message)
-                        .setMessage(getString(R.string.tip_check_myorders))
+                        .setTitle(R.string.tip)
+                        .setMessage(message)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                if(orderType.equals(OrderItem.TYPE_APPOINTMENT)){
-                                    UIHelper.goMyOrdersActivity(BarristerDetailActivity.this);
-                                }
+//                                if(orderType.equals(OrderItem.TYPE_APPOINTMENT)){
+//                                }
+
+                                UIHelper.goMyOrdersActivity(BarristerDetailActivity.this);
 
                                 dialog.dismiss();
                             }

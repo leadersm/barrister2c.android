@@ -14,7 +14,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.androidquery.util.AQUtility;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.lsm.barrister2c.push.PushUtil;
+import com.lsm.barrister2c.module.push.PushUtil;
 import com.lsm.barrister2c.utils.DLog;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.zhy.http.okhttp.OkHttpUtils;

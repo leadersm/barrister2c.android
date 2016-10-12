@@ -10,7 +10,7 @@ import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.app.AppConfig;
 import com.lsm.barrister2c.app.Constants;
 import com.lsm.barrister2c.app.VersionHelper;
-import com.lsm.barrister2c.push.PushUtil;
+import com.lsm.barrister2c.module.push.PushUtil;
 import com.lsm.barrister2c.utils.DLog;
 
 import cn.jpush.android.api.JPushInterface;

@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.lsm.barrister2c.R;
@@ -28,7 +29,7 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
-public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandler{
+public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandler,AliPay.AlipayCallback{
 	
 	private static final String TAG = "WXPayEntryActivity";
 	
@@ -80,6 +81,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 		});
     	api = WXAPIFactory.createWXAPI(this, Constants.WX_APP_ID);
         api.handleIntent(getIntent(), this);
+
     }
 
 //	private void setupToolbar() {
@@ -169,6 +171,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
 	}
 
+	boolean isLoading = false;
 	/**
 	 * 支付宝预付订单
 	 * @param goodsName
@@ -177,10 +180,14 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 	 */
 	private void doGetAliPrepayInfo(String goodsName, String goodsInfo, float money) {
 
+		if(isLoading)
+			return;
+
 		new GetAliPrePayInfoReq(this,goodsName,goodsInfo,money).execute(new Action.Callback<String>(){
 
 			@Override
 			public void progress() {
+				isLoading = true;
                 aq.id(R.id.btn_commit).enabled(false);
 				progressDialog.setMessage("正在创建订单，请稍候..");
 				progressDialog.show();
@@ -188,6 +195,8 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
 			@Override
 			public void onError(int errorCode, String msg) {
+				isLoading = false;
+
                 aq.id(R.id.btn_commit).enabled(true);
 				progressDialog.dismiss();
 				UIHelper.showToast(getApplicationContext(),"创建订单失败");
@@ -195,9 +204,14 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
 			@Override
 			public void onCompleted(final String payInfo) {
+
+				isLoading = false;
+
                 aq.id(R.id.btn_commit).enabled(true);
 				progressDialog.dismiss();
-				AliPay.getInstance().init(WXPayEntryActivity.this).pay(payInfo);
+
+				AliPay.getInstance().init(WXPayEntryActivity.this).setCallback(WXPayEntryActivity.this).pay(payInfo);
+
 			}
 		});
 	}
@@ -209,10 +223,17 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 	 * @param money
 	 */
 	private void doGetWxPrepayInfo(String goodsName, String goodsInfo, float money) {
+
+		if(isLoading)
+			return;
+
 		new GetWXPrePayInfoReq(this,goodsName,goodsInfo,money).execute(new Action.Callback<WxPrepayInfo>() {
 
 			@Override
 			public void progress() {
+
+				isLoading = true;
+
                 aq.id(R.id.btn_commit).enabled(false);
 
 				progressDialog.setMessage("正在创建订单，请稍候..");
@@ -221,6 +242,8 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
 			@Override
 			public void onError(int errorCode, String msg) {
+				isLoading = false;
+
                 aq.id(R.id.btn_commit).enabled(true);
 
 				progressDialog.dismiss();
@@ -229,6 +252,9 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
 			@Override
 			public void onCompleted(WxPrepayInfo info) {
+
+				isLoading = false;
+
                 aq.id(R.id.btn_commit).enabled(true);
 
 				progressDialog.dismiss();
@@ -245,5 +271,33 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(R.string.recharge);
+	}
+
+	@Override
+	public void onAliPaySuccess() {
+		//成功
+		DLog.d(TAG,"ali.支付成功");
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.tip)
+				.setMessage("充值成功")
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+						dialog.dismiss();
+					}
+				}).create().show();
+	}
+
+	@Override
+	public void onAliPaying() {
+		DLog.e(TAG,"ali.支付结果确认中");
+	}
+
+	@Override
+	public void onAliPayFailed() {
+		//失败
+		DLog.e(TAG,"ali.支付失败");
+		Toast.makeText(this, "支付失败", Toast.LENGTH_SHORT).show();
 	}
 }

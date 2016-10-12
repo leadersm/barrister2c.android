@@ -184,7 +184,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="如果已经完成咨询，请及时评价。"
+                    android:text="@string/tip_action_add_star"
                     android:textColor="@color/green04"
                     android:id="@+id/tv_tip_order_done" />
 
@@ -298,7 +298,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:textSize="13sp"
+                            android:textSize="14sp"
                             android:id="@+id/tv_order_nickname" />
 
                         <TextView
@@ -306,7 +306,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginTop="5dp"
-                            android:textSize="13sp"
+                            android:textSize="12sp"
                             android:id="@+id/tv_order_phone_number" />
 
                     </LinearLayout>

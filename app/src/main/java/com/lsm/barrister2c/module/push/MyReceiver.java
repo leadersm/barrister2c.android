@@ -1,4 +1,4 @@
-package com.lsm.barrister2c.push;
+package com.lsm.barrister2c.module.push;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
 import android.text.Html;
@@ -21,11 +22,11 @@ import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.app.AppConfig;
 import com.lsm.barrister2c.app.AppManager;
 import com.lsm.barrister2c.app.Constants;
-import com.lsm.barrister2c.app.MsgHelper;
 import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.app.VersionHelper;
 import com.lsm.barrister2c.data.db.PushMessage;
 import com.lsm.barrister2c.data.db.UserDbService;
+import com.lsm.barrister2c.ui.activity.AuthActivity;
 import com.lsm.barrister2c.ui.activity.MainActivity;
 import com.lsm.barrister2c.ui.activity.MyAccountActivity;
 import com.lsm.barrister2c.ui.activity.OrderDetailActivity;
@@ -130,7 +131,7 @@ public class MyReceiver extends BroadcastReceiver {
                     //消息入库
                     UserDbService.getInstance(context).getPushMessageAction().save(msg);
 
-                    showNewsNotification(context,title,content,type,contentId);
+                    showNotification(context,title,content,type,contentId);
 
                 }else if (msg.getType().equals(PushMessage.TYPE_ORDER_REWARD)) {
 
@@ -139,7 +140,7 @@ public class MyReceiver extends BroadcastReceiver {
                     //消息入库
                     UserDbService.getInstance(context).getPushMessageAction().save(msg);
 
-                    showNewsNotification(context,title,content,type,contentId);
+                    showNotification(context,title,content,type,contentId);
 
                 }else if (msg.getType().equals(PushMessage.TYPE_ORDER_STATUS)) {
 
@@ -148,7 +149,7 @@ public class MyReceiver extends BroadcastReceiver {
                     //消息入库
                     UserDbService.getInstance(context).getPushMessageAction().save(msg);
 
-                    showNewsNotification(context,title,content,type,contentId);
+                    showNotification(context,title,content,type,contentId);
 
                 }else if (msg.getType().equals(PushMessage.TYPE_RECEIVE_STAR)) {
 
@@ -157,7 +158,7 @@ public class MyReceiver extends BroadcastReceiver {
                     //消息入库
                     UserDbService.getInstance(context).getPushMessageAction().save(msg);
 
-                    showNewsNotification(context,title,content,type,contentId);
+                    showNotification(context,title,content,type,contentId);
 
                 }else if (msg.getType().equals(PushMessage.TYPE_RECHARGE)) {
 
@@ -166,7 +167,7 @@ public class MyReceiver extends BroadcastReceiver {
                     //消息入库
                     UserDbService.getInstance(context).getPushMessageAction().save(msg);
 
-                    showNewsNotification(context,title,content,type,contentId);
+                    showNotification(context,title,content,type,contentId);
 
                 }else if (msg.getType().equals(PushMessage.TYPE_VERIFY)) {
 
@@ -175,7 +176,7 @@ public class MyReceiver extends BroadcastReceiver {
                     //消息入库
                     UserDbService.getInstance(context).getPushMessageAction().save(msg);
 
-                    showNewsNotification(context,title,content,type,contentId);
+                    showNotification(context,title,content,type,contentId);
 
                 }else if (msg.getType().equals(PushMessage.TYPE_LEARNING)) {
 
@@ -184,7 +185,7 @@ public class MyReceiver extends BroadcastReceiver {
                     //消息入库
                     UserDbService.getInstance(context).getPushMessageAction().save(msg);
 
-//                    showNewsNotification(context,title,content,type,contentId);
+//                    showNotification(context,title,content,type,contentId);
 
                 }else if (msg.getType().equals(PushMessage.TYPE_GET_MONEY)) {
 
@@ -193,7 +194,7 @@ public class MyReceiver extends BroadcastReceiver {
                     //消息入库
                     UserDbService.getInstance(context).getPushMessageAction().save(msg);
 
-                    showNewsNotification(context,title,content,type,contentId);
+                    showNotification(context,title,content,type,contentId);
 
                 }else if (msg.getType().equals(PushMessage.TYPE_ORDER_BACK_MONEY)) {
 
@@ -202,7 +203,16 @@ public class MyReceiver extends BroadcastReceiver {
                     //消息入库
                     UserDbService.getInstance(context).getPushMessageAction().save(msg);
 
-                    showNewsNotification(context,title,content,type,contentId);
+                    showNotification(context,title,content,type,contentId);
+
+                }else if (msg.getType().equals(PushMessage.TYPE_WEB_AUTH)) {
+
+                    //授权
+                    String title = "Web登陆授权";
+                    //消息入库
+                    UserDbService.getInstance(context).getPushMessageAction().save(msg);
+
+                    showNotification(context,title,content,type,contentId);
 
                 }
                 //========================COMMON=================================
@@ -213,7 +223,7 @@ public class MyReceiver extends BroadcastReceiver {
                     //消息入库
                     UserDbService.getInstance(context).getPushMessageAction().save(msg);
 
-                    showNewsNotification(context,title,content,type,contentId);
+                    showNotification(context,title,content,type,contentId);
 
                 }else if (msg.getType().equals(PushMessage.TYPE_FORCE_UPDATE)) {
                     //强制更新
@@ -282,7 +292,7 @@ public class MyReceiver extends BroadcastReceiver {
      *
      * @param context
      */
-    public void showNewsNotification(Context context, String title, String digest, String type, String contentId) {
+    public void showNotification(Context context, String title, String digest, String type, String contentId) {
 
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -310,19 +320,27 @@ public class MyReceiver extends BroadcastReceiver {
 
         }else if(type.equals(PushMessage.TYPE_SYSTEM_MSG)){
             targetIntent = new Intent(context, MainActivity.class);
+        }else if(type.equals(PushMessage.TYPE_WEB_AUTH)){
+            targetIntent = new Intent(context, AuthActivity.class);
         }
 
         PendingIntent contentIntent = null;
 
+        int requestCode = (int) SystemClock.uptimeMillis();
+
+
         if (targetIntent != null) {
 
-            targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
             if (AppManager.isMainActivityRunning()) {
+
+                targetIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
                 //程序运行中，弹出消息防止闪屏
-                contentIntent = PendingIntent.getActivity(context, ++Constants.NOTIFICATION_REQUEST_CODE, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                contentIntent = PendingIntent.getActivity(context, requestCode, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             } else {
+
+                targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
                 //程序未运行，弹出消息后，退出消息详情返回主页面
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -345,11 +363,13 @@ public class MyReceiver extends BroadcastReceiver {
 
                 }else if(type.equals(PushMessage.TYPE_SYSTEM_MSG)){
                     stackBuilder.addParentStack( MainActivity.class);
+                }else if(type.equals(PushMessage.TYPE_WEB_AUTH)){
+                    stackBuilder.addParentStack( MainActivity.class);
                 }
 
                 stackBuilder.addNextIntent(targetIntent);
 
-                contentIntent = stackBuilder.getPendingIntent(++Constants.NOTIFICATION_REQUEST_CODE, PendingIntent.FLAG_UPDATE_CURRENT);
+                contentIntent = stackBuilder.getPendingIntent(requestCode, PendingIntent.FLAG_UPDATE_CURRENT);
 
             }
         }
@@ -378,7 +398,7 @@ public class MyReceiver extends BroadcastReceiver {
 
         Notification notification = builder.build();
 
-        manager.notify(Constants.NOTIFICATION_REQUEST_CODE, notification);
+        manager.notify(requestCode, notification);
 
     }
 

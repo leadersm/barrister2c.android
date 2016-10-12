@@ -111,16 +111,19 @@ public class MsgsActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         refreshReq.execute(new Action.Callback<IO.GetMyMsgsResult>() {
             @Override
             public void progress() {
-
+                mSwipeRefreshLayout.setRefreshing(true);
             }
 
             @Override
             public void onError(int errorCode, String msg) {
 
+                mSwipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onCompleted(IO.GetMyMsgsResult result) {
+
+                mSwipeRefreshLayout.setRefreshing(false);
 
                 List<Message> msgs = result.msgs;
                 if(msgs!=null){

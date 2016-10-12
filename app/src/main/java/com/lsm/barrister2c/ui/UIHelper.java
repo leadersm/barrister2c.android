@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,26 +23,36 @@ import com.lsm.barrister2c.data.entity.Account;
 import com.lsm.barrister2c.data.entity.Barrister;
 import com.lsm.barrister2c.data.entity.BusinessArea;
 import com.lsm.barrister2c.data.entity.BusinessType;
+import com.lsm.barrister2c.data.entity.CreditDebtInfo;
 import com.lsm.barrister2c.ui.activity.AddOrderStarActivity;
+import com.lsm.barrister2c.ui.activity.AuthActivity;
 import com.lsm.barrister2c.ui.activity.AvatarDetailActivity;
 import com.lsm.barrister2c.ui.activity.BarristerDetailActivity;
 import com.lsm.barrister2c.ui.activity.BarristerListActivity;
-import com.lsm.barrister2c.ui.activity.DocActivity;
+import com.lsm.barrister2c.ui.activity.ExpertListActivity;
 import com.lsm.barrister2c.ui.activity.GetMoneyActivity;
 import com.lsm.barrister2c.ui.activity.LoginActivity;
 import com.lsm.barrister2c.ui.activity.MainActivity;
 import com.lsm.barrister2c.ui.activity.ModifyAvaterActivity;
+import com.lsm.barrister2c.ui.activity.MyAccountActivity;
 import com.lsm.barrister2c.ui.activity.MyBankCardActivity;
 import com.lsm.barrister2c.ui.activity.MyFavoriteActivity;
 import com.lsm.barrister2c.ui.activity.MyOrdersActivity;
+import com.lsm.barrister2c.ui.activity.OnLineBizUserListActivity;
 import com.lsm.barrister2c.ui.activity.OrderDetailActivity;
-import com.lsm.barrister2c.ui.activity.RechargeActivity;
+import com.lsm.barrister2c.ui.activity.SearchBarristerActivity;
 import com.lsm.barrister2c.ui.activity.SetBankCardActivity;
 import com.lsm.barrister2c.ui.activity.SettingsActivity;
+import com.lsm.barrister2c.ui.activity.UploadCaseActivity;
 import com.lsm.barrister2c.ui.activity.WebViewActivity;
+import com.lsm.barrister2c.ui.activity.creditdebt.CreditDebtDetailActivity;
+import com.lsm.barrister2c.ui.activity.creditdebt.CreditDebtListActivity;
+import com.lsm.barrister2c.ui.activity.creditdebt.UploadCreditDebtActivity;
 import com.lsm.barrister2c.wxapi.WXPayEntryActivity;
 
 import java.util.ArrayList;
+
+import static com.baidu.location.h.i.U;
 
 public class UIHelper {
 
@@ -172,13 +181,13 @@ public class UIHelper {
     public static void goBarristerListAcitivity(Context context, String type, BusinessType bizType, BusinessArea bizArea) {
         Intent intent = new Intent(context, BarristerListActivity.class);
 
-        intent.putExtra(BarristerListActivity.KEY_TYPE,type);
+        intent.putExtra(BarristerListActivity.KEY_TYPE, type);
 
-        if(bizType!=null){
+        if (bizType != null) {
             intent.putExtra(BarristerListActivity.KEY_BIZ_TYPE, bizType);
         }
 
-        if(bizArea!=null){
+        if (bizArea != null) {
             intent.putExtra(BarristerListActivity.KEY_BIZ_AREA, bizArea);
         }
 
@@ -215,12 +224,12 @@ public class UIHelper {
      *
      * @param context
      * @param title
-     * @param file
+     * @param url
      */
-    public static void goDocActivity(Context context, String title, String file) {
-        Intent intent = new Intent(context, DocActivity.class);
+    public static void goDocActivity(Context context, String title, String url) {
+        Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra(Constants.KEY_TITLE, title);
-        intent.putExtra(Constants.KEY_FILE, file);
+        intent.putExtra(Constants.KEY_URL, url);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -245,16 +254,16 @@ public class UIHelper {
 
     /**
      * 修改用户信息
+     *
      * @param activity
      * @param key
      */
     public static void goModifyInfoActivity(Activity activity, String key, String value) {
-        Intent intent = new Intent(activity,ModifyAvaterActivity.class);
+        Intent intent = new Intent(activity, ModifyAvaterActivity.class);
         intent.putExtra(Constants.KEY, key);
         intent.putExtra(Constants.KEY_USER_INFO_VALUE, value);
         activity.startActivityForResult(intent, Constants.REQUEST_CODE_FROM_USER_DETAIL);
     }
-
 
 
     public static void goMainActivity(Context ctx) {
@@ -265,7 +274,7 @@ public class UIHelper {
 
     public static void goBankcardActivity(Context ctx, Account.BankCard bankCard) {
         Intent intent = new Intent(ctx, MyBankCardActivity.class);
-        intent.putExtra(MyBankCardActivity.KEY,bankCard);
+        intent.putExtra(MyBankCardActivity.KEY, bankCard);
         ctx.startActivity(intent);
     }
 
@@ -294,19 +303,21 @@ public class UIHelper {
         activity.startActivity(intent);
     }
 
-    public static void goBarristerDetailActivity(Context activity,Barrister barrister) {
+    public static void goBarristerDetailActivity(Context activity, Barrister barrister) {
         Intent intent = new Intent(activity, BarristerDetailActivity.class);
-        intent.putExtra(BarristerDetailActivity.KEY,barrister);
+        intent.putExtra(BarristerDetailActivity.KEY, barrister);
         activity.startActivity(intent);
     }
 
-    public static void goBarristerDetailActivity(Context activity,String id) {
+    public static void goBarristerDetailActivity(Context activity, String id) {
         Intent intent = new Intent(activity, BarristerDetailActivity.class);
-        intent.putExtra("id",id);
+        intent.putExtra("id", id);
         activity.startActivity(intent);
     }
+
     /**
      * 充值页面
+     *
      * @param activity
      */
     public static void goRechargeActivity(Context activity) {
@@ -315,9 +326,85 @@ public class UIHelper {
         activity.startActivity(intent);
     }
 
-    public static void goAddOrderStarActivity(Activity activity,String id) {
+    public static void goAddOrderStarActivity(Activity activity, String id) {
         Intent intent = new Intent(activity, AddOrderStarActivity.class);
-        intent.putExtra("id",id);
-        activity.startActivityForResult(intent,Constants.REQUEST_ADD_ORDER_STAR);
+        intent.putExtra("id", id);
+        activity.startActivityForResult(intent, Constants.REQUEST_ADD_ORDER_STAR);
+    }
+
+    public static void goOrderDetailActivity(Context context, String id) {
+        Intent intent = new Intent(context, OrderDetailActivity.class);
+        intent.putExtra("id", id);
+        context.startActivity(intent);
+    }
+
+    public static void goMyAccountActivity(Context context) {
+        Intent intent = new Intent(context, MyAccountActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void goSearchActivity(Context context) {
+        Intent intent = new Intent(context, SearchBarristerActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void goOnLineUserListAcitivity(Context context, BusinessType item) {
+        Intent intent = new Intent(context, OnLineBizUserListActivity.class);
+        intent.putExtra("item", item);
+        context.startActivity(intent);
+    }
+
+    public static void goUploadCaseActivity(Context context) {
+        Intent intent = new Intent(context, UploadCaseActivity.class);
+        context.startActivity(intent);
+    }
+
+    /**
+     * 开启QQ与指定q号聊天
+     *
+     * @param context
+     * @param qq
+     */
+    public static void startQQ(Context context, String qq) {
+        String url = "mqqwpa://im/chat?chat_type=wpa&uin=" + qq;
+        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    public static void showCallView(Context context, String phone) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    public static void goWebAuthActivity(Context context) {
+        Intent intent = new Intent(context, AuthActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void goExpertListAcitivity(Context context) {
+        Intent intent = new Intent(context, ExpertListActivity.class);
+        context.startActivity(intent);
+    }
+
+    /**
+     * 账款库列表,搜索,添加
+     *
+     * @param context
+     */
+    public static void goCreditListAcitivity(Context context) {
+        Intent intent = new Intent(context, CreditDebtListActivity.class);
+        context.startActivity(intent);
+    }
+
+
+    public static void goAddCreditDebtActivity(Context context) {
+        Intent intent = new Intent(context, UploadCreditDebtActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void goCreditDebtDetailActivity(Context context, CreditDebtInfo mItem) {
+        Intent intent = new Intent(context, CreditDebtDetailActivity.class);
+        intent.putExtra("item", mItem);
+        context.startActivity(intent);
     }
 }

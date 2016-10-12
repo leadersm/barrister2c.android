@@ -1,8 +1,6 @@
 package com.lsm.barrister2c.ui.activity;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -83,15 +81,9 @@ public class AddOrderStarActivity extends BaseActivity {
 
             @Override
             public void onCompleted(Boolean aBoolean) {
-
-                new AlertDialog.Builder(AddOrderStarActivity.this).setTitle("提示").setMessage("您已完成评价,系统将打款给律师")
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                setResult(RESULT_OK);
-                                finish();
-                            }
-                        }).create().show();
+                //评价完成。
+                setResult(RESULT_OK);
+                finish();
 
             }
         });

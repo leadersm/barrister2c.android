@@ -26,9 +26,6 @@ import java.util.HashMap;
 
 public abstract class Request {
 
-    public static final String SERVER = "http://10.0.0.35:8080/ceres.service";//GTC.测试
-//	public static final String SERVER = "http://10.0.0.25:8080";//高荣威
-
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 
     private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;

@@ -49,6 +49,16 @@ public class AppointmentSetting implements Serializable{
         boolean isEnable;
         boolean isSoldOut = false;
 
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        String date;
+
         public String getHour() {
             return hour;
         }

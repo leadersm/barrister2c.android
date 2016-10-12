@@ -12,6 +12,8 @@ public class BusinessType extends Filter implements Serializable{
 
     String desc;
     String icon;
+    String docTitle;
+    String docUrl;
 
     public String getDesc() {
         return desc;
@@ -29,4 +31,19 @@ public class BusinessType extends Filter implements Serializable{
         this.icon = icon;
     }
 
+    public String getDocTitle() {
+        return docTitle;
+    }
+
+    public void setDocTitle(String docTitle) {
+        this.docTitle = docTitle;
+    }
+
+    public String getDocUrl() {
+        return docUrl;
+    }
+
+    public void setDocUrl(String docUrl) {
+        this.docUrl = docUrl;
+    }
 }

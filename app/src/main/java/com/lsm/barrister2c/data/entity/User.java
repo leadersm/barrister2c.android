@@ -9,7 +9,7 @@ public class User implements Serializable {
 
     public static final String KEY_GENDER = "gender";
     public static final String KEY_AGE = "age";
-    public static final String KEY_EMAIL = "mail";
+    public static final String KEY_EMAIL = "email";
     public static final String KEY_PHONE = "phone";
     public static final String KEY_NICKNAME = "nickname";
     public static final String KEY_USERICON = "userIcon";
@@ -37,6 +37,8 @@ public class User implements Serializable {
     String pushId;//推送id
 
     String verifyCode;//验证码 ，动态密码，每次用户相关操作需带此参数。
+
+    String company;//单位
 
     public String getId() {
         return id;
@@ -166,4 +168,11 @@ public class User implements Serializable {
         this.verifyCode = verifyCode;
     }
 
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
 }

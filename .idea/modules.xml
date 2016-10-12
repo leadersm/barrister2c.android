@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Barrister2C.iml" filepath="$PROJECT_DIR$/Barrister2C.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/barrister2c.android.iml" filepath="$PROJECT_DIR$/barrister2c.android.iml" />
     </modules>
   </component>
 </project>

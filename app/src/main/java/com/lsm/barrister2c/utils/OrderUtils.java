@@ -45,4 +45,24 @@ public class OrderUtils {
         }
         return statusColor;
     }
+
+    public static int getPayStatusColor(String status){
+        int statusColor = Color.parseColor("#cccccc");
+        if(status.equals("0")){//待支付
+            statusColor = Color.parseColor("#F8C82E");//ffef87;
+        }else if(status.equals("1")){//已支付
+            statusColor = Color.parseColor("#59E1FA");//a9f82e;
+        }
+        return statusColor;
+    }
+
+    public static String getPayStatusString(String status){
+        String str = null;
+        if(status.equals("0")){//待支付
+            str = "待支付";
+        }else if(status.equals("1")){//已支付
+            str = "已支付";
+        }
+        return str;
+    }
 }

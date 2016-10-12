@@ -26,6 +26,7 @@ import com.lsm.barrister2c.data.entity.OrderDetail;
 import com.lsm.barrister2c.data.entity.OrderItem;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
+import com.lsm.barrister2c.data.io.app.GetMyAccountReq;
 import com.lsm.barrister2c.data.io.app.GetOrderDetailReq;
 import com.lsm.barrister2c.data.io.app.MakeCallReq;
 import com.lsm.barrister2c.data.io.app.RequestCancelOrderReq;
@@ -34,7 +35,6 @@ import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.adapter.CallHistoryAdapter;
 import com.lsm.barrister2c.utils.DateFormatUtils;
 import com.lsm.barrister2c.utils.OrderUtils;
-import com.lsm.barrister2c.utils.TextHandler;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,7 +62,22 @@ public class OrderDetailActivity extends BaseActivity {
         aq.id(R.id.btn_call_make).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doMakeCall();
+
+                new AlertDialog.Builder(OrderDetailActivity.this)
+                        .setTitle(R.string.tip)
+                        .setMessage("确定要拨打电话吗？")
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                doMakeCall();
+                            }
+                        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+
             }
         });
 
@@ -157,7 +172,7 @@ public class OrderDetailActivity extends BaseActivity {
         aq.id(R.id.tv_order_nickname).text(mDetail.getBarristerNickname());
 
         //律师电话
-        aq.id(R.id.tv_order_phone_number).text(TextHandler.getHidePhone(mDetail.getBarristerPhone()));
+        aq.id(R.id.tv_order_phone_number).text("点击拨打电话");//.text(TextHandler.getHidePhone(mDetail.getBarristerPhone()));
 
         //头像
         SimpleDraweeView sdv = (SimpleDraweeView) aq.id(R.id.image_order_custom_icon).getView();
@@ -290,6 +305,29 @@ public class OrderDetailActivity extends BaseActivity {
 
         //余额检查
         Account account = UserHelper.getInstance().getAccount();
+
+        if(account==null){
+            new GetMyAccountReq(this).execute(new Action.Callback<IO.GetAccountResult>() {
+                @Override
+                public void progress() {
+
+                }
+
+                @Override
+                public void onError(int errorCode, String msg) {
+                    UIHelper.showToast(getApplicationContext(),getString(R.string.tip_error_sync_account));
+                }
+
+                @Override
+                public void onCompleted(IO.GetAccountResult result) {
+
+                    UserHelper.getInstance().setAccount(result.account);
+                    UserHelper.getInstance().updateAccount();
+
+                }
+            });
+            return;
+        }
 
         float remaining = account.getRemainingBalance();
 

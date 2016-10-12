@@ -24,6 +24,7 @@
 
     <dimen name="bottom_navigation_text_size_active">14sp</dimen>
     <dimen name="bottom_navigation_text_size_inactive">12sp</dimen>
-    w
     <dimen name="text_size_bank_number">26sp</dimen>
+
+    <dimen name="tabs_height">48dp</dimen>
 </resources>

@@ -183,4 +183,7 @@
     <color name="money_in">#31F77E</color>
     <color name="money_out">#FF2222</color>
 
+    <color name="medium_tab_act">#ffffff</color>
+    <color name="medium_tab_nor">#80ffffff</color>
+
 </resources>

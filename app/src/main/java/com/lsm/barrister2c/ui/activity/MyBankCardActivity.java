@@ -3,6 +3,8 @@ package com.lsm.barrister2c.ui.activity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.androidquery.AQuery;
@@ -42,6 +44,25 @@ public class MyBankCardActivity extends BaseActivity implements UserHelper.OnAcc
         UserHelper.getInstance().addOnAccountUpdateListener(this);
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_modify_card){
+            UIHelper.goSetBankcardActivity(this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(bankCard != null){
+            getMenuInflater().inflate(R.menu.menu_set_bankcard,menu);
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
 
     @Override
     protected void onDestroy() {

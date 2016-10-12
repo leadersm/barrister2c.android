@@ -84,4 +84,15 @@
 
 
     <color name="window_bg">#cccccc</color>
+
+    <style name="MRatingBar" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#ff9000</item>
+        <item name="colorPrimaryDark">#ff9000</item>
+        <item name="colorAccent">#ff9000</item>
+        <item name="colorControlNormal">#ff9000</item>
+        <item name="colorControlActivated">#ff9900</item>
+
+    </style>
+
 </resources>

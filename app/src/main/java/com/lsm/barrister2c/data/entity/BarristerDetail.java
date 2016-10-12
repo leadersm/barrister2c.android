@@ -21,6 +21,10 @@ public class BarristerDetail implements Serializable{
     public static final String ORDER_STATUS_CAN = "can";//可以接单
     public static final String ORDER_STATUS_NOT = "can_not";//不可以接单
 
+    public static final String TYPE_ALL = "ALL";//全部
+    public static final String TYPE_APPOINTMENT = "APPOINTMENT";//预约
+    public static final String TYPE_IM = "IM";//即时
+
     String id;
     String userIcon;//头像
     String name;//姓名
@@ -35,10 +39,39 @@ public class BarristerDetail implements Serializable{
     String intro;//简介
 
 //  律师当前接单状态
-    String status;
+    String orderStatus;
 
     float priceIM;//即时咨询价格 ,一次
     float priceAppointment;//预约咨询 每个时段价格
+
+
+    String secretaryQQ;
+    String secretaryPhone;
+
+    public String getSecretaryQQ() {
+        return secretaryQQ;
+    }
+
+    public void setSecretaryQQ(String secretaryQQ) {
+        this.secretaryQQ = secretaryQQ;
+    }
+
+    public String getSecretaryPhone() {
+        return secretaryPhone;
+    }
+
+    public void setSecretaryPhone(String secretaryPhone) {
+        this.secretaryPhone = secretaryPhone;
+    }
+
+    int isExpert = 0;
+    public int getIsExpert() {
+        return isExpert;
+    }
+
+    public void setIsExpert(int isExpert) {
+        this.isExpert = isExpert;
+    }
 
     public String getIntro() {
         return intro;
@@ -120,13 +153,6 @@ public class BarristerDetail implements Serializable{
         this.bizAreas = bizAreas;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public float getPriceIM() {
         return priceIM;
@@ -150,5 +176,13 @@ public class BarristerDetail implements Serializable{
 
     public void setBizTypes(List<BusinessType> bizTypes) {
         this.bizTypes = bizTypes;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

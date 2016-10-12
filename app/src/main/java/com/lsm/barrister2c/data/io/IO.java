@@ -10,9 +10,11 @@ import com.lsm.barrister2c.data.entity.BusinessArea;
 import com.lsm.barrister2c.data.entity.BusinessType;
 import com.lsm.barrister2c.data.entity.Channel;
 import com.lsm.barrister2c.data.entity.ConsumeDetail;
+import com.lsm.barrister2c.data.entity.CreditDebtInfo;
 import com.lsm.barrister2c.data.entity.LawApp;
 import com.lsm.barrister2c.data.entity.LearningItem;
 import com.lsm.barrister2c.data.entity.Message;
+import com.lsm.barrister2c.data.entity.OnlineBizUser;
 import com.lsm.barrister2c.data.entity.OrderDetail;
 import com.lsm.barrister2c.data.entity.OrderItem;
 import com.lsm.barrister2c.data.entity.User;
@@ -28,9 +30,8 @@ public class IO {
 
     public static final String TEST = "http://www.baidu.com";
 
-    public static final String SERVER = "http://119.254.167.200:8080/clientservice/";//GTC.测试
+    public static final String SERVER = "http://app.dls.com.cn:8080/clientservice/";//GTC.测试
 //    public static final String SERVER = "http://10.0.0.64:8080/clientservice/";//高荣威
-
 
     public static final String URL_LOGOUT = SERVER + "logout.do";
 
@@ -47,14 +48,72 @@ public class IO {
     public static final String URL_GET_MY_FAVORITE = SERVER + "myFavoriteList.do";
     public static final String URL_MAKE_DEAL = SERVER + "placeOrder.do";
     public static final String URL_ADD_ORDER_STAR = SERVER + "addOrderStar.do";
+    public static final String URL_UPLOAD_CASE = SERVER + "uploadCase.do";
+    public static final String URL_PAY_ONLINE_ORDER = SERVER + "payOnlineOrder.do";
+    public static final String URL_WEB_AUTH = SERVER + "webAuth.do";
+    public static final String URL_ONLINE_BIZ_USER_LIST = SERVER + "onlineBizUserList.do";
+    public static final String URL_BUY_CREDITDEBTDETAIL = SERVER + "buyCreditDebtDetail.do";
+    public static final String URL_CREDITDEBTINFODETAIL = SERVER + "creditDebtInfoDetail.do";
+    public static String URL_DEL_CREDITDEBTINFO = SERVER + "delCreditDebtInfo.do";
+    public static String URL_MY_PURCHASEDCREDITDEBTLIST = SERVER + "myPurchasedCreditDebtList.do";
+    public static String URL_MY_UPLOADCREDITDEBTLIST = SERVER + "myUploadCreditDebtList.do";
+    public static String URL_SEARCH_CREDITDEBTLIST = SERVER + "searchCreditDebtList.do";
+    public static String URL_UPDATE_CREDITDEBT = SERVER +  "updateCreditDebt.do";
+    public static String URL_UPLOAD_CREDITDEBT = SERVER + "uploadCreditDebt.do";
 
+
+
+    /**
+     * Created by lvshimin on 16/10/10.
+     * 39.+我购买的列表接口
+     *   myPurchasedCreditDebtList
+     *   提交方式：post
+     *   参数:userId,verifyCode,page,pageSize
+     *   返回值：resultCode，resultMsg ，List<CreditDebtInfo> list
+     *   备注：
+     */
+    /**
+     * Created by lvshimin on 16/10/10.
+     * 40.+ 查询接口（已审核过的,显示部分信息）
+     *   searchCreditDebtList
+     *   提交方式：post
+     *   参数:userId,verifyCode,page,pageSize, key, keyType（公司名称company、机构代码licenseNum、姓名name、身份证 idNum）,userType (credit//债权人,debt//债务人)
+     *   返回值：resultCode，resultMsg ，List<CreditDebtInfo> list
+     *   备注：客户端查询页面》输入框 key》查询实体类型：单选框keyType（公司名称、机构代码、姓名、身份证）》查询类型：单选框userType（credit//债权人,debt//债务人）》查询按钮
+     */
+    public static class CreditDebtListResult extends Action.CommonResult {
+        public int total;
+        public List<CreditDebtInfo> list;
+    }
+
+    /**
+     * Created by lvshimin on 16/10/10.
+     * 41.+债权债务信息详情接口
+     *   creditDebtInfoDetail
+     *   提交方式：post
+     *   参数:userId,verifyCode,id
+     *   返回值：resultCode，resultMsg, CreditDebtInfo detail
+     *   备注：人的详情接口，这个人下面的所有债权债务信息
+     */
+    /**
+     * Created by lvshimin on 16/10/10.
+     * 42.+下单接口(返回债权债务信息详情)
+     *   buyCreditDebtDetail
+     *   提交方式：post
+     *   参数:userId,verifyCode,id（债券债务信息记录id）
+     *   返回值：resultCode，resultMsg,CreditDebtInfo detail
+     *   备注：购买成功直接返回详细信息（债券债务人的全部详细信息）
+     */
+    public static class CreditDebtDetailResult extends Action.CommonResult{
+        public CreditDebtInfo detail;
+    }
 
     public static class PrePayResult extends Action.CommonResult {
         public WxPrepayInfo wxPrepayInfo;
     }
 
     public static class AliPrePayResult extends Action.CommonResult {
-        public String payInfo;//支付信息
+        public String aliPrepayInfo;//支付信息
     }
 
     /**
@@ -278,6 +337,7 @@ public class IO {
      */
     public static class GetBarristerListResult extends Action.CommonResult {
         public List<Barrister> items;
+        public String docUrl;
         public int total;
     }
 
@@ -308,4 +368,11 @@ public class IO {
         public List<Favorite> favoriteItemList;
         public int total;
     }
+
+
+    public static class GetOnlineBizUserListResult extends Action.CommonResult {
+        public List<OnlineBizUser> list;
+        public int total;
+    }
+
 }

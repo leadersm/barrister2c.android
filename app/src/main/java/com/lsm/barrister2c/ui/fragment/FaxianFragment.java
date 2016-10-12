@@ -83,6 +83,22 @@ public class FaxianFragment extends Fragment {
             }
         });
 
+        aq.id(R.id.btn_faxian_expert).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.goExpertListAcitivity(v.getContext());
+            }
+        });
+
+
+        aq.id(R.id.btn_faxian_creditdebt).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.goCreditListAcitivity(v.getContext());
+            }
+        });
+
+
         mLawAppListView = (RecyclerView) view.findViewById(R.id.recyclerview_faxian_apps);
         mLawAppListLayoutManager = new GridLayoutManager(getActivity(), 3);
         mLawAppListAdapter = new LawAppAdapter(items);

@@ -56,13 +56,33 @@
             android:background="@drawable/item_year_label"
             android:textAppearance="?attr/textAppearanceListItem" />
 
+        <TextView
+            android:id="@+id/tv_item_barrister_expert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
+            android:paddingRight="3dp"
+            android:paddingLeft="3dp"
+            android:gravity="center"
+            android:textSize="10sp"
+            android:text="@string/expert"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@+id/tv_item_barrister_year"
+            android:visibility="gone"
+            android:layout_marginLeft="5dp"
+            android:layout_alignTop="@+id/tv_item_barrister_nickname"
+            android:background="@drawable/item_year_label"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
         <RatingBar
-            style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/tv_item_barrister_nickname"
+            android:theme="@style/MRatingBar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_gravity="right|center_vertical"
             android:id="@+id/ratingbar_item_barrister" />
 
@@ -88,11 +108,10 @@
 
     </RelativeLayout>
 
-    <GridView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/gridview_goodat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:numColumns="4"/>
+        android:layout_marginTop="5dp"/>
 
 </LinearLayout>

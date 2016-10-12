@@ -38,4 +38,11 @@ public class BusinessArea extends Filter implements Serializable{
     }
 
 
+    @Override
+    public String toString() {
+        return "BusinessArea{" +
+                "desc='" + desc + '\'' +
+                ", icon='" + icon + '\'' +
+                '}';
+    }
 }

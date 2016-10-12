@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginBottom="100dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_auth_logo" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black"
+            android:text="Web授权登陆确认"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_auth_ok"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_btn_selector"
+            android:textColor="@color/text_color_selector_white_black"
+            android:text="@string/ok" />
+
+        <Button
+            android:id="@+id/btn_auth_cancel"
+            android:layout_width="170dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/transparent"
+            android:textColor="@color/gray"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:text="@string/close"
+        android:textColor="@color/colorPrimary"
+        android:clickable="true"
+        android:gravity="center"
+        android:background="@color/transparent"
+        android:id="@+id/btn_auth_close" />
+
+</FrameLayout>

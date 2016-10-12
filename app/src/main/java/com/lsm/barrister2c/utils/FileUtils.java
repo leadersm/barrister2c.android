@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -27,6 +28,7 @@ import com.lsm.barrister2c.app.Constants;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -305,7 +307,6 @@ public class FileUtils {
 
     /**
      * 获取目录文件个数
-     *
      */
     public long getFileList(File dir) {
         long count = 0;
@@ -710,9 +711,12 @@ public class FileUtils {
                     e.printStackTrace();
                 } finally {
                     try {
-                        fos.flush();
-                        fos.close();
-                        fos = null;
+                        if (fos != null) {
+
+                            fos.flush();
+                            fos.close();
+                            fos = null;
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -1140,6 +1144,77 @@ public class FileUtils {
         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
         intent.setType("application/octet-stream");
         context.startActivity(Intent.createChooser(intent, "分享到"));
+    }
+
+    public static Bitmap smallBitmap(Bitmap bitmap, float ratio) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(ratio, ratio);
+
+        int tw = (int) (width * ratio);
+        int th = (int) (height * ratio);
+
+        Bitmap newbmp = Bitmap.createBitmap(bitmap, 0, 0, tw, th, matrix, true);
+        return newbmp;
+    }
+
+    public static Bitmap ratio(Bitmap image, float ratio) {
+
+        image = smallBitmap(image,ratio);
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, os);
+
+        int options = 50;
+        while( os.toByteArray().length / 1024 > 1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
+            os.reset();//重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, options, os);//这里压缩50%，把压缩后的数据存放到baos中
+            options -= 10;
+        }
+
+        ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
+        BitmapFactory.Options newOpts = new BitmapFactory.Options();
+        //开始读入图片，此时把options.inJustDecodeBounds 设回true了
+        newOpts.inJustDecodeBounds = true;
+        newOpts.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap bitmap = BitmapFactory.decodeStream(is, null, newOpts);
+        newOpts.inJustDecodeBounds = false;
+        newOpts.inSampleSize = calculateInSampleSize(newOpts,720,1080);//设置缩放比例
+
+        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+        is = new ByteArrayInputStream(os.toByteArray());
+        bitmap = BitmapFactory.decodeStream(is, null, newOpts);
+        //压缩好比例大小后再进行质量压缩
+//      return compress(bitmap, maxSize); // 这里再进行质量压缩的意义不大，反而耗资源，删除
+        try {
+            os.flush();
+            os.close();
+            is.close();
+            os = null;
+            is = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        bitmap = compressImage(bitmap);
+
+        return bitmap;
+    }
+
+    //计算图片的缩放值
+    public static int calculateInSampleSize(BitmapFactory.Options options,int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int heightRatio = Math.round((float) height/ (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        return inSampleSize;
     }
 
 }

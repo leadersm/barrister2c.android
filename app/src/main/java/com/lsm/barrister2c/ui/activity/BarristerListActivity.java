@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +30,6 @@ import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
 import com.lsm.barrister2c.data.io.app.GetBarristerListReq;
 import com.lsm.barrister2c.data.io.app.GetMyOrderListReq;
-import com.lsm.barrister2c.data.io.app.GetStudyListReq;
 import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.adapter.BarristerAdapter;
 import com.lsm.barrister2c.ui.adapter.EmptyController;
@@ -49,13 +47,22 @@ public class BarristerListActivity extends BaseActivity implements SwipeRefreshL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_barrister_list);
 
         filterBizArea = (Filter) getIntent().getSerializableExtra(KEY_BIZ_AREA);
         filterBizType = (Filter) getIntent().getSerializableExtra(KEY_BIZ_TYPE);
 
+        String type = getIntent().getStringExtra(KEY_TYPE);
+
+        if(!TextUtils.isEmpty(type)){
+            this.type = type;
+        }
+
         System.out.println("====>"+filterBizArea);
+
         setupToolbar();
+
 
         init();
     }
@@ -117,9 +124,11 @@ public class BarristerListActivity extends BaseActivity implements SwipeRefreshL
         mRecyclerView.setAdapter(mAdapter);
 
         refresh();
+
     }
 
     GetBarristerListReq mListReq;
+
     int page = 1;
     int total;
 
@@ -232,10 +241,15 @@ public class BarristerListActivity extends BaseActivity implements SwipeRefreshL
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         if (item.getItemId() == R.id.action_filter) {
             showFilterDialog();
             return true;
+        }else if (item.getItemId() == R.id.action_search) {
+            UIHelper.goSearchActivity(BarristerListActivity.this);
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

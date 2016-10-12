@@ -85,8 +85,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:rating="5"
-                style="?android:attr/ratingBarStyle"
-                android:id="@+id/rartingbar_add_order_star" />
+                style="@style/Widget.AppCompat.RatingBar"
+                android:theme="@style/MRatingBar"
+                android:id="@+id/rartingbar_add_order_star"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -108,14 +109,6 @@
             android:layout_marginTop="20dp"
             android:id="@+id/btn_feedback_commit" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="提示：如果订单没有完成，不必进行评价。评价成功表示订单已完成，系统将给律师转账。"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:id="@+id/textView9" />
     </LinearLayout>
 
 </LinearLayout>
