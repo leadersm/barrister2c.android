@@ -15,6 +15,8 @@ import com.androidquery.AQuery;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.data.entity.CreditDebtUser;
 import com.lsm.barrister2c.ui.UIHelper;
+import com.lsm.barrister2c.utils.TextHandler;
+import com.lsm.barrister2c.utils.Validator;
 
 /**
  * Created by lvshimin on 16/10/12.
@@ -102,6 +104,18 @@ public class AddCreditUserFragment extends Fragment {
             phone = userPhoneEditable.toString();
             ID_number = idNumEditable.toString();
 
+
+            if(!TextHandler.isMobileNum(phone)){
+                UIHelper.showToast(getActivity(),R.string.error_invalid_phone);
+                return false;
+            }
+
+
+            if(!Validator.isIDCard(ID_number)){
+                UIHelper.showToast(getActivity(),R.string.error_invalid_id_num);
+                return false;
+            }
+
         }else{
 
             Editable companyEditable = aq.id(R.id.et_company_name).getEditable();
@@ -126,6 +140,11 @@ public class AddCreditUserFragment extends Fragment {
             company = companyEditable.toString();
             companyPhone = companyPhoneEditable.toString();
             licenseNuber = companyNumEditable.toString();
+
+            if(!TextHandler.isMobileNum(companyPhone)){
+                UIHelper.showToast(getActivity(),R.string.error_invalid_phone);
+                return false;
+            }
         }
 
         Editable addressEditable = aq.id(R.id.et_address).getEditable();

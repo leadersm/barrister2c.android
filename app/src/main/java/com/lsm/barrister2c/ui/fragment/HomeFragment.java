@@ -29,6 +29,7 @@ import com.lsm.barrister2c.data.entity.BusinessType;
 import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
+import com.lsm.barrister2c.data.io.app.GetBarristerListReq;
 import com.lsm.barrister2c.data.io.app.GetMyAccountReq;
 import com.lsm.barrister2c.data.io.app.GetUserHomeReq;
 import com.lsm.barrister2c.ui.UIHelper;
@@ -39,7 +40,6 @@ import com.lsm.barrister2c.ui.widget.CirclePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class HomeFragment extends Fragment implements UserHelper.UserActionListener,UserHelper.OnAccountUpdateListener{
 
@@ -116,6 +116,27 @@ public class HomeFragment extends Fragment implements UserHelper.UserActionListe
         mBusinessTypeListView.setLayoutManager(mCaseTypeListLayoutManager);
         mBusinessTypeListView.setItemAnimator(new DefaultItemAnimator());
         mBusinessTypeListView.setAdapter(mBusinessTypeListAdapter);
+
+
+        aq.id(R.id.btn_faxian_appointment).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.goBarristerListAcitivity(v.getContext(), GetBarristerListReq.TYPE_APPOINTMENT, null, null);
+            }
+        });
+        aq.id(R.id.btn_faxian_im).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.goBarristerListAcitivity(v.getContext(), GetBarristerListReq.TYPE_IM, null, null);
+            }
+        });
+
+        aq.id(R.id.btn_faxian_expert).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.goExpertListAcitivity(v.getContext());
+            }
+        });
 
         aq.id(R.id.btn_upload_case).clicked(new View.OnClickListener() {
             @Override
@@ -257,16 +278,15 @@ public class HomeFragment extends Fragment implements UserHelper.UserActionListe
 
     @Override
     public void onUpdateAccount(Account account) {
-        float remainingBalance = 0f;
-        float totalConsume = 0f;
-
-        if(account != null){
-            remainingBalance = account.getRemainingBalance();
-            totalConsume = account.getTotalConsume();
-        }
-
-        aq.id(R.id.tv_home_yue).text(String.format(Locale.CHINA,"%.2f元", remainingBalance));
-        aq.id(R.id.tv_home_consume).text(String.format(Locale.CHINA,"%.2f元", totalConsume));
+//        float remainingBalance = 0f;
+//        float totalConsume = 0f;
+//
+//        if(account != null){
+//            remainingBalance = account.getRemainingBalance();
+//            totalConsume = account.getTotalConsume();
+//        }
+//        aq.id(R.id.tv_home_yue).text(String.format(Locale.CHINA,"%.2f元", remainingBalance));
+//        aq.id(R.id.tv_home_consume).text(String.format(Locale.CHINA,"%.2f元", totalConsume));
     }
 
     public class AdsPagerAdapter extends FragmentPagerAdapter {

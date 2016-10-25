@@ -20,10 +20,9 @@ public class MyUploadCreditDebtListReq extends Action {
     int page;
     int pageSize = 20;
 
-    public MyUploadCreditDebtListReq(Context context, int page, int pageSize) {
+    public MyUploadCreditDebtListReq(Context context, int page) {
         super(context);
         this.page = page;
-        this.pageSize = pageSize;
 
         addUserParams();
 

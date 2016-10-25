@@ -72,9 +72,11 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.MainActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" />
-        <activity android:name=".ui.activity.WelcomeActivity" android:screenOrientation="portrait">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.WelcomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -83,27 +85,54 @@
         </activity>
         <activity
             android:name=".ui.activity.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.GuideActivity"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_login" />
-        <activity android:name=".ui.activity.GuideActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
-        <activity android:name=".ui.activity.BarristerDetailActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.FeedbackActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.DocActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.SettingsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.AvatarDetailActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.ModifyAvaterActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.MyFavoriteActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.MyOrdersActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.MyAccountActivity" android:screenOrientation="portrait" android:parentActivityName=".ui.activity.MainActivity">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".ui.activity.BarristerDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.FeedbackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.DocActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AvatarDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ModifyAvaterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MyFavoriteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MyOrdersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MyAccountActivity"
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.lsm.barrister2c.ui.activity.MainActivity" />
 
         </activity>
-        <activity android:name=".ui.activity.MsgsActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.MsgsActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.activity.OrderDetailActivity" android:screenOrientation="portrait" android:parentActivityName=".ui.activity.MainActivity">
+        <activity
+            android:name=".ui.activity.OrderDetailActivity"
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -111,50 +140,87 @@
 
         </activity>
 
-        <activity android:name=".ui.activity.WebViewActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.GetMoneyActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.MyBankCardActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.SetBankCardActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.RechargeActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.BarristerListActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.AddOrderStarActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.SearchBarristerActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.OnLineBizUserListActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.UploadCaseActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.OnlineOrderDetailActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.AuthActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".module.pick.HiddenActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.ExpertListActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.GetMoneyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.MyBankCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SetBankCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.RechargeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BarristerListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AddOrderStarActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SearchBarristerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.OnLineBizUserListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.UploadCaseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.OnlineOrderDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AuthActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.pick.HiddenActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ExpertListActivity"
+            android:screenOrientation="portrait" />
 
         <!--债权债务信息相关页面-->
-        <activity android:name=".ui.activity.creditdebt.CreditDebtDetailActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.creditdebt.UploadCreditDebtActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.creditdebt.CreditDebtListActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.creditdebt.MyPurchasedCreditDebtListActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.creditdebt.MyUploadCreditDebtListActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.creditdebt.SearchCreditDebtListActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.creditdebt.CreditDebtDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.creditdebt.UploadCreditDebtActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.activity.creditdebt.CreditDebtListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.creditdebt.MyPurchasedCreditDebtListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.creditdebt.MyUploadCreditDebtListActivity"
+            android:screenOrientation="portrait" />
 
         <!-- 微信分享回调 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:label="@string/app_name"
             android:exported="true"
+            android:label="@string/app_name"
             android:launchMode="singleTop">
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="wx719e35ccbca02039"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="wx719e35ccbca02039" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
 
-        <receiver
-            android:name=".wxapi.AppRegister">
+        <receiver android:name=".wxapi.AppRegister">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
@@ -163,10 +229,11 @@
         <!-- Required SDK核心功能-->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden" >
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="com.lsm.barrister2c" />
             </intent-filter>
@@ -175,8 +242,7 @@
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false" >
-        </service>
+            android:exported="false"></service>
 
 
         <!-- Required SDK 核心功能-->
@@ -196,7 +262,7 @@
         <!-- Required SDK核心功能-->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
-            android:enabled="true" >
+            android:enabled="true">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
                 <category android:name="com.lsm.barrister2c" />
@@ -209,6 +275,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
                 <data android:scheme="package" />
             </intent-filter>
 
@@ -232,8 +299,12 @@
         </receiver>
 
         <!-- Required  . Enable it you can get statistics data with channel -->
-        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
-        <meta-data android:name="JPUSH_APPKEY" android:value="f802f6cf4892280c2a542731" /> <!--  </>值来自开发者平台取得的AppKey-->
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="f802f6cf4892280c2a542731" /> <!--  </>值来自开发者平台取得的AppKey-->
 
         <service
             android:name="com.baidu.location.f"

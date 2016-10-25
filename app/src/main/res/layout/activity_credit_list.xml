@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#eeeeee"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -17,33 +18,29 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <include
-        layout="@layout/layout_search_credit"
+    <TextView
+        android:id="@+id/btn_search_dialog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/layout_selector"
+        android:textColor="@color/text_color_selector_blue_white"
+        android:text="@string/hint_search_credit"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="LinearLayoutManager"
-                tools:context=".ui.fragment.LearningCenterFragment"
-                tools:listitem="@layout/item_barrister" />
-
-        </android.support.v4.widget.SwipeRefreshLayout>
-
+            android:layout_height="wrap_content"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/item_barrister" />
 
         <include
             layout="@layout/list_empty_layout"

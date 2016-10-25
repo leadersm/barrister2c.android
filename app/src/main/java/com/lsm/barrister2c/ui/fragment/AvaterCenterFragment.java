@@ -22,7 +22,7 @@ import com.lsm.barrister2c.ui.activity.LoginActivity;
 import com.lsm.barrister2c.ui.activity.MsgsActivity;
 import com.lsm.barrister2c.ui.activity.MyAccountActivity;
 
-public class AvaterCenterFragment extends Fragment implements UserHelper.UserActionListener{
+public class AvaterCenterFragment extends Fragment implements UserHelper.UserActionListener {
 
     public AvaterCenterFragment() {
         // Required empty public constructor
@@ -112,6 +112,38 @@ public class AvaterCenterFragment extends Fragment implements UserHelper.UserAct
             }
         });
 
+        //我上传的债权债务信息
+        aq.id(R.id.btn_my_upload_creditdebt).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                User user = AppConfig.getUser(getContext());
+
+                if (user != null) {
+                    UIHelper.goMyUploadCreditActivity(getActivity());
+                } else {
+                    UIHelper.goLoginActivity(getActivity());
+                }
+
+            }
+        });
+
+        //我购买的债权债务信息
+        aq.id(R.id.btn_my_purchased_creditdebt).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                User user = AppConfig.getUser(getContext());
+
+                if (user != null) {
+                    UIHelper.goMyPurchasedCreditActivity(getActivity());
+                } else {
+                    UIHelper.goLoginActivity(getActivity());
+                }
+
+            }
+        });
+
         //我的消息
         aq.id(R.id.btn_my_msg).clicked(new View.OnClickListener() {
             @Override
@@ -143,7 +175,7 @@ public class AvaterCenterFragment extends Fragment implements UserHelper.UserAct
         aq.id(R.id.btn_settings).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               UIHelper.goSettingsActivity(getActivity());
+                UIHelper.goSettingsActivity(getActivity());
             }
         });
 
@@ -182,7 +214,7 @@ public class AvaterCenterFragment extends Fragment implements UserHelper.UserAct
             if (!TextUtils.isEmpty(user.getUserIcon()))
                 usrIconView.setImageURI(Uri.parse(user.getUserIcon()));
 
-            String name = TextUtils.isEmpty(user.getNickname())?user.getPhone():user.getNickname();
+            String name = TextUtils.isEmpty(user.getNickname()) ? user.getPhone() : user.getNickname();
 
             aq.id(R.id.tv_nickname).text(name);
 

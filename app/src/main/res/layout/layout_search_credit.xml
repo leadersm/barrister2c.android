@@ -1,124 +1,324 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
-
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="match_parent"
         android:background="@color/white"
-        android:gravity="bottom"
-        android:orientation="horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
-            <EditText
-                android:id="@+id/et_search"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_search_credit">
+                android:layout_weight="1">
 
-                <requestFocus />
-            </EditText>
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_search_credit">
 
-        </android.support.design.widget.TextInputLayout>
+                    <requestFocus />
+                </EditText>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/btn_search"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/layout_selector"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="@string/search"
+                android:textColor="@color/text_color_selector_blue_white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eeeeee"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:text="@string/label_debt_search_key"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btn_advance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="10dp"
+                android:text="@string/advance"
+                android:textColor="@color/text_color_selector_blue_white" />
+
+        </LinearLayout>
 
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/divider" />
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="3dp">
+
+            <RadioButton
+                android:id="@+id/rb_key_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="公司名称" />
+
+            <RadioButton
+                android:id="@+id/rb_key_license_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="机构代码" />
+
+            <RadioButton
+                android:id="@+id/rb_key_id_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="身份证" />
+
+        </RadioGroup>
 
         <TextView
-            android:id="@+id/btn_search"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/layout_selector"
-            android:clickable="true"
-            android:gravity="center"
-            android:text="@string/search"
-            android:textColor="@color/text_color_selector_blue_white" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eeeeee"
+            android:padding="10dp"
+            android:text="@string/label_debt_user_type"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="3dp">
+
+            <RadioButton
+                android:id="@+id/rb_user_credit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="债权人" />
+
+            <RadioButton
+                android:id="@+id/rb_user_debt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="债务人" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/layout_search_advance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/label_credit_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#eeeeee"
+                android:padding="10dp"
+                android:text="@string/label_credit_info_status"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:scrollbars="none"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioGroup
+                    android:id="@+id/group_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_status_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="不限制" />
+
+                    <RadioButton
+                        android:id="@+id/rb_status_not_sue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="未起诉" />
+
+                    <RadioButton
+                        android:id="@+id/rb_status_judging"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="诉讼中" />
+
+                    <RadioButton
+                        android:id="@+id/rb_status_suing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="执行中" />
+
+                    <RadioButton
+                        android:id="@+id/rb_status_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="已过时效" />
+
+                </RadioGroup>
+
+            </HorizontalScrollView>
+
+
+            <TextView
+                android:id="@+id/label_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#eeeeee"
+                android:padding="10dp"
+                android:text="@string/label_date"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <EditText
+                    android:id="@+id/et_search_starttime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:hint="开始时间"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="@dimen/divider_size"
+                    android:layout_height="match_parent"
+                    android:background="@color/divider"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_search_endtime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:hint="结束时间"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/label_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#eeeeee"
+                android:padding="10dp"
+                android:text="@string/label_money_range"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <EditText
+                    android:id="@+id/et_search_start_money"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="最小金额"
+                    android:inputType="numberDecimal"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="@dimen/divider_size"
+                    android:layout_height="match_parent"
+                    android:background="@color/divider"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_search_end_money"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="最大金额"
+                    android:inputType="numberDecimal"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/label_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#eeeeee"
+                android:padding="10dp"
+                android:text="@string/label_area"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_search_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:hint="请输入地区"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="13sp" />
+
+
+        </LinearLayout>
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#eeeeee"
-        android:padding="10dp"
-        android:text="@string/label_debt_search_key"
-        android:textStyle="bold" />
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:paddingBottom="10dp"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/rb_key_company"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="公司名称" />
-
-        <RadioButton
-            android:id="@+id/rb_key_license_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="机构代码" />
-
-        <RadioButton
-            android:id="@+id/rb_key_id_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="身份证" />
-
-    </RadioGroup>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#eeeeee"
-        android:padding="10dp"
-        android:text="@string/label_debt_user_type"
-        android:textStyle="bold" />
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/rb_user_credit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="债权人" />
-
-        <RadioButton
-            android:id="@+id/rb_user_debt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="债务人" />
-
-    </RadioGroup>
-
-
-</LinearLayout>
+</ScrollView>

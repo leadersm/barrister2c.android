@@ -20,10 +20,9 @@ public class MyPurchasedCreditDebtListReq extends Action {
     int page;
     int pageSize = 20;
 
-    public MyPurchasedCreditDebtListReq(Context context, int page, int pageSize) {
+    public MyPurchasedCreditDebtListReq(Context context, int page) {
         super(context);
         this.page = page;
-        this.pageSize = pageSize;
 
         addUserParams();
 

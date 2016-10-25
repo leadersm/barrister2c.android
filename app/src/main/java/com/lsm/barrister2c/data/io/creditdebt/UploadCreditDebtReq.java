@@ -44,19 +44,20 @@ public class UploadCreditDebtReq extends Action {
 
         addUserParams();
 
-        if(proof!=null)
-            addFile("proof",proof);
+        if (proof != null)
+            addFile("proof", proof);
 
-        if(judgeDocument!=null)
-            addFile("judgeDocument",judgeDocument);
+        if (judgeDocument != null)
+            addFile("judgeDocument", judgeDocument);
 
 
-        params("money",String.valueOf(data.getMoney()));
-        params("desc",data.getDesc());
-        params("creditDebtTime",data.getCreditDebtTime());
-        params("creditDebtStatus",data.getCreditDebtStatus());
-        params("proofName",data.getProofName());
-        params("judgeDocumentName",data.getJudgeDocumentName());
+        params("type", data.getType());
+        params("money", String.valueOf(data.getMoney()));
+        params("desc", data.getDesc());
+        params("creditDebtTime", data.getCreditDebtTime());
+        params("creditDebtStatus", data.getCreditDebtStatus());
+        params("proofName", data.getProofName());
+        params("judgeDocumentName", data.getJudgeDocumentName());
 
 //        String type;
 //        String name;//姓名(个人)
@@ -72,24 +73,25 @@ public class UploadCreditDebtReq extends Action {
         //===================债权人====================================
         CreditDebtUser creditUser = data.getCreditUser();
 
-        params("creditName", TextUtils.isEmpty(creditUser.getName())?"":creditUser.getName());
-        params("creditPhone", TextUtils.isEmpty(creditUser.getPhone())?"":creditUser.getPhone());
-        params("creditID_number", TextUtils.isEmpty(creditUser.getID_number())?"":creditUser.getID_number());
-        params("creditCompany", TextUtils.isEmpty(creditUser.getCompany())?"":creditUser.getCompany());
-        params("creditCompanyPhone", TextUtils.isEmpty(creditUser.getCompanyPhone())?"":creditUser.getCompanyPhone());
-        params("creditLicenseNuber", TextUtils.isEmpty(creditUser.getLicenseNuber())?"":creditUser.getLicenseNuber());
-        params("creditAddress", TextUtils.isEmpty(creditUser.getAddress())?"":creditUser.getAddress());
+        params("creditName", TextUtils.isEmpty(creditUser.getName()) ? "" : creditUser.getName());
+        params("creditName", TextUtils.isEmpty(creditUser.getName()) ? "" : creditUser.getName());
+        params("creditPhone",TextUtils.isEmpty(creditUser.getPhone()) ? "" : creditUser.getPhone());
+        params("creditID_number", TextUtils.isEmpty(creditUser.getID_number()) ? "" :creditUser.getID_number());
+        params("creditCompany", TextUtils.isEmpty(creditUser.getCompany()) ? "" :creditUser.getCompany());
+        params("creditCompanyPhone",TextUtils.isEmpty(creditUser.getCompanyPhone()) ? "" : creditUser.getCompanyPhone());
+        params("creditLicenseNuber",TextUtils.isEmpty(creditUser.getLicenseNuber()) ? "" : creditUser.getLicenseNuber());
+        params("creditAddress", TextUtils.isEmpty(creditUser.getAddress()) ? "" :creditUser.getAddress());
 
         //======================债务人=================================
         CreditDebtUser debtUser = data.getDebtUser();
 
-        params("debtName", TextUtils.isEmpty(debtUser.getName())?"":debtUser.getName());
-        params("debtPhone", TextUtils.isEmpty(debtUser.getPhone())?"":debtUser.getPhone());
-        params("debtID_number", TextUtils.isEmpty(debtUser.getID_number())?"":debtUser.getID_number());
-        params("debtCompany", TextUtils.isEmpty(debtUser.getCompany())?"":debtUser.getCompany());
-        params("debtCompanyPhone", TextUtils.isEmpty(debtUser.getCompanyPhone())?"":debtUser.getCompanyPhone());
-        params("debtLicenseNuber", TextUtils.isEmpty(debtUser.getLicenseNuber())?"":debtUser.getLicenseNuber());
-        params("debtAddress", TextUtils.isEmpty(debtUser.getAddress())?"":debtUser.getAddress());
+        params("debtName", TextUtils.isEmpty(debtUser.getName()) ? "" : debtUser.getName());
+        params("debtPhone",TextUtils.isEmpty(debtUser.getPhone()) ? "" : debtUser.getPhone());
+        params("debtID_number", TextUtils.isEmpty(debtUser.getID_number()) ? "" :debtUser.getID_number());
+        params("debtCompany", TextUtils.isEmpty(debtUser.getCompany()) ? "" :debtUser.getCompany());
+        params("debtCompanyPhone",TextUtils.isEmpty(debtUser.getCompanyPhone()) ? "" : debtUser.getCompanyPhone());
+        params("debtLicenseNuber",TextUtils.isEmpty(debtUser.getLicenseNuber()) ? "" : debtUser.getLicenseNuber());
+        params("debtAddress", TextUtils.isEmpty(debtUser.getAddress()) ? "" :debtUser.getAddress());
 
     }
 
@@ -112,4 +114,8 @@ public class UploadCreditDebtReq extends Action {
     public int method() {
         return POST;
     }
+
+
+
+
 }
