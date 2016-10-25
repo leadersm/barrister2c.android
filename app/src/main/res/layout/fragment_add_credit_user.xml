@@ -69,6 +69,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
                 android:hint="电话"
+                android:inputType="number"
                 android:textSize="13sp" />
 
         </android.support.design.widget.TextInputLayout>
@@ -85,6 +86,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
                 android:hint="身份证号码"
+                android:inputType="number"
                 android:textSize="13sp" />
 
         </android.support.design.widget.TextInputLayout>
@@ -127,6 +129,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
                 android:hint="公司电话"
+                android:inputType="number"
                 android:textSize="13sp" />
 
         </android.support.design.widget.TextInputLayout>

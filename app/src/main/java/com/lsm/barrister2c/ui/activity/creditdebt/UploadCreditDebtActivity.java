@@ -16,6 +16,7 @@ import com.lsm.barrister2c.data.entity.CreditDebtInfo;
 import com.lsm.barrister2c.data.entity.CreditDebtUser;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.creditdebt.UploadCreditDebtReq;
+import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.activity.BaseActivity;
 import com.lsm.barrister2c.ui.fragment.uploadcredit.AddCreditDebtInfoFragment;
 import com.lsm.barrister2c.ui.fragment.uploadcredit.AddCreditUserFragment;
@@ -111,20 +112,25 @@ public class UploadCreditDebtActivity extends BaseActivity {
             File proofFile = addCreditDebtInfoFragment.getProofFile();
             File judgeFile = addCreditDebtInfoFragment.getJudgeFile();
 
-            new UploadCreditDebtReq(this,info,proofFile,judgeFile).execute(new Action.Callback<Action.CommonResult>() {
+            new UploadCreditDebtReq(this,info,proofFile,judgeFile).execute(new Action.Callback<Boolean>() {
                 @Override
                 public void progress() {
+                    progressDialog.setMessage(getString(R.string.loading));
+                    progressDialog.show();
 
                 }
 
                 @Override
                 public void onError(int errorCode, String msg) {
-
+                    UIHelper.showToast(getApplicationContext(),R.string.tip_upload_failed);
+                    progressDialog.dismiss();
                 }
 
                 @Override
-                public void onCompleted(Action.CommonResult commonResult) {
-
+                public void onCompleted(Boolean commonResult) {
+                    progressDialog.dismiss();
+                    UIHelper.showToast(getApplicationContext(),R.string.tip_upload_success);
+                    finish();
                 }
             });
 

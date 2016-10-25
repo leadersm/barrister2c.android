@@ -330,6 +330,8 @@
     <string name="title_add_debt_user">填写债务人信息</string>
 
     <string name="title_upload_credit">新增债券债务信息</string>
+    <string name="tip_upload_success">上传成功</string>
+    <string name="tip_upload_failed">上传失败</string>
     <!--<string name="tip_add_star_success">感谢您的反馈欢迎</string>-->
 
 </resources>

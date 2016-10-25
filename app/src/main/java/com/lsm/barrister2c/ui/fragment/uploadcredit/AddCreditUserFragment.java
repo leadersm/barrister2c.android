@@ -79,9 +79,9 @@ public class AddCreditUserFragment extends Fragment {
 
         if(typeId == R.id.rb_type_user){
 
-            Editable nameEditable = aq.id(R.id.tv_credit_user_name).getEditable();
-            Editable userPhoneEditable = aq.id(R.id.tv_credit_user_phone).getEditable();
-            Editable idNumEditable = aq.id(R.id.tv_credit_user_id_number).getEditable();
+            Editable nameEditable = aq.id(R.id.et_user_name).getEditable();
+            Editable userPhoneEditable = aq.id(R.id.et_user_phone).getEditable();
+            Editable idNumEditable = aq.id(R.id.et_user_id_num).getEditable();
 
             if(TextUtils.isEmpty(nameEditable)){
                 UIHelper.showToast(getContext(),"请填写债权人联系人");

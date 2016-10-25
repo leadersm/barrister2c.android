@@ -139,6 +139,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
                 android:hint="金额"
+                android:inputType="numberDecimal"
                 android:textSize="13sp" />
 
         </android.support.design.widget.TextInputLayout>

@@ -1,6 +1,7 @@
 package com.lsm.barrister2c.data.io.creditdebt;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.lsm.barrister2c.data.entity.CreditDebtInfo;
 import com.lsm.barrister2c.data.entity.CreditDebtUser;
@@ -71,24 +72,24 @@ public class UploadCreditDebtReq extends Action {
         //===================债权人====================================
         CreditDebtUser creditUser = data.getCreditUser();
 
-        params("creditName",creditUser.getName());
-        params("creditPhone",creditUser.getPhone());
-        params("creditID_number",creditUser.getID_number());
-        params("creditCompany",creditUser.getCompany());
-        params("creditCompanyPhone",creditUser.getCompanyPhone());
-        params("creditLicenseNuber",creditUser.getLicenseNuber());
-        params("creditAddress",creditUser.getAddress());
+        params("creditName", TextUtils.isEmpty(creditUser.getName())?"":creditUser.getName());
+        params("creditPhone", TextUtils.isEmpty(creditUser.getPhone())?"":creditUser.getPhone());
+        params("creditID_number", TextUtils.isEmpty(creditUser.getID_number())?"":creditUser.getID_number());
+        params("creditCompany", TextUtils.isEmpty(creditUser.getCompany())?"":creditUser.getCompany());
+        params("creditCompanyPhone", TextUtils.isEmpty(creditUser.getCompanyPhone())?"":creditUser.getCompanyPhone());
+        params("creditLicenseNuber", TextUtils.isEmpty(creditUser.getLicenseNuber())?"":creditUser.getLicenseNuber());
+        params("creditAddress", TextUtils.isEmpty(creditUser.getAddress())?"":creditUser.getAddress());
 
         //======================债务人=================================
         CreditDebtUser debtUser = data.getDebtUser();
 
-        params("debtName",debtUser.getName());
-        params("debtPhone",debtUser.getPhone());
-        params("debtID_number",debtUser.getID_number());
-        params("debtCompany",debtUser.getCompany());
-        params("debtCompanyPhone",debtUser.getCompanyPhone());
-        params("debtLicenseNuber",debtUser.getLicenseNuber());
-        params("debtAddress",debtUser.getAddress());
+        params("debtName", TextUtils.isEmpty(debtUser.getName())?"":debtUser.getName());
+        params("debtPhone", TextUtils.isEmpty(debtUser.getPhone())?"":debtUser.getPhone());
+        params("debtID_number", TextUtils.isEmpty(debtUser.getID_number())?"":debtUser.getID_number());
+        params("debtCompany", TextUtils.isEmpty(debtUser.getCompany())?"":debtUser.getCompany());
+        params("debtCompanyPhone", TextUtils.isEmpty(debtUser.getCompanyPhone())?"":debtUser.getCompanyPhone());
+        params("debtLicenseNuber", TextUtils.isEmpty(debtUser.getLicenseNuber())?"":debtUser.getLicenseNuber());
+        params("debtAddress", TextUtils.isEmpty(debtUser.getAddress())?"":debtUser.getAddress());
 
     }
 
