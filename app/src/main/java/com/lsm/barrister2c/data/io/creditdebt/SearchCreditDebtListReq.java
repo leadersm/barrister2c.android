@@ -51,6 +51,57 @@ public class SearchCreditDebtListReq extends Action {
 
     }
 
+    //金额范围，
+    String startMoney;
+    String endMoney;
+    //时间范围
+    String startDate;
+    String endDate;
+    //债状态，
+    String creditDebtStatus;
+    // area地区
+    String area;
+
+    public SearchCreditDebtListReq(Context context, int page, String key, String keyType, String userType, String startMoney, String endMoney, String startDate, String endDate, String creditDebtStatus, String area) {
+        super(context);
+        this.page = page;
+        this.key = key;
+        this.keyType = keyType;
+        this.userType = userType;
+        this.startMoney = startMoney;
+        this.endMoney = endMoney;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.creditDebtStatus = creditDebtStatus;
+        this.area = area;
+
+        addUserParams();
+
+        params("page", String.valueOf(page));
+        params("pageSize", String.valueOf(pageSize));
+
+        if (!TextUtils.isEmpty(key))
+            params("key", key);
+        if (!TextUtils.isEmpty(keyType))
+            params("keyType", keyType);
+        if (!TextUtils.isEmpty(userType))
+            params("userType", userType);
+        //高级条件
+        if (!TextUtils.isEmpty(startMoney))
+            params("startMoney", startMoney);
+        if (!TextUtils.isEmpty(endMoney))
+            params("endMoney", endMoney);
+        if (!TextUtils.isEmpty(startDate))
+            params("startDate", startDate);
+        if (!TextUtils.isEmpty(endDate))
+            params("endDate", endDate);
+        if (!TextUtils.isEmpty(creditDebtStatus))
+            params("creditDebtStatus", creditDebtStatus);
+        if (!TextUtils.isEmpty(area))
+            params("area", area);
+
+    }
+
     @Override
     public String getName() {
         return SearchCreditDebtListReq.class.getSimpleName();

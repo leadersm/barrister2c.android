@@ -1,6 +1,8 @@
 package com.lsm.barrister2c.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +66,7 @@ public class CreditDebtListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (holder instanceof ItemHolder) {
 
             ItemHolder temp = (ItemHolder) holder;
-            temp.bind(items.get(position));
+            temp.bind(items.get(position),position);
 
         } else if (holder instanceof FooterViewHolder) {
 
@@ -99,9 +101,21 @@ public class CreditDebtListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return items == null || items.isEmpty() ? 0 : (items.size() + 1);
     }
 
-    public class ItemHolder extends RecyclerView.ViewHolder {
 
-        public CreditDebtInfo mItem;
+    public int getSelectIndex() {
+        return selectIndex;
+    }
+
+    public void setSelectIndex(int selectIndex) {
+        this.selectIndex = selectIndex;
+    }
+
+    private int selectIndex;
+
+
+    public class ItemHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
+
+        public CreditDebtInfo item;
 
         AQuery aq;
 
@@ -111,13 +125,34 @@ public class CreditDebtListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             aq.clicked(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    UIHelper.goCreditDebtDetailActivity(v.getContext(), mItem);
+                    UIHelper.goCreditDebtDetailActivity(v.getContext(), item);
                 }
             });
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if(editable){
+
+                        if(item.getStatus().equals("published")){
+                            return false;
+                        }
+
+                        view.showContextMenu();
+                        setSelectIndex(position);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+            view.setOnCreateContextMenuListener(this);
         }
 
-        public void bind(CreditDebtInfo item) {
-            mItem = item;
+        int position;
+        public void bind(CreditDebtInfo item,int position) {
+            this.position = position;
+            this.item = item;
 
             String type;
             if (item.getType().equals(CreditDebtInfo.TYPE_CONTRACT)) {
@@ -135,28 +170,64 @@ public class CreditDebtListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             //类型
             aq.id(R.id.tv_credit_type).text(type);
 
-            String status;
-            if (item.getStatus().equals(CreditDebtInfo.CREDIT_DEBT_STATUS_NOT_SUE)) {
-                status = "未起诉";
-            } else if (item.getStatus().equals(CreditDebtInfo.CREDIT_DEBT_STATUS_SUING)) {
-                status = "诉讼中";
-            } else if (item.getStatus().equals(CreditDebtInfo.CREDIT_DEBT_STATUS_JUDGING)) {
-                status = "执行中";
-            } else {
-                status = "已过时效";
+            String creditStatus;
+
+            if(!TextUtils.isEmpty(item.getCreditDebtStatus())){
+
+                if (item.getCreditDebtStatus().equals(CreditDebtInfo.CREDIT_DEBT_STATUS_NOT_SUE)) {
+                    creditStatus = "未起诉";
+                } else if (item.getCreditDebtStatus().equals(CreditDebtInfo.CREDIT_DEBT_STATUS_SUING)) {
+                    creditStatus = "诉讼中";
+                } else if (item.getCreditDebtStatus().equals(CreditDebtInfo.CREDIT_DEBT_STATUS_JUDGING)) {
+                    creditStatus = "执行中";
+                } else {
+                    creditStatus = "已过时效";
+                }
+
+            }else{
+                creditStatus = "未起诉";
             }
 
             //状态
-            aq.id(R.id.tv_credit_status).text(status);
+            aq.id(R.id.tv_credit_status).text("状态：" +creditStatus);
 
             aq.id(R.id.tv_credit_desc).text(item.getDesc());
-            aq.id(R.id.tv_credit_money).text(String.valueOf(item.getMoney()));
-            aq.id(R.id.tv_credit_time).text(item.getUpdateTime());
-            aq.id(R.id.tv_credit_addtime).text(item.getAddTime());
+            aq.id(R.id.tv_credit_money).text("金额："+String.valueOf(item.getMoney()));
+            aq.id(R.id.tv_credit_time).text("形成时间："+item.getCreditDebtTime());
+            aq.id(R.id.tv_credit_addtime).text("添加时间："+item.getAddTime());
+
+            if(editable){
+                String status = "";
+                int color = aq.getContext().getResources().getColor(R.color.yellow02);
+                if(item.getStatus().equals("unpublished")){
+                    status = "未发布";
+                    color = aq.getContext().getResources().getColor(R.color.yellow02);
+                }else if(item.getStatus().equals("published")){
+                    status = "已发布";
+                    color = aq.getContext().getResources().getColor(R.color.yellowGreen02);
+                }
+
+                aq.id(R.id.tv_status).text(status).textColor(color);
+            }
 
         }
 
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            menu.setHeaderTitle("操作");
+//            menu.add(0, 0, 0, "修改");
+            menu.add(0, 1, 0, "删除");
+        }
+
     }
+
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    boolean editable = false;
+
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
 

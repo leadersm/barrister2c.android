@@ -15,6 +15,8 @@ import com.androidquery.AQuery;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.data.entity.CreditDebtUser;
 import com.lsm.barrister2c.ui.UIHelper;
+import com.lsm.barrister2c.utils.TextHandler;
+import com.lsm.barrister2c.utils.Validator;
 
 /**
  * Created by lvshimin on 16/10/12.
@@ -79,9 +81,9 @@ public class AddCreditUserFragment extends Fragment {
 
         if(typeId == R.id.rb_type_user){
 
-            Editable nameEditable = aq.id(R.id.tv_credit_user_name).getEditable();
-            Editable userPhoneEditable = aq.id(R.id.tv_credit_user_phone).getEditable();
-            Editable idNumEditable = aq.id(R.id.tv_credit_user_id_number).getEditable();
+            Editable nameEditable = aq.id(R.id.et_user_name).getEditable();
+            Editable userPhoneEditable = aq.id(R.id.et_user_phone).getEditable();
+            Editable idNumEditable = aq.id(R.id.et_user_id_num).getEditable();
 
             if(TextUtils.isEmpty(nameEditable)){
                 UIHelper.showToast(getContext(),"请填写债权人联系人");
@@ -101,6 +103,18 @@ public class AddCreditUserFragment extends Fragment {
             name = nameEditable.toString();
             phone = userPhoneEditable.toString();
             ID_number = idNumEditable.toString();
+
+
+            if(!TextHandler.isMobileNum(phone)){
+                UIHelper.showToast(getActivity(),R.string.error_invalid_phone);
+                return false;
+            }
+
+
+            if(!Validator.isIDCard(ID_number)){
+                UIHelper.showToast(getActivity(),R.string.error_invalid_id_num);
+                return false;
+            }
 
         }else{
 
@@ -126,6 +140,11 @@ public class AddCreditUserFragment extends Fragment {
             company = companyEditable.toString();
             companyPhone = companyPhoneEditable.toString();
             licenseNuber = companyNumEditable.toString();
+
+            if(!TextHandler.isMobileNum(companyPhone)){
+                UIHelper.showToast(getActivity(),R.string.error_invalid_phone);
+                return false;
+            }
         }
 
         Editable addressEditable = aq.id(R.id.et_address).getEditable();

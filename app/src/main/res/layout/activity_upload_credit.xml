@@ -23,9 +23,9 @@
                 android:id="@+id/tv_toolbar_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textSize="18dp"
+                android:layout_weight="1"
                 android:textColor="@color/white"
-                android:layout_weight="1" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/btn_commit"
@@ -38,6 +38,7 @@
                 android:textColor="@color/white" />
 
         </LinearLayout>
+
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
@@ -49,7 +50,6 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

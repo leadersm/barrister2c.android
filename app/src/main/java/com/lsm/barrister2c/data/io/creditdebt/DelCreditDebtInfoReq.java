@@ -23,6 +23,7 @@ public class DelCreditDebtInfoReq extends Action {
         super(context);
         this.id = id;
         addUserParams();
+        params("id",id);
     }
 
     @Override

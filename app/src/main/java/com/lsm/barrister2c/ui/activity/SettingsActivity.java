@@ -115,6 +115,10 @@ public class SettingsActivity extends BaseActivity {
             }
         });
 
+        String versionName = VersionHelper.instance().getVersionName();
+
+        aq.id(R.id.tv_settings_version).text("v"+versionName);
+
     }
 
     private void setupToolbar() {

@@ -22,7 +22,10 @@ public class BuyCreditDebtDetailReq extends Action {
     public BuyCreditDebtDetailReq(Context context, String id) {
         super(context);
         this.id = id;
+
         addUserParams();
+
+        params("id",id);
     }
 
     @Override

@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
     android:orientation="vertical"
+    android:background="@color/white"
     android:padding="10dp">
 
 
@@ -28,15 +29,23 @@
             android:text="类型:"
             android:textSize="13sp" />
 
-
         <TextView
-            android:id="@+id/tv_credit_status"
+            android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="债状态"
+            android:layout_gravity="right"
+            android:text="状态"
+            android:layout_marginLeft="10dp"
             android:textSize="13sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_credit_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="债状态"
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/tv_credit_money"

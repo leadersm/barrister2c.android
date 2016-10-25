@@ -128,7 +128,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void bind(OrderItem item){
             this.mItem = item;
 
-//            String phoneNumber = mItem.getPhone();
+//            String phoneNumber = item.getPhone();
 //
 //            String showPhone = phoneNumber;
 //

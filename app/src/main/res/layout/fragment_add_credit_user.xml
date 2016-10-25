@@ -24,6 +24,7 @@
             android:id="@+id/rb_type_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="个人" />
 
         <RadioButton
@@ -46,6 +47,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="5dp"
             android:hint="联系人"
+            android:imeOptions="actionNext"
+            android:nextFocusDown="@+id/et_user_phone"
             android:textSize="13sp" />
 
     </android.support.design.widget.TextInputLayout>
@@ -69,6 +72,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
                 android:hint="电话"
+                android:inputType="number"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/et_user_id_num"
                 android:textSize="13sp" />
 
         </android.support.design.widget.TextInputLayout>
@@ -85,6 +91,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
                 android:hint="身份证号码"
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/et_company_name"
                 android:textSize="13sp" />
 
         </android.support.design.widget.TextInputLayout>
@@ -110,6 +119,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/et_company_phone"
                 android:hint="公司名称"
                 android:textSize="13sp" />
 
@@ -126,6 +137,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:nextFocusDown="@+id/et_company_liscense_num"
                 android:hint="公司电话"
                 android:textSize="13sp" />
 
@@ -142,6 +156,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/et_address"
                 android:hint="信用代码"
                 android:textSize="13sp" />
 

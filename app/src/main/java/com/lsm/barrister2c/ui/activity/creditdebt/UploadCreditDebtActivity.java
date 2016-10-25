@@ -16,6 +16,7 @@ import com.lsm.barrister2c.data.entity.CreditDebtInfo;
 import com.lsm.barrister2c.data.entity.CreditDebtUser;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.creditdebt.UploadCreditDebtReq;
+import com.lsm.barrister2c.ui.UIHelper;
 import com.lsm.barrister2c.ui.activity.BaseActivity;
 import com.lsm.barrister2c.ui.fragment.uploadcredit.AddCreditDebtInfoFragment;
 import com.lsm.barrister2c.ui.fragment.uploadcredit.AddCreditUserFragment;
@@ -44,7 +45,7 @@ public class UploadCreditDebtActivity extends BaseActivity {
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setOffscreenPageLimit(3);
 
         ViewGroup tab = (ViewGroup) findViewById(R.id.tab);
 
@@ -92,9 +93,15 @@ public class UploadCreditDebtActivity extends BaseActivity {
                 doCommit();
             }
         });
+
     }
 
+    boolean isLoading = false;
+
     private void doCommit() {
+
+        if(isLoading)
+            return;
 
         boolean infoPrepared = addCreditDebtInfoFragment.prepared();
         boolean creditUserPrepared = addCreditUserFragment.prepared();
@@ -111,20 +118,29 @@ public class UploadCreditDebtActivity extends BaseActivity {
             File proofFile = addCreditDebtInfoFragment.getProofFile();
             File judgeFile = addCreditDebtInfoFragment.getJudgeFile();
 
-            new UploadCreditDebtReq(this,info,proofFile,judgeFile).execute(new Action.Callback<Action.CommonResult>() {
+            new UploadCreditDebtReq(this,info,proofFile,judgeFile).execute(new Action.Callback<Boolean>() {
                 @Override
                 public void progress() {
-
+                    isLoading = true;
+                    progressDialog.setMessage(getString(R.string.loading));
+                    progressDialog.show();
                 }
 
                 @Override
                 public void onError(int errorCode, String msg) {
-
+                    isLoading = false;
+                    progressDialog.dismiss();
+                    UIHelper.showToast(getApplicationContext(),msg);
                 }
 
                 @Override
-                public void onCompleted(Action.CommonResult commonResult) {
+                public void onCompleted(Boolean commonResult) {
+                    isLoading = false;
 
+                    progressDialog.dismiss();
+
+                    UIHelper.showToast(getApplicationContext(),R.string.tip_success_add_credit);
+                    finish();
                 }
             });
 
@@ -139,11 +155,11 @@ public class UploadCreditDebtActivity extends BaseActivity {
     private void updateTitle(int position) {
         String title;
         if (position == 0) {
-            title = getString(R.string.title_add_credit_info);
-        } else if (position == 1) {
             title = getString(R.string.title_add_credit_user);
-        } else {
+        } else if (position == 1) {
             title = getString(R.string.title_add_debt_user);
+        } else {
+            title = getString(R.string.title_add_credit_info);
         }
         aq.id(R.id.tv_toolbar_title).text(title);
     }
@@ -163,7 +179,6 @@ public class UploadCreditDebtActivity extends BaseActivity {
     AddCreditUserFragment addCreditUserFragment = new AddCreditUserFragment();
     AddDebtUserFragment addDebtUserFragment = new AddDebtUserFragment();
 
-
     /**
      * Title: NewsFragment.java
      * Description:ViewPager适配器
@@ -181,11 +196,11 @@ public class UploadCreditDebtActivity extends BaseActivity {
         public CharSequence getPageTitle(int position) {
             String title;
             if (position == 0) {
-                title = getString(R.string.title_add_step1);
+                title = getString(R.string.title_add_step0);
             } else if (position == 1) {
-                title = getString(R.string.title_add_step2);
+                title = getString(R.string.title_add_step1);
             } else {
-                title = getString(R.string.title_add_step3);
+                title = getString(R.string.title_add_step2);
             }
             return title;
         }
@@ -202,14 +217,16 @@ public class UploadCreditDebtActivity extends BaseActivity {
 
             if (position == 0) {
 
-                fragment = addCreditDebtInfoFragment;
+                fragment = addCreditUserFragment;
 
             } else if (position == 1) {
 
-                fragment = addCreditUserFragment;
+                fragment = addDebtUserFragment;
 
             }else{
-                fragment = addDebtUserFragment;
+
+                fragment = addCreditDebtInfoFragment;
+
             }
 
             return fragment;

@@ -47,6 +47,8 @@ import com.lsm.barrister2c.ui.activity.UploadCaseActivity;
 import com.lsm.barrister2c.ui.activity.WebViewActivity;
 import com.lsm.barrister2c.ui.activity.creditdebt.CreditDebtDetailActivity;
 import com.lsm.barrister2c.ui.activity.creditdebt.CreditDebtListActivity;
+import com.lsm.barrister2c.ui.activity.creditdebt.MyPurchasedCreditDebtListActivity;
+import com.lsm.barrister2c.ui.activity.creditdebt.MyUploadCreditDebtListActivity;
 import com.lsm.barrister2c.ui.activity.creditdebt.UploadCreditDebtActivity;
 import com.lsm.barrister2c.wxapi.WXPayEntryActivity;
 
@@ -405,6 +407,24 @@ public class UIHelper {
     public static void goCreditDebtDetailActivity(Context context, CreditDebtInfo mItem) {
         Intent intent = new Intent(context, CreditDebtDetailActivity.class);
         intent.putExtra("item", mItem);
+        context.startActivity(intent);
+    }
+
+    /**
+     * 我购买的
+     * @param context
+     */
+    public static void goMyPurchasedCreditActivity(Context context) {
+        Intent intent = new Intent(context, MyPurchasedCreditDebtListActivity.class);
+        context.startActivity(intent);
+    }
+
+    /**
+     * 我上传的
+     * @param context
+     */
+    public static void goMyUploadCreditActivity(Context context) {
+        Intent intent = new Intent(context, MyUploadCreditDebtListActivity.class);
         context.startActivity(intent);
     }
 }

@@ -1,6 +1,7 @@
 package com.lsm.barrister2c.ui.fragment.uploadcredit;
 
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -14,9 +15,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.RadioGroup;
 
 import com.androidquery.AQuery;
@@ -33,6 +36,7 @@ import com.lsm.barrister2c.utils.DateFormatUtils;
 import com.lsm.barrister2c.utils.FileUtils;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Date;
 
 import rx.Observable;
@@ -69,8 +73,6 @@ public class AddCreditDebtInfoFragment extends Fragment {
         groupProofType = (RadioGroup) view.findViewById(R.id.group_proof);
         groupJudgeType = (RadioGroup) view.findViewById(R.id.group_judge);
 
-        aq.id(R.id.et_credit_time).text(DateFormatUtils.format(new Date()));
-
         //凭证图片
         aq.id(R.id.btn_proof_image).clicked(new View.OnClickListener() {
             @Override
@@ -92,16 +94,58 @@ public class AddCreditDebtInfoFragment extends Fragment {
         groupStatus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == R.id.rb_status_not_sue){
-                    aq.id(R.id.layout_image_judge).gone();
-                }else{
+                if(checkedId == R.id.rb_status_suing){
+                    //执行中隐藏凭证
+                    aq.id(R.id.btn_proof_image).gone();
                     aq.id(R.id.layout_image_judge).visible();
+                }else{
+                    //其他隐藏判决书
+                    aq.id(R.id.btn_proof_image).visible();
+                    aq.id(R.id.layout_image_judge).gone();
                 }
             }
         });
 
+        aq.id(R.id.et_credit_time).clicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateTimePicker();
+            }
+        });
+
+
+        createTime = DateFormatUtils.format(new Date(),"yyyy-MM-dd");
+
+        aq.id(R.id.et_credit_time).text(createTime);
+
     }
 
+    Calendar cal;
+    private void showDateTimePicker() {
+
+        cal = Calendar.getInstance();
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+
+        new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                cal.set(Calendar.YEAR,year);
+                cal.set(Calendar.MONTH,monthOfYear);
+                cal.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                Date time = cal.getTime();
+                String date = DateFormatUtils.format(time,"yyyy-MM-dd");
+
+                Log.d("onDatePick","pickdate:"+date);
+                aq.id(R.id.et_credit_time).text(date);
+
+                createTime = date;
+            }
+        }, year, month, dayOfMonth).show();
+    }
 
     String type;
     String status;
@@ -111,11 +155,13 @@ public class AddCreditDebtInfoFragment extends Fragment {
 
     String proofName;
     String judgeDocumentName;
+
     /**
      * 提交前检查
+     *
      * @return
      */
-    public boolean prepared(){
+    public boolean prepared() {
 
         //债类型
         int typeId = groupType.getCheckedRadioButtonId();
@@ -173,23 +219,33 @@ public class AddCreditDebtInfoFragment extends Fragment {
 
         Editable descEditable = aq.id(R.id.et_credit_desc).getEditable();
         Editable moneyEditable = aq.id(R.id.et_credit_money).getEditable();
-        Editable dateEditable = aq.id(R.id.et_credit_time).getEditable();
 
-        if(TextUtils.isEmpty(moneyEditable)){
-            UIHelper.showToast(getContext(),"请填写金额");
+        if (TextUtils.isEmpty(moneyEditable)) {
+            UIHelper.showToast(getContext(), "请填写金额");
             return false;
         }
 
-        if(TextUtils.isEmpty(descEditable)){
-            UIHelper.showToast(getContext(),"请填写描述信息");
+        if (TextUtils.isEmpty(descEditable)) {
+            UIHelper.showToast(getContext(), "请填写描述信息");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(createTime)) {
+            UIHelper.showToast(getContext(), "请填写日期");
+            return false;
+        }
+
+        Date create = DateFormatUtils.parse(createTime, "yyyy-MM-dd");
+        Date now = new Date();
+
+        if(create.after(now)){
+            UIHelper.showToast(getActivity(),"创建时间不正确");
             return false;
         }
 
         money = moneyEditable.toString();
 
         desc = descEditable.toString();
-
-        createTime = dateEditable.toString();
 
         return true;
     }
@@ -244,6 +300,7 @@ public class AddCreditDebtInfoFragment extends Fragment {
 
     /**
      * 从相册选择or拍照
+     *
      * @param which
      */
     protected void doSelectChooseMode(int which) {
@@ -256,7 +313,7 @@ public class AddCreditDebtInfoFragment extends Fragment {
                     .flatMap(new Func1<Uri, Observable<File>>() {
                         @Override
                         public Observable<File> call(Uri uri) {
-                            return RxImageConverters.uriToFile(getContext(), uri,createTempFile());
+                            return RxImageConverters.uriToFile(getContext(), uri, createTempFile());
                         }
                     }).subscribe(new Action1<File>() {
 
@@ -272,7 +329,7 @@ public class AddCreditDebtInfoFragment extends Fragment {
                     .flatMap(new Func1<Uri, Observable<File>>() {
                         @Override
                         public Observable<File> call(Uri uri) {
-                            return RxImageConverters.uriToFile(getActivity(), uri,createTempFile());
+                            return RxImageConverters.uriToFile(getActivity(), uri, createTempFile());
                         }
                     }).subscribe(new Action1<File>() {
 
@@ -306,13 +363,13 @@ public class AddCreditDebtInfoFragment extends Fragment {
 
     private void showFile(File file) {
 
-        if(choose == CHOOSE_PROOF_FILE){
+        if (choose == CHOOSE_PROOF_FILE) {
 
             proofFile = file;
             SimpleDraweeView image = (SimpleDraweeView) aq.id(R.id.image_proof).getView();
             image.setImageURI(Uri.fromFile(file));
 
-        }else{
+        } else {
 
             judgeFile = file;
             SimpleDraweeView image = (SimpleDraweeView) aq.id(R.id.image_judge).getView();
@@ -321,7 +378,7 @@ public class AddCreditDebtInfoFragment extends Fragment {
         }
     }
 
-    class BmTask extends AsyncTask<Void,Void,Bitmap> {
+    class BmTask extends AsyncTask<Void, Void, Bitmap> {
 
         File file;
         Bitmap bitmap;
@@ -350,20 +407,20 @@ public class AddCreditDebtInfoFragment extends Fragment {
             int height = bitmap.getHeight();
             int width = bitmap.getWidth();
 
-            float targetRatio = 0 ;
+            float targetRatio = 0;
 
-            if(height>1920 || width >1080){
+            if (height > 1920 || width > 1080) {
 
 //            targetHeight = height = 1920;
 //            targetWidth = (int) (height/ratio);
 
-                if(height>1920){
-                    targetRatio = (float) 1920/height;
-                }else if(width>1080){
-                    targetRatio =  (float) 1080/width;
+                if (height > 1920) {
+                    targetRatio = (float) 1920 / height;
+                } else if (width > 1080) {
+                    targetRatio = (float) 1080 / width;
                 }
 
-                return FileUtils.ratio(bitmap,targetRatio);
+                return FileUtils.ratio(bitmap, targetRatio);
 //                return FileUtils.ratio(bitmap,targetRatio*width,targetRatio*height);
             }
 
@@ -374,7 +431,7 @@ public class AddCreditDebtInfoFragment extends Fragment {
         protected void onPostExecute(Bitmap bm) {
             super.onPostExecute(bm);
 
-            if(bm!=null){
+            if (bm != null) {
 
                 FileUtils.saveImageFile(bm, AppConfig.getDir(Constants.imageDir), file.getName(), new FileUtils.FileCallback() {
                     @Override
@@ -386,7 +443,7 @@ public class AddCreditDebtInfoFragment extends Fragment {
                     }
                 });
 
-            }else{
+            } else {
                 progressDialog.dismiss();
                 showFile(file);
                 bitmap = null;

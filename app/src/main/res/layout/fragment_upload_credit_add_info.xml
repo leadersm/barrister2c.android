@@ -34,6 +34,7 @@
                     android:id="@+id/rb_type_contract"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="合同欠款" />
 
                 <RadioButton
@@ -85,6 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:checked="true"
                 android:text="未起诉" />
 
             <RadioButton
@@ -123,6 +125,8 @@
                 android:layout_marginTop="5dp"
                 android:gravity="top"
                 android:hint="描述"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/et_credit_money"
                 android:lines="5"
                 android:textSize="13sp" />
         </android.support.design.widget.TextInputLayout>
@@ -138,28 +142,28 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
+                android:inputType="numberDecimal"
                 android:hint="金额"
                 android:textSize="13sp" />
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:text="形成时间"
+            android:textSize="13sp" />
 
-            <EditText
-                android:id="@+id/et_credit_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="5dp"
-                android:editable="false"
-                android:hint="形成时间"
-                android:text="2016-04-09 14:00-17:00"
-                android:textSize="13sp" />
-
-        </android.support.design.widget.TextInputLayout>
+        <TextView
+            android:id="@+id/et_credit_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:textSize="13sp" />
 
         <View
             android:layout_width="match_parent"
@@ -184,6 +188,7 @@
                 android:id="@+id/rb_proof_hetong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="合同" />
 
             <RadioButton
@@ -267,25 +272,26 @@
                     android:id="@+id/rb_judge_panjueshu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="未起诉" />
+                    android:checked="true"
+                    android:text="判决书" />
 
                 <RadioButton
                     android:id="@+id/rb_judge_tiaojieshu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="诉讼中" />
+                    android:text="调解书" />
 
                 <RadioButton
                     android:id="@+id/rb_judge_zhongcaishu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="执行中" />
+                    android:text="仲裁书" />
 
                 <RadioButton
                     android:id="@+id/rb_judge_qita"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="已过时效" />
+                    android:text="其他" />
 
             </RadioGroup>
 
