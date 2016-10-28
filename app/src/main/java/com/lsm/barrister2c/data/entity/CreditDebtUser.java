@@ -1,10 +1,12 @@
 package com.lsm.barrister2c.data.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by lvshimin on 16/9/25.
  * 债权人、债务人
  */
-public class CreditDebtUser {
+public class CreditDebtUser implements Serializable{
 
 
     public static final String TYPE_CREDIT = "credit";//债权人
@@ -90,5 +92,20 @@ public class CreditDebtUser {
 
     public void setID_number(String ID_number) {
         this.ID_number = ID_number;
+    }
+
+    @Override
+    public String toString() {
+        return "CreditDebtUser{" +
+                "id='" + id + '\'' +
+                ", type='" + type + '\'' +
+                ", company='" + company + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", companyPhone='" + companyPhone + '\'' +
+                ", licenseNuber='" + licenseNuber + '\'' +
+                ", ID_number='" + ID_number + '\'' +
+                '}';
     }
 }

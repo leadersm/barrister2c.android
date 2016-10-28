@@ -144,7 +144,6 @@
                 android:layout_marginTop="5dp"
                 android:inputType="numberDecimal"
                 android:hint="金额"
-                android:inputType="numberDecimal"
                 android:textSize="13sp" />
 
         </android.support.design.widget.TextInputLayout>
@@ -171,70 +170,80 @@
             android:layout_height="0.5dp"
             android:background="@color/divider" />
 
-        <TextView
+
+        <LinearLayout
+            android:id="@+id/layout_image_proof"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="10dp"
-            android:text="凭证类型"
-            android:textSize="13sp" />
+            android:layout_height="wrap_content">
 
-        <RadioGroup
-            android:id="@+id/group_proof"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rb_proof_hetong"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="合同" />
-
-            <RadioButton
-                android:id="@+id/rb_proof_xieyi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="协议" />
-
-            <RadioButton
-                android:id="@+id/rb_proof_qiantiao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="欠条" />
-
-            <RadioButton
-                android:id="@+id/rb_proof_qita"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="其他" />
-
-        </RadioGroup>
-
-        <FrameLayout
-            android:id="@+id/btn_proof_image"
-            style="@style/clickablelayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:drawablePadding="5dp"
-                android:text="选择凭证图片"
-                android:textSize="16sp" />
+                android:layout_marginTop="10dp"
+                android:text="凭证类型"
+                android:textSize="13sp" />
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/image_proof"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right|center_vertical"
-                app:placeholderImage="@color/placeholder" />
-        </FrameLayout>
+            <RadioGroup
+                android:id="@+id/group_proof"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_proof_hetong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="合同" />
+
+                <RadioButton
+                    android:id="@+id/rb_proof_xieyi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="协议" />
+
+                <RadioButton
+                    android:id="@+id/rb_proof_qiantiao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="欠条" />
+
+                <RadioButton
+                    android:id="@+id/rb_proof_qita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="其他" />
+
+            </RadioGroup>
+
+            <FrameLayout
+                android:id="@+id/btn_proof_image"
+                style="@style/clickablelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:drawablePadding="5dp"
+                    android:text="选择凭证图片"
+                    android:textSize="16sp" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/image_proof"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="right|center_vertical"
+                    app:placeholderImage="@color/placeholder" />
+            </FrameLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layout_image_judge"

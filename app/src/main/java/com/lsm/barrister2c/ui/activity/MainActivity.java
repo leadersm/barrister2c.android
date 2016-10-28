@@ -18,6 +18,7 @@ import com.lsm.barrister2c.app.UserHelper;
 import com.lsm.barrister2c.app.VersionHelper;
 import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.ui.fragment.AvaterCenterFragment;
+import com.lsm.barrister2c.ui.fragment.CreditDebtCenter;
 import com.lsm.barrister2c.ui.fragment.FaxianFragment;
 import com.lsm.barrister2c.ui.fragment.HomeFragment;
 import com.lsm.barrister2c.ui.fragment.LearningCenterFragment;
@@ -79,20 +80,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 bottomNavigationView.onBottomNavigationItemClick(position);
-
-                switch (position) {
-                    case 0:
-                        break;
-                    case 1:
-
-                        break;
-                    case 2:
-
-                        break;
-                    case 3:
-
-                        break;
-                }
             }
 
             @Override
@@ -114,6 +101,10 @@ public class MainActivity extends BaseActivity {
                 (getString(R.string.tab_home), getResources().getColor(R.color.colorPrimary), R.drawable.func_main_home_selector);
         BottomNavigationItem myConsultsItem = new BottomNavigationItem
                 (getString(R.string.tab_faxian), getResources().getColor(R.color.colorPrimary), R.drawable.func_main_faxian_selector);
+
+        BottomNavigationItem creditdebtItem = new BottomNavigationItem
+                (getString(R.string.tab_credit_debt), getResources().getColor(R.color.colorPrimary), R.drawable.func_main_credit_selector);
+
         BottomNavigationItem learningCenterItem = new BottomNavigationItem
                 (getString(R.string.tab_learning_center), getResources().getColor(R.color.colorPrimary), R.drawable.func_main_learning_selector);
         BottomNavigationItem avaterCenterItem = new BottomNavigationItem
@@ -122,6 +113,7 @@ public class MainActivity extends BaseActivity {
 
         bottomNavigationView.addTab(homeItem);
         bottomNavigationView.addTab(myConsultsItem);
+        bottomNavigationView.addTab(creditdebtItem);
         bottomNavigationView.addTab(learningCenterItem);
         bottomNavigationView.addTab(avaterCenterItem);
 
@@ -172,6 +164,8 @@ public class MainActivity extends BaseActivity {
             }else if(position==1){
                 return FaxianFragment.newInstance();
             }else if(position==2){
+                return CreditDebtCenter.newInstance();
+            }else if(position==3){
                 return LearningCenterFragment.newInstance();
             }else{
                 return AvaterCenterFragment.newInstance(user);
@@ -180,8 +174,8 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 4;
+            // Show 5 total pages.
+            return 5;
         }
 
     }
@@ -208,7 +202,6 @@ public class MainActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
     }
-
 
     /**
      * 程序退出销毁

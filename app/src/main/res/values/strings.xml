@@ -312,7 +312,7 @@
     <string name="title_expert_doc">专家咨询须知</string>
     <string name="expert">专家</string>
     <string name="secretary">专家小秘书</string>
-    <string name="title_creditdebt">债权债务信息系统</string>
+    <string name="title_creditdebt">债权债务信息查询系统</string>
     <string name="summary_creditdebt">点击查看债权债务信息</string>
     <string name="label_credit_info">债务信息</string>
     <string name="label_credit_user">债权人</string>
@@ -322,9 +322,9 @@
     <string name="label_debt_user_type">查询他的</string>
     <string name="label_debt_search_key">查询条件</string>
     <string name="title_credit_search">债权债务信息查询</string>
-    <string name="title_add_step2">第一步</string>
-    <string name="title_add_step0">第二步</string>
-    <string name="title_add_step1">第三步</string>
+    <string name="title_add_step0">第一步</string>
+    <string name="title_add_step1">第二步</string>
+    <string name="title_add_step2">第三步</string>
     <string name="title_add_credit_info">填写债权债务信息</string>
     <string name="title_add_credit_user">填写债权人信息</string>
     <string name="title_add_debt_user">填写债务人信息</string>
@@ -345,6 +345,8 @@
     <string name="label_area">地区</string>
     <string name="label_credit_info_status">债状态</string>
     <string name="advance">高级搜索条件</string>
+    <string name="tab_credit_debt">债立方</string>
+    <string name="label_debt">上榜债务信息</string>
     <!--<string name="tip_add_star_success">感谢您的反馈欢迎</string>-->
 
 </resources>

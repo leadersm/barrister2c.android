@@ -1,6 +1,7 @@
 package com.lsm.barrister2c.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 import com.lsm.barrister2c.R;
 import com.lsm.barrister2c.data.entity.CreditDebtInfo;
+import com.lsm.barrister2c.data.entity.CreditDebtUser;
 import com.lsm.barrister2c.ui.UIHelper;
 
 import java.util.List;
@@ -66,7 +68,7 @@ public class CreditDebtListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (holder instanceof ItemHolder) {
 
             ItemHolder temp = (ItemHolder) holder;
-            temp.bind(items.get(position),position);
+            temp.bind(items.get(position), position);
 
         } else if (holder instanceof FooterViewHolder) {
 
@@ -113,7 +115,7 @@ public class CreditDebtListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private int selectIndex;
 
 
-    public class ItemHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
+    public class ItemHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
         public CreditDebtInfo item;
 
@@ -132,9 +134,10 @@ public class CreditDebtListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    if(editable){
 
-                        if(item.getStatus().equals("published")){
+                    if (editable) {
+
+                        if (item.getStatus().equals("published")) {
                             return false;
                         }
 
@@ -150,7 +153,8 @@ public class CreditDebtListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         int position;
-        public void bind(CreditDebtInfo item,int position) {
+
+        public void bind(CreditDebtInfo item, int position) {
             this.position = position;
             this.item = item;
 
@@ -168,11 +172,11 @@ public class CreditDebtListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
 
             //类型
-            aq.id(R.id.tv_credit_type).text(type);
+            aq.id(R.id.tv_credit_type).text("债务类型：" + type);
 
             String creditStatus;
 
-            if(!TextUtils.isEmpty(item.getCreditDebtStatus())){
+            if (!TextUtils.isEmpty(item.getCreditDebtStatus())) {
 
                 if (item.getCreditDebtStatus().equals(CreditDebtInfo.CREDIT_DEBT_STATUS_NOT_SUE)) {
                     creditStatus = "未起诉";
@@ -184,30 +188,98 @@ public class CreditDebtListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     creditStatus = "已过时效";
                 }
 
-            }else{
+            } else {
                 creditStatus = "未起诉";
             }
 
             //状态
-            aq.id(R.id.tv_credit_status).text("状态：" +creditStatus);
+            aq.id(R.id.tv_credit_status).text("状态：" + creditStatus);
 
             aq.id(R.id.tv_credit_desc).text(item.getDesc());
-            aq.id(R.id.tv_credit_money).text("金额："+String.valueOf(item.getMoney()));
-            aq.id(R.id.tv_credit_time).text("形成时间："+item.getCreditDebtTime());
-            aq.id(R.id.tv_credit_addtime).text("添加时间："+item.getAddTime());
 
-            if(editable){
+            String money = (isCenterList ? "债务金额" : "金额") + "：<font color=\"#ff0000\">" + item.getMoney() + "</font>";
+            aq.id(R.id.tv_credit_money).text(Html.fromHtml(money));
+
+            aq.id(R.id.tv_credit_time).text("形成时间：" + (TextUtils.isEmpty(item.getCreditDebtTime()) ? "未知" : item.getCreditDebtTime()));
+
+            aq.id(R.id.tv_credit_addtime).text("添加时间：" + item.getAddTime());
+
+            if (editable) {
                 String status = "";
                 int color = aq.getContext().getResources().getColor(R.color.yellow02);
-                if(item.getStatus().equals("unpublished")){
+                if (item.getStatus().equals("unpublished")) {
                     status = "未发布";
                     color = aq.getContext().getResources().getColor(R.color.yellow02);
-                }else if(item.getStatus().equals("published")){
+                } else if (item.getStatus().equals("published")) {
                     status = "已发布";
                     color = aq.getContext().getResources().getColor(R.color.yellowGreen02);
                 }
 
                 aq.id(R.id.tv_status).text(status).textColor(color);
+
+            } else {
+                aq.id(R.id.tv_status).gone();
+            }
+
+            CreditDebtUser debtUser = item.getDebtUser();
+
+            if (debtUser != null) {
+
+                System.out.println(debtUser.toString());
+
+                aq.id(R.id.layout_debt_user).visible();
+
+                if (TextUtils.isEmpty(debtUser.getName())) {
+                    aq.id(R.id.tv_debt_user_name).gone();
+                } else {
+
+                    String debtUserName = "联系人:<font color=\"#2bacfe\">" + (TextUtils.isEmpty(debtUser.getName()) ? "未知" : debtUser.getName()) + "</font>";
+                    aq.id(R.id.tv_debt_user_name).text(Html.fromHtml(debtUserName)).visible();
+
+                }
+
+                if (!TextUtils.isEmpty(debtUser.getPhone())) {
+                    aq.id(R.id.tv_debt_user_phone).text("电话:" + debtUser.getPhone()).visible();
+                } else {
+                    aq.id(R.id.tv_debt_user_phone).gone();
+                }
+
+                if (!TextUtils.isEmpty(debtUser.getID_number())) {
+                    aq.id(R.id.tv_debt_user_id_number).text("身份证号码:" + debtUser.getID_number()).visible();
+                } else {
+                    aq.id(R.id.tv_debt_user_id_number).gone();
+                }
+
+                if (!TextUtils.isEmpty(debtUser.getCompany())) {
+                    String company = "公司名称:<font color=\"#2bacfe\">" + (TextUtils.isEmpty(debtUser.getCompany()) ? "未知" : debtUser.getCompany()) + "</font>";
+
+                    aq.id(R.id.tv_debt_user_company).text(Html.fromHtml(company)).visible();
+                } else {
+                    aq.id(R.id.tv_debt_user_company).gone();
+                }
+
+
+                if (!TextUtils.isEmpty(debtUser.getCompanyPhone())) {
+                    aq.id(R.id.tv_debt_company_phone).text("公司电话:" + debtUser.getCompanyPhone()).visible();
+
+                } else {
+                    aq.id(R.id.tv_debt_company_phone).gone();
+                }
+
+                if (!TextUtils.isEmpty(debtUser.getLicenseNuber())) {
+                    aq.id(R.id.tv_debt_liscense_number).text("信用代码:" + debtUser.getLicenseNuber()).visible();
+                } else {
+                    aq.id(R.id.tv_debt_liscense_number).gone();
+                }
+
+                if (!TextUtils.isEmpty(debtUser.getLicenseNuber())) {
+                    aq.id(R.id.tv_debt_address).text("联系地址:" + debtUser.getAddress()).visible();
+                } else {
+                    aq.id(R.id.tv_debt_address).gone();
+                }
+
+            } else {
+                aq.id(R.id.layout_debt_user).gone();
             }
 
         }
@@ -221,6 +293,11 @@ public class CreditDebtListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     }
 
+    public void setCenterList(boolean centerList) {
+        isCenterList = centerList;
+    }
+
+    boolean isCenterList = false;
 
     public void setEditable(boolean editable) {
         this.editable = editable;

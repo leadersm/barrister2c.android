@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 
 import com.androidquery.AQuery;
 import com.lsm.barrister2c.R;
-import com.lsm.barrister2c.app.AppConfig;
 import com.lsm.barrister2c.data.entity.LawApp;
-import com.lsm.barrister2c.data.entity.User;
 import com.lsm.barrister2c.data.io.Action;
 import com.lsm.barrister2c.data.io.IO;
 import com.lsm.barrister2c.data.io.app.GetLawAppListReq;
@@ -71,22 +69,6 @@ public class FaxianFragment extends Fragment {
     private void init(View view) {
 
         aq = new AQuery(view);
-
-        aq.id(R.id.btn_faxian_creditdebt).clicked(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                User user = AppConfig.getUser(getContext());
-
-                if (user != null) {
-                    UIHelper.goCreditListAcitivity(v.getContext());
-                } else {
-                    UIHelper.goLoginActivity(getActivity());
-                }
-
-            }
-        });
-
 
         mLawAppListView = (RecyclerView) view.findViewById(R.id.recyclerview_faxian_apps);
         mLawAppListLayoutManager = new GridLayoutManager(getActivity(), 4);

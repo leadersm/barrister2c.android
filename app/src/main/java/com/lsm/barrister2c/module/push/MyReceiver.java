@@ -29,6 +29,7 @@ import com.lsm.barrister2c.data.db.UserDbService;
 import com.lsm.barrister2c.ui.activity.AuthActivity;
 import com.lsm.barrister2c.ui.activity.MainActivity;
 import com.lsm.barrister2c.ui.activity.MyAccountActivity;
+import com.lsm.barrister2c.ui.activity.OnlineOrderDetailActivity;
 import com.lsm.barrister2c.ui.activity.OrderDetailActivity;
 import com.lsm.barrister2c.ui.activity.WebViewActivity;
 import com.lsm.barrister2c.utils.DLog;
@@ -214,6 +215,15 @@ public class MyReceiver extends BroadcastReceiver {
 
                     showNotification(context,title,content,type,contentId);
 
+                }else if (msg.getType().equals(PushMessage.TYPE_ONLINE_ORDER)) {
+
+                    //授权
+                    String title = "在线订单支付";
+                    //消息入库
+                    UserDbService.getInstance(context).getPushMessageAction().save(msg);
+
+                    showNotification(context,title,content,type,contentId);
+
                 }
                 //========================COMMON=================================
                 else if (msg.getType().equals(PushMessage.TYPE_SYSTEM_MSG)) {
@@ -316,12 +326,19 @@ public class MyReceiver extends BroadcastReceiver {
                 type.equals(PushMessage.TYPE_GET_MONEY)||
                 type.equals(PushMessage.TYPE_ORDER_BACK_MONEY)) {
 
+            //我的账户
             targetIntent = new Intent(context, MyAccountActivity.class);
 
         }else if(type.equals(PushMessage.TYPE_SYSTEM_MSG)){
+            //系统消息
             targetIntent = new Intent(context, MainActivity.class);
         }else if(type.equals(PushMessage.TYPE_WEB_AUTH)){
+            //网页授权认证页面
             targetIntent = new Intent(context, AuthActivity.class);
+        }else if(type.equals(PushMessage.TYPE_ONLINE_ORDER)){
+            //在线订单详情
+            targetIntent = new Intent(context, OnlineOrderDetailActivity.class);
+            targetIntent.putExtra("id", contentId);
         }
 
         PendingIntent contentIntent = null;
@@ -347,11 +364,11 @@ public class MyReceiver extends BroadcastReceiver {
 
                 if (type.equals(PushMessage.TYPE_ORDER_STATUS)) {
 
-                    // Adds the back stack
+                    //返回订单详情
                     stackBuilder.addParentStack(OrderDetailActivity.class);
 
                 } else if (type.equals(PushMessage.TYPE_LEARNING)) {
-                    // Adds the back stack
+                    //返回学习中心
                     stackBuilder.addParentStack(WebViewActivity.class);
 
                 }else if (type.equals(PushMessage.TYPE_ORDER_REWARD)||
@@ -359,12 +376,16 @@ public class MyReceiver extends BroadcastReceiver {
                         type.equals(PushMessage.TYPE_GET_MONEY)||
                         type.equals(PushMessage.TYPE_ORDER_BACK_MONEY)) {
 
+                    //返回我的账户页
                     stackBuilder.addParentStack( MyAccountActivity.class);
 
-                }else if(type.equals(PushMessage.TYPE_SYSTEM_MSG)){
+                }else if(type.equals(PushMessage.TYPE_SYSTEM_MSG)
+                        ||type.equals(PushMessage.TYPE_WEB_AUTH)
+                        ||type.equals(PushMessage.TYPE_ONLINE_ORDER)){
+
+                    //返回主页
                     stackBuilder.addParentStack( MainActivity.class);
-                }else if(type.equals(PushMessage.TYPE_WEB_AUTH)){
-                    stackBuilder.addParentStack( MainActivity.class);
+
                 }
 
                 stackBuilder.addNextIntent(targetIntent);

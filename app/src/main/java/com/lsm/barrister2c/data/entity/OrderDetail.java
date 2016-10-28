@@ -22,6 +22,11 @@ public class OrderDetail implements Serializable {
     //    f.请求取消
     public static final String STATUS_REQUEST_CANCELED = "order.status.request.cancel";
 
+    //未支付-在线业务订单
+    public static final String STATUS_NOT_PAY = "0";
+    //已支付-在线业务订单
+    public static final String STATUS_PAYED = "1";
+
     public static final String ISSTART_YES = "isStart.yes";// 已经给星
     public static final String ISSTART_NO = "isStart.no";// 没有给星
 
@@ -53,6 +58,9 @@ public class OrderDetail implements Serializable {
     List<CallHistory> callHistories;//通话记录
 
     String isStart;
+
+    String secretaryQq = null;//在线服务QQ
+    String secretaryPhone = null;//在线服务电话
 
     public String getId() {
         return id;
@@ -228,5 +236,22 @@ public class OrderDetail implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+
+    public String getSecretaryQq() {
+        return secretaryQq;
+    }
+
+    public void setSecretaryQq(String secretaryQq) {
+        this.secretaryQq = secretaryQq;
+    }
+
+    public String getSecretaryPhone() {
+        return secretaryPhone;
+    }
+
+    public void setSecretaryPhone(String secretaryPhone) {
+        this.secretaryPhone = secretaryPhone;
     }
 }

@@ -63,7 +63,7 @@ public class UploadCreditDebtActivity extends BaseActivity {
 
         viewPagerTab.setViewPager(mViewPager);
 
-        aq.id(R.id.tv_toolbar_title).text(R.string.title_add_credit_info);
+        aq.id(R.id.tv_toolbar_title).text(R.string.title_add_credit_user);
 
         viewPagerTab.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -168,8 +168,10 @@ public class UploadCreditDebtActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.title_upload_credit);
+        getSupportActionBar().setTitle(getString(R.string.title_add_credit_user));
     }
+
+
 
     ViewPager mViewPager;
     MyPagerAdapter adapter;

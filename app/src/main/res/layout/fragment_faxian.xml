@@ -22,54 +22,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/title_faxian"
+                android:text="@string/tab_faxian"
                 android:textColor="#efefef"
                 android:textSize="20sp" />
         </FrameLayout>
     </android.support.design.widget.AppBarLayout>
-
-
-    <LinearLayout
-        android:id="@+id/btn_faxian_creditdebt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/layout_selector"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:padding="10dp">
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/ic_launcher" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/title_creditdebt"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:textSize="12sp"-->
-                <!--android:text="@string/summary_creditdebt" />-->
-        </LinearLayout>
-
-
-    </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"

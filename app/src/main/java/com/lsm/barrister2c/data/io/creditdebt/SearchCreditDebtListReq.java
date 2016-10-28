@@ -51,6 +51,16 @@ public class SearchCreditDebtListReq extends Action {
 
     }
 
+    public SearchCreditDebtListReq(Context context, int page) {
+        super(context);
+        this.page = page;
+
+        addUserParams();
+
+        params("page", String.valueOf(page));
+        params("pageSize", String.valueOf(pageSize));
+    }
+
     //金额范围，
     String startMoney;
     String endMoney;

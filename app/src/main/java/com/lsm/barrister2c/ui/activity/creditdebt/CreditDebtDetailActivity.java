@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -227,7 +228,10 @@ public class CreditDebtDetailActivity extends BaseActivity {
         aq.id(R.id.tv_credit_status).text("状态：" + status);
 
         aq.id(R.id.tv_credit_desc).text("描述信息:******");//item.getDesc()
-        aq.id(R.id.tv_credit_money).text("金额：" + String.valueOf(item.getMoney()));
+
+        String money = "金额：<font color=\"#ff0000\">" + item.getMoney() + "</font>";
+        aq.id(R.id.tv_credit_money).text(Html.fromHtml(money));
+
         aq.id(R.id.tv_credit_time).text("形成时间：" + item.getUpdateTime());
         aq.id(R.id.tv_credit_addtime).text("添加时间：" + item.getAddTime());
 
@@ -240,13 +244,67 @@ public class CreditDebtDetailActivity extends BaseActivity {
         aq.id(R.id.tv_credit_liscense_number).text("信用代码:" + "******");
         aq.id(R.id.tv_credit_address).text("联系地址:" + "******");
         //债务人信息============
-        aq.id(R.id.tv_debt_user_name).text("联系人:" + "******");
-        aq.id(R.id.tv_debt_user_phone).text("电话:" + "******");
-        aq.id(R.id.tv_debt_user_id_number).text("联系身份证号码:" + "******");
-        aq.id(R.id.tv_debt_user_company).text("公司名称:" + "******");
-        aq.id(R.id.tv_debt_company_phone).text("公司电话:" + "******");
-        aq.id(R.id.tv_debt_liscense_number).text("信用代码:" + "******");
-        aq.id(R.id.tv_debt_address).text("联系地址:" + "******");
+
+        //债务人信息============
+        CreditDebtUser debtUser = item.getDebtUser();
+        if (debtUser != null) {
+
+            String debtUserName = "联系人:<font color=\"#2bacfe\">" + (TextUtils.isEmpty(debtUser.getName()) ? "未知" : debtUser.getName()) + "</font>";
+
+            aq.id(R.id.tv_debt_user_name).text(Html.fromHtml(debtUserName));
+
+            if(!TextUtils.isEmpty(debtUser.getPhone())){
+                aq.id(R.id.tv_debt_user_phone).text("电话:" + debtUser.getPhone());
+            }else{
+                aq.id(R.id.tv_debt_user_phone).gone();
+            }
+
+            if(!TextUtils.isEmpty(debtUser.getID_number())){
+
+                aq.id(R.id.tv_debt_user_id_number).text("联系身份证号码:" + debtUser.getID_number());
+            }else{
+                aq.id(R.id.tv_debt_user_id_number).gone();
+            }
+
+            if(!TextUtils.isEmpty(debtUser.getCompany())){
+
+                String company = "公司名称:<font color=\"#2bacfe\">" + (TextUtils.isEmpty(debtUser.getCompany()) ? "未知" : debtUser.getCompany()) + "</font>";
+
+                aq.id(R.id.tv_debt_user_company).text(Html.fromHtml(company));
+
+            }else{
+                aq.id(R.id.tv_debt_user_company).gone();
+            }
+
+
+            if(!TextUtils.isEmpty(debtUser.getCompanyPhone())){
+                aq.id(R.id.tv_debt_company_phone).text("公司电话:" + debtUser.getCompanyPhone());
+
+            }else{
+                aq.id(R.id.tv_debt_company_phone).gone();
+            }
+
+            if(!TextUtils.isEmpty(debtUser.getLicenseNuber())){
+                aq.id(R.id.tv_debt_liscense_number).text("信用代码:" + debtUser.getLicenseNuber());
+            }else{
+                aq.id(R.id.tv_debt_liscense_number).gone();
+            }
+
+            aq.id(R.id.tv_debt_address).text("联系地址:" + debtUser.getAddress());
+
+        }else{
+
+            aq.id(R.id.tv_debt_user_name).text("联系人:" + "******");
+            aq.id(R.id.tv_debt_user_phone).text("电话:" + "******");
+            aq.id(R.id.tv_debt_user_id_number).text("联系身份证号码:" + "******");
+            aq.id(R.id.tv_debt_user_company).text("公司名称:" + "******");
+            aq.id(R.id.tv_debt_company_phone).text("公司电话:" + "******");
+            aq.id(R.id.tv_debt_liscense_number).text("信用代码:" + "******");
+            aq.id(R.id.tv_debt_address).text("联系地址:" + "******");
+
+        }
+
+
 
 
     }
@@ -296,7 +354,10 @@ public class CreditDebtDetailActivity extends BaseActivity {
         aq.id(R.id.tv_credit_status).text(status);
 
         aq.id(R.id.tv_credit_desc).text("描述信息:"+ result.detail.getDesc());//item.getDesc()
-        aq.id(R.id.tv_credit_money).text("金额：" +String.valueOf(item.getMoney()));
+
+        String money = "金额：<font color=\"#ff0000\">" + item.getMoney() + "</font>";
+        aq.id(R.id.tv_credit_money).text(Html.fromHtml(money));
+
         aq.id(R.id.tv_credit_time).text(item.getUpdateTime());
         aq.id(R.id.tv_credit_addtime).text(item.getAddTime());
 
@@ -304,7 +365,7 @@ public class CreditDebtDetailActivity extends BaseActivity {
         CreditDebtUser creditUser = result.detail.getCreditUser();
         if (creditUser != null) {
 
-            aq.id(R.id.tv_credit_user_name).text("联系人:" + creditUser.getName());
+            aq.id(R.id.tv_credit_user_name).text("联系人:" + (TextUtils.isEmpty(creditUser.getName()) ? "未知" : creditUser.getName()));
 
             if(!TextUtils.isEmpty(creditUser.getPhone())){
                 aq.id(R.id.tv_credit_user_phone).text("电话:" + creditUser.getPhone());
@@ -344,8 +405,10 @@ public class CreditDebtDetailActivity extends BaseActivity {
 
         //债务人信息============
         CreditDebtUser debtUser = result.detail.getDebtUser();
-        if (creditUser != null) {
-            aq.id(R.id.tv_debt_user_name).text("联系人:" + debtUser.getName());
+
+        if (debtUser != null) {
+
+            aq.id(R.id.tv_debt_user_name).text("联系人:" + (TextUtils.isEmpty(debtUser.getName()) ? "未知" : debtUser.getName()));
 
             if(!TextUtils.isEmpty(debtUser.getPhone())){
                 aq.id(R.id.tv_debt_user_phone).text("电话:" + debtUser.getPhone());

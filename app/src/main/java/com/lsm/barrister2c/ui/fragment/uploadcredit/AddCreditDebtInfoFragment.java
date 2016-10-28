@@ -96,11 +96,11 @@ public class AddCreditDebtInfoFragment extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.rb_status_suing){
                     //执行中隐藏凭证
-                    aq.id(R.id.btn_proof_image).gone();
+                    aq.id(R.id.layout_image_proof).gone();
                     aq.id(R.id.layout_image_judge).visible();
                 }else{
                     //其他隐藏判决书
-                    aq.id(R.id.btn_proof_image).visible();
+                    aq.id(R.id.layout_image_proof).visible();
                     aq.id(R.id.layout_image_judge).gone();
                 }
             }

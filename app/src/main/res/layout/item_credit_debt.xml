@@ -2,11 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:orientation="vertical"
+    android:layout_marginBottom="10dp"
     android:background="@color/white"
-    android:padding="10dp">
-
+    android:orientation="vertical"
+    android:padding="15dp">
 
     <!--* String type;//债类型-->
     <!--* float money;//债的金额-->
@@ -16,8 +15,96 @@
     <!--* String creditDebtStatus;//债的状态-->
 
     <LinearLayout
+        android:id="@+id/layout_debt_user"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="债务人"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/debt_frame"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_debt_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:text="姓名"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_debt_user_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:text="个人电话"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_debt_user_id_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:text="身份证"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_debt_user_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:text="单位名称"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_debt_company_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:text="公司电话"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_debt_liscense_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:text="信用代码"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_debt_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:text="联系地址"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <TextView
@@ -34,8 +121,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="状态"
             android:layout_marginLeft="10dp"
+            android:text="状态"
             android:textSize="13sp" />
     </LinearLayout>
 
@@ -73,5 +160,6 @@
         android:layout_marginTop="5dp"
         android:text="更新时间:2016-04-09 14:00-17:00"
         android:textSize="13sp" />
+
 
 </LinearLayout>

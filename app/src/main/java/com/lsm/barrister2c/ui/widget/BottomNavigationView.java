@@ -182,7 +182,7 @@ public class BottomNavigationView extends RelativeLayout {
                 final TextView title = (TextView) view.findViewById(R.id.bottom_navigation_item_title);
                 final ImageView icon = (ImageView) view.findViewById(R.id.bottom_navigation_item_icon);
                 BottomNavigationUtils.changeTextColor(title, itemInactiveColor, itemActiveColor);
-                BottomNavigationUtils.changeTextSize(title, withText ? textInactiveSize : 0, textActiveSize);
+//                BottomNavigationUtils.changeTextSize(title, withText ? textInactiveSize : 0, textActiveSize);
                 BottomNavigationUtils.imageColorChange(icon, itemInactiveColor, itemActiveColor);
                 BottomNavigationUtils.changeTopPadding(view, withText ? viewInactivePaddingTop : viewInactivePaddingTopWithoutText, viewActivePaddingTop);
 //                icon.animate()
@@ -215,7 +215,7 @@ public class BottomNavigationView extends RelativeLayout {
                 BottomNavigationUtils.imageColorChange(icon, itemActiveColor, itemInactiveColor);
                 BottomNavigationUtils.changeTopPadding(view, viewActivePaddingTop, withText ? viewInactivePaddingTop : viewInactivePaddingTopWithoutText);
                 BottomNavigationUtils.changeTextColor(title, itemActiveColor, itemInactiveColor);
-                BottomNavigationUtils.changeTextSize(title, textActiveSize, withText ? textInactiveSize : 0);
+//                BottomNavigationUtils.changeTextSize(title, textActiveSize, withText ? textInactiveSize : 0);
 //                icon.animate()
 //                        .setDuration(150)
 //                        .scaleX(1)

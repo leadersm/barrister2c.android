@@ -197,6 +197,8 @@ public class CreditDebtListActivity extends BaseActivity {
             }
         });
 
+        mAdapter.setEditable(false);
+
         mRecyclerView.setAdapter(mAdapter);
 
         aq.id(R.id.btn_search_dialog).clicked(new View.OnClickListener() {
@@ -267,8 +269,8 @@ public class CreditDebtListActivity extends BaseActivity {
                 Editable startDateEditable = dialog.id(R.id.et_search_starttime).getEditable();
                 Editable endDateEditable = dialog.id(R.id.et_search_endtime).getEditable();
 
-                Editable startMoneyEditable = dialog.id(R.id.et_search_starttime).getEditable();
-                Editable endMoneyEditable = dialog.id(R.id.et_search_endtime).getEditable();
+                Editable startMoneyEditable = dialog.id(R.id.et_search_start_money).getEditable();
+                Editable endMoneyEditable = dialog.id(R.id.et_search_end_money).getEditable();
                 //地区
                 Editable areaEditable = dialog.id(R.id.et_search_area).getEditable();
 
