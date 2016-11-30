@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -363,13 +364,19 @@ public class UIHelper {
 
     /**
      * 开启QQ与指定q号聊天
+     * mqqwpa://im/chat?chat_type=wpa&uin=
      *
      * @param context
      * @param qq
      */
     public static void startQQ(Context context, String qq) {
-        String url = "mqqwpa://im/chat?chat_type=wpa&uin=" + qq;
-        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        try {
+            String url = "mqqwpa://im/chat?chat_type=wpa&uin=" + qq;
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     public static void showCallView(Context context, String phone) {
@@ -412,6 +419,7 @@ public class UIHelper {
 
     /**
      * 我购买的
+     *
      * @param context
      */
     public static void goMyPurchasedCreditActivity(Context context) {
@@ -421,6 +429,7 @@ public class UIHelper {
 
     /**
      * 我上传的
+     *
      * @param context
      */
     public static void goMyUploadCreditActivity(Context context) {

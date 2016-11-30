@@ -239,6 +239,7 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
             if(!TextUtils.isEmpty(secretaryQQ)){
 
                 aq.id(R.id.layout_secretary).visible();
+                aq.id(R.id.btn_secretary_qq).visible();
                 aq.id(R.id.tv_secretary_qq).text(secretaryQQ);
                 aq.id(R.id.btn_secretary_qq).clicked(new View.OnClickListener() {
                     @Override
@@ -246,11 +247,14 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
                         UIHelper.startQQ(BarristerDetailActivity.this,secretaryQQ);
                     }
                 });
+            }else{
+                aq.id(R.id.btn_secretary_qq).gone();
             }
 
             if(!TextUtils.isEmpty(secretaryPhone)){
 
                 aq.id(R.id.layout_secretary).visible();
+                aq.id(R.id.btn_secretary_phone).visible();
                 aq.id(R.id.tv_secretary_phone).text(secretaryPhone);
                 aq.id(R.id.btn_secretary_phone).clicked(new View.OnClickListener() {
                     @Override
@@ -258,6 +262,8 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
                         UIHelper.showCallView(BarristerDetailActivity.this, secretaryPhone);
                     }
                 });
+            }else {
+                aq.id(R.id.btn_secretary_phone).gone();
             }
 
         }else{
@@ -373,11 +379,15 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
         float remaining = account.getRemainingBalance();
 
         if (remaining < money) {
-            new AlertDialog.Builder(BarristerDetailActivity.this).setTitle("您的账户余额不足请充值").setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+            new AlertDialog.Builder(BarristerDetailActivity.this)
+                    .setTitle("您的账户余额不足请充值")
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     UIHelper.goRechargeActivity(BarristerDetailActivity.this);
+
                 }
             }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
@@ -385,6 +395,7 @@ public class BarristerDetailActivity extends BaseActivity implements Appointment
                     dialog.dismiss();
                 }
             }).create().show();
+
         } else {
 
             View view = getLayoutInflater().inflate(R.layout.dialog_remarks,null);

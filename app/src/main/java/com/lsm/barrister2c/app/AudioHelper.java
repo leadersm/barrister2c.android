@@ -46,7 +46,13 @@ public class AudioHelper {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+
                 DLog.d(TAG,"播放完成");
+
+                if(handler==null || mediaPlayer==null){
+                    return;
+                }
+
                 handler.removeMessages(0);
                 mediaPlayer.seekTo(0);
 

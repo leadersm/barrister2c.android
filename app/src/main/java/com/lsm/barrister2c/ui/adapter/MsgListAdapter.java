@@ -123,6 +123,10 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             //处理
             title = "系统通知";
 
+        }else if (msg.getType().equals(PushMessage.TYPE_ONLINE_ORDER)) {
+            //处理
+            title = "在线订单";
+
         }
 
         return title;
@@ -156,6 +160,7 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             super(view);
             mView = view;
             aq = new AQuery(view);
+
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -166,10 +171,12 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     String type = mItem.getType();
 
                     if (type.equals(PushMessage.TYPE_ORDER_STATUS)) {
+                        //订单状态
 
                         UIHelper.goOrderDetailActivity(v.getContext(),mItem.getContentId());
 
                     } else if (type.equals(PushMessage.TYPE_LEARNING)) {
+                        //学习中心
 
 
                     }else if (type.equals(PushMessage.TYPE_ORDER_REWARD)||
@@ -178,10 +185,14 @@ public class MsgListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             type.equals(PushMessage.TYPE_ORDER_BACK_MONEY)||
                             type.equals(PushMessage.TYPE_RECEIVE_STAR)) {
 
+                        //账户相关
                         UIHelper.goMyAccountActivity(v.getContext());
 
                     }else if(type.equals(PushMessage.TYPE_WEB_AUTH)){
+
+                        //网页授权
                         UIHelper.goWebAuthActivity(v.getContext());
+
                     }
                 }
             });
